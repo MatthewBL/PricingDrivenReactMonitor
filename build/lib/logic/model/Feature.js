@@ -57,11 +57,11 @@ var Feature = (function () {
                 }
                 try {
                     feature_1 = retriever[this.featureId];
-                    if (typeof feature_1 === "boolean") {
-                        return [2, (0, ResultValue_1.value)(feature_1)];
+                    if (typeof feature_1["eval"] === "boolean") {
+                        return [2, (0, ResultValue_1.value)(feature_1["eval"])];
                     }
                     else {
-                        return [2, (0, ResultValue_1.error)("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature_1)];
+                        return [2, (0, ResultValue_1.error)("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature_1["eval"])];
                     }
                 }
                 catch (_b) {

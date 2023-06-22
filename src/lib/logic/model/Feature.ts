@@ -18,11 +18,13 @@ export class Feature implements NAryFunction<boolean> {
             return error("Error evaluating Feature " + this.featureId + ". No FeatureRetriever provided");
         }
         try {
+
             const feature = retriever[this.featureId];
-            if (typeof feature === "boolean") {
-                return value(feature);
+            
+            if (typeof feature["eval"] === "boolean") {
+                return value(feature["eval"]);
             } else {
-                return error("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature);
+                return error("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature["eval"]);
             }
         } catch {
             return error("Error evaluating Feature: " + this.featureId + " Retrieval error");
