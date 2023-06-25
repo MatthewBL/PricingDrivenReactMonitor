@@ -12,7 +12,7 @@ npm install pricingplans-react
 
 The package uses JSON Web Tokens (JWT) to send from the backend, as well as authentication data, the evaluation of different pricing features for the user that makes the request. The JWT must be stored as a `String` in the local storage of the browser, with the name `jwt`. The token body must have the following structure:
 
-```json
+```
 {
   "sub": String,
   "exp": timestamp,
