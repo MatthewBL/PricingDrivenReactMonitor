@@ -5,7 +5,8 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "npx tsc -p ."
+    "build": "npx tsc -p .",
+    "test": "npx jest"
   },
   "keywords": ["feature", "toggle", "pricing", "plan", "react", "component"],
   "author": "ISA Group, University of Seville, Spain",
