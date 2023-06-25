@@ -1,6 +1,6 @@
 # pricingplans-react
 
-The aim of this package is to provide a simple and easy to use components for react that allows UI feature toggling driven by pricing features. Also take a look to the package [pricingplans-4j](https://github.com/Alex-GF/feature-toggling-java), which allows fast and easy implementation of backend logic to be used by this package.
+The aim of this package is to provide some simple and easy to use components for react that allows UI feature toggling driven by pricing features. Also take a look to the package [pricingplans-4j](https://github.com/Alex-GF/feature-toggling-java), which allows fast and easy implementation of backend logic to be used by this package.
 
 ## Installation
 
