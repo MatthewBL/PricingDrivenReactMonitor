@@ -1,15 +1,15 @@
 {
   "name": "pricingplans-react",
   "version": "1.0.0",
-  "description": "",
+  "description": "A library of components that ease the integration of feature toggling driven by pricing plans into your React application's UI.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
     "build": "npx tsc -p ."
   },
-  "keywords": [],
-  "author": "",
-  "license": "",
+  "keywords": ["feature", "toggle", "pricing", "plan", "react", "component"],
+  "author": "ISA Group, University of Seville, Spain",
+  "license": "MIT",
   "peerDependencies": {
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0"
