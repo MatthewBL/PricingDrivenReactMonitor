@@ -20,14 +20,14 @@ class TokenService {
         return jwt ? jwt : null;
     }
 
-    getFeaturesFromToken() {
+    getFromToken(key: string) {
         const jwt = JSON.parse(localStorage.getItem("jwt")  as string);
 
         if (jwt) {
 
             let jwtBody = parseJwt(jwt);
 
-            return jwtBody.features;
+            return jwtBody[key];
         }
 
         return null;

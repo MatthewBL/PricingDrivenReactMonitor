@@ -38,7 +38,7 @@ function useGenericFeature(options) {
         if (options.on) {
             setIsLoading(true);
             var expressionPromises = options.on.map(function (on) {
-                return on.expression.eval({ featureRetriever: featureRetriever });
+                return on.expression.eval();
             });
             if (expressionPromises.length === 0) {
                 setIsLoading(false);

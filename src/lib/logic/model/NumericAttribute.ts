@@ -3,6 +3,7 @@ import FeatureRetriever, {
 } from "../../components/feature/FeatureRetriever";
 import { NAryFunction, NAryFunctionOptions } from "./NAryFunction";
 import { error, ResultValue, value } from "./ResultValue";
+import tokenService from "../../../services/token.service";
 
 export class NumericAttribute implements NAryFunction<number> {
   attributeId: string;
@@ -14,7 +15,7 @@ export class NumericAttribute implements NAryFunction<number> {
   }
 
   async eval(options?: NAryFunctionOptions): Promise<ResultValue<number>> {
-    const retriever = this.featureRetriever ?? options?.featureRetriever;
+    const retriever = tokenService.getFromToken("features"); //this.featureRetriever ?? options?.featureRetriever;
     if (!retriever) {
       return error(
         "Error evaluating Attribute " +
@@ -23,18 +24,18 @@ export class NumericAttribute implements NAryFunction<number> {
       );
     }
     try {
-      const attribute = await retriever.getAttribute(this.attributeId);
-      if (typeof attribute !== "number") {
+      const attribute = retriever[this.attributeId];
+      if (typeof attribute["eval"] !== "number") {
         return error(
           "Error evaluating Attribute " +
             this.attributeId +
             ". Got a " +
-            typeof attribute +
+            typeof attribute["eval"] +
             ", expected number. Recv value: " +
             attribute
         );
       } else {
-        return value(attribute);
+        return value(attribute["eval"]);
       }
     } catch {
       return error(

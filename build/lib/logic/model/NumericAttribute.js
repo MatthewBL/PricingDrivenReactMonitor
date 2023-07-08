@@ -35,50 +35,46 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.numericAttribute = exports.NumericAttribute = void 0;
 var ResultValue_1 = require("./ResultValue");
+var token_service_1 = __importDefault(require("../../../services/token.service"));
 var NumericAttribute = (function () {
     function NumericAttribute(featureId, featureRetriever) {
         this.attributeId = featureId;
         this.featureRetriever = featureRetriever;
     }
     NumericAttribute.prototype.eval = function (options) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var retriever, attribute, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        retriever = (_a = this.featureRetriever) !== null && _a !== void 0 ? _a : options === null || options === void 0 ? void 0 : options.featureRetriever;
-                        if (!retriever) {
-                            return [2, (0, ResultValue_1.error)("Error evaluating Attribute " +
-                                    this.attributeId +
-                                    ". No FeatureRetriever provided")];
-                        }
-                        _c.label = 1;
-                    case 1:
-                        _c.trys.push([1, 3, , 4]);
-                        return [4, retriever.getAttribute(this.attributeId)];
-                    case 2:
-                        attribute = _c.sent();
-                        if (typeof attribute !== "number") {
-                            return [2, (0, ResultValue_1.error)("Error evaluating Attribute " +
-                                    this.attributeId +
-                                    ". Got a " +
-                                    typeof attribute +
-                                    ", expected number. Recv value: " +
-                                    attribute)];
-                        }
-                        else {
-                            return [2, (0, ResultValue_1.value)(attribute)];
-                        }
-                        return [3, 4];
-                    case 3:
-                        _b = _c.sent();
-                        return [2, (0, ResultValue_1.error)("Error evaluating Attribute: " + this.attributeId + " Retrieval error")];
-                    case 4: return [2];
+            var retriever, attribute;
+            return __generator(this, function (_a) {
+                retriever = token_service_1.default.getFromToken("features");
+                if (!retriever) {
+                    return [2, (0, ResultValue_1.error)("Error evaluating Attribute " +
+                            this.attributeId +
+                            ". No FeatureRetriever provided")];
                 }
+                try {
+                    attribute = retriever[this.attributeId];
+                    if (typeof attribute["eval"] !== "number") {
+                        return [2, (0, ResultValue_1.error)("Error evaluating Attribute " +
+                                this.attributeId +
+                                ". Got a " +
+                                typeof attribute["eval"] +
+                                ", expected number. Recv value: " +
+                                attribute)];
+                    }
+                    else {
+                        return [2, (0, ResultValue_1.value)(attribute["eval"])];
+                    }
+                }
+                catch (_b) {
+                    return [2, (0, ResultValue_1.error)("Error evaluating Attribute: " + this.attributeId + " Retrieval error")];
+                }
+                return [2];
             });
         });
     };

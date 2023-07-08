@@ -13,7 +13,7 @@ export class Feature implements NAryFunction<boolean> {
     }
 
     async eval(options?: NAryFunctionOptions): Promise<ResultValue<boolean>> {
-        const retriever = tokenService.getFeaturesFromToken();//this.featureRetriever ?? options?.featureRetriever;
+        const retriever = tokenService.getFromToken("features");//this.featureRetriever ?? options?.featureRetriever;
         if (!retriever) {
             return error("Error evaluating Feature " + this.featureId + ". No FeatureRetriever provided");
         }
@@ -23,10 +23,23 @@ export class Feature implements NAryFunction<boolean> {
             
             if (typeof feature["eval"] === "boolean") {
                 return value(feature["eval"]);
+            }else if (typeof feature["eval"] === "string"){ 
+
+                let userContext = tokenService.getFromToken("userContext");
+                let planContext = tokenService.getFromToken("planContext");
+
+                try{
+                    let result = eval(`${feature["eval"]}`)
+                    return value(result);
+                }catch{
+                    return error("Error evaluating Feature " + this.featureId + ". The expression is not valid, it throws an exception or returns a non boolean value.");
+                }
+
             } else {
                 return error("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature["eval"]);
             }
-        } catch {
+        } catch{
+
             return error("Error evaluating Feature: " + this.featureId + " Retrieval error");
         }
     }

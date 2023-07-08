@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useGenericFeature = exports.feature = exports.FeatureRetriever = exports.FeatureContext = exports.ErrorFallback = exports.Loading = exports.Default = exports.On = exports.Feature = void 0;
+exports.implies = exports.iff = exports.or = exports.and = exports.useGenericFeature = exports.feature = exports.ErrorFallback = exports.Loading = exports.Default = exports.On = exports.Feature = void 0;
 var Feature_1 = require("./lib/components/feature/Feature");
 Object.defineProperty(exports, "Feature", { enumerable: true, get: function () { return Feature_1.Feature; } });
 Object.defineProperty(exports, "On", { enumerable: true, get: function () { return Feature_1.On; } });
@@ -12,9 +12,10 @@ Object.defineProperty(exports, "Loading", { enumerable: true, get: function () {
 Object.defineProperty(exports, "ErrorFallback", { enumerable: true, get: function () { return Feature_1.ErrorFallback; } });
 var useGenericFeature_1 = __importDefault(require("./lib/components/feature/useGenericFeature"));
 exports.useGenericFeature = useGenericFeature_1.default;
-var FeatureContext_1 = require("./lib/components/feature/FeatureContext");
-Object.defineProperty(exports, "FeatureContext", { enumerable: true, get: function () { return FeatureContext_1.FeatureContext; } });
-var FeatureRetriever_1 = __importDefault(require("./lib/components/feature/FeatureRetriever"));
-exports.FeatureRetriever = FeatureRetriever_1.default;
 var Feature_2 = require("./lib/logic/model/Feature");
 Object.defineProperty(exports, "feature", { enumerable: true, get: function () { return Feature_2.feature; } });
+var BinaryLogicalPredicate_1 = require("./lib/logic/model/BinaryLogicalPredicate");
+Object.defineProperty(exports, "and", { enumerable: true, get: function () { return BinaryLogicalPredicate_1.and; } });
+Object.defineProperty(exports, "or", { enumerable: true, get: function () { return BinaryLogicalPredicate_1.or; } });
+Object.defineProperty(exports, "iff", { enumerable: true, get: function () { return BinaryLogicalPredicate_1.iff; } });
+Object.defineProperty(exports, "implies", { enumerable: true, get: function () { return BinaryLogicalPredicate_1.implies; } });

@@ -33,7 +33,7 @@ export default function useGenericFeature(
       setIsLoading(true);
       // Get the feature value for each provided expression
       const expressionPromises = options.on.map((on) =>
-        on.expression.eval({ featureRetriever })
+        on.expression.eval()
       );
 
       if (expressionPromises.length === 0) {

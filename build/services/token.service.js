@@ -15,11 +15,11 @@ var TokenService = (function () {
         var jwt = JSON.parse(localStorage.getItem("jwt"));
         return jwt ? jwt : null;
     };
-    TokenService.prototype.getFeaturesFromToken = function () {
+    TokenService.prototype.getFromToken = function (key) {
         var jwt = JSON.parse(localStorage.getItem("jwt"));
         if (jwt) {
             var jwtBody = parseJwt(jwt);
-            return jwtBody.features;
+            return jwtBody[key];
         }
         return null;
     };

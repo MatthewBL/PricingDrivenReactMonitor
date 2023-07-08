@@ -49,23 +49,25 @@ var Feature = (function () {
     }
     Feature.prototype.eval = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var retriever, feature_1;
+            var retriever, feature, userContext, planContext, result;
             return __generator(this, function (_a) {
-                retriever = token_service_1.default.getFeaturesFromToken();
+                retriever = token_service_1.default.getFromToken("features");
                 if (!retriever) {
                     return [2, (0, ResultValue_1.error)("Error evaluating Feature " + this.featureId + ". No FeatureRetriever provided")];
                 }
-                try {
-                    feature_1 = retriever[this.featureId];
-                    if (typeof feature_1["eval"] === "boolean") {
-                        return [2, (0, ResultValue_1.value)(feature_1["eval"])];
-                    }
-                    else {
-                        return [2, (0, ResultValue_1.error)("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature_1["eval"])];
-                    }
+                feature = retriever[this.featureId];
+                if (typeof feature["eval"] === "boolean") {
+                    return [2, (0, ResultValue_1.value)(feature["eval"])];
                 }
-                catch (_b) {
-                    return [2, (0, ResultValue_1.error)("Error evaluating Feature: " + this.featureId + " Retrieval error")];
+                else if (typeof feature["eval"] === "string") {
+                    userContext = token_service_1.default.getFromToken("userContext");
+                    planContext = token_service_1.default.getFromToken("planContext");
+                    result = eval("".concat(feature["eval"]));
+                    console.log("result (".concat(this.featureId, ")"), result);
+                    return [2, (0, ResultValue_1.value)(result)];
+                }
+                else {
+                    return [2, (0, ResultValue_1.error)("Error evaluating Feature " + this.featureId + ". It was not a boolean. Recv value: " + feature["eval"])];
                 }
                 return [2];
             });

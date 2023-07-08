@@ -1,7 +1,7 @@
 declare class TokenService {
     getLocalRefreshToken(): any;
     getLocalAccessToken(): any;
-    getFeaturesFromToken(): any;
+    getFromToken(key: string): any;
     updateLocalAccessToken(token: string): void;
     getUser(): any;
     setUser(user: object): void;
