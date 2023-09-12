@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { PricingContext } from "./types";
 
 interface PricingEditor {
@@ -9,11 +9,11 @@ interface PricingEditor {
   onSave: () => void;
 }
 
-export const PricingEditor = () => {
+export const PricingEditor = (props:PricingEditor) => {
   return (
-    <>
-      <Route path="/hello" element={<h1>Hello World</h1>} />
-      <Route path="/hello1" element={<h1>Hello World 1</h1>} />
-    </>
+    <Routes>
+      <Route path={`hello`} element={<h1>Hello World</h1>} />
+      <Route path={`hello1`} element={<h1>Hello World 1</h1>} />
+    </Routes>
   );
 };
