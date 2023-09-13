@@ -1,11 +1,6 @@
+import { AttributeFormData } from "../pages/Attributes";
 import { TableState } from "../reducers/tableReducer";
-import {
-  Attribute,
-  AttributeFormData,
-  Attributes,
-  Feature,
-  Features,
-} from "../types";
+import { Attribute, Attributes, Feature, Features } from "../types";
 
 export function isNumeric(value: any) {
   return typeof value === "number";
