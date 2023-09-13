@@ -1,5 +1,10 @@
-import React, {Dispatch, SetStateAction, createContext, useState} from "react";
-import {PricingContext} from "../utils/types";
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useState,
+} from "react";
+import { PricingContext } from "../types";
 
 interface EditorContextProps {
   pricingContext: PricingContext;
@@ -38,7 +43,8 @@ export function EditorContextProvider({
         setPricingContext: setPricingState,
         theme: editorTheme,
         returnTo: retTo,
-      }}>
+      }}
+    >
       {children}
     </EditorContext.Provider>
   );

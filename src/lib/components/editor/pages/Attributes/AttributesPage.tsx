@@ -1,16 +1,16 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import {
   ActionsDict,
   Attribute,
   AttributeFormErrors,
   ERROR_MESSAGES,
-} from "../../utils/types";
-import {Button} from "../../components/Button";
-import {Table} from "../../components/Table";
-import {Modal} from "../../components/Modal";
-import {AttributeForm} from "./AttributeForm";
-import {AttributesContext} from "../../context/AttributesProvider";
-import {attributeToAttributeForm} from "../../utils";
+} from "../../types";
+import { Button } from "../../components/Button";
+import { Table } from "../../components/Table";
+import { Modal } from "../../components/Modal";
+import { AttributeForm } from "./AttributeForm";
+import { AttributesContext } from "../../context/AttributesProvider";
+import { attributeToAttributeForm } from "../../utils";
 
 type Command = "add" | "edit" | "delete";
 
@@ -25,7 +25,7 @@ export function AttributesPage({
   tableHeaders,
   addLabel,
 }: AttributePagesProps) {
-  const {state, dispatch} = useContext(AttributesContext);
+  const { state, dispatch } = useContext(AttributesContext);
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
 
@@ -39,34 +39,34 @@ export function AttributesPage({
   };
 
   const addAttribute = (attribute: Attribute) => {
-    dispatch({type: "add_item", payload: attribute});
+    dispatch({ type: "add_item", payload: attribute });
     closeModal();
   };
 
   const updateAttribute = (newAttribute: Attribute) => {
-    dispatch({type: "update_item", payload: newAttribute});
+    dispatch({ type: "update_item", payload: newAttribute });
     closeModal();
   };
 
   const deleteAttribute = () => {
-    dispatch({type: "delete_item"});
+    dispatch({ type: "delete_item" });
     closeModal();
   };
 
   const handleValidation = (attribute: Attribute) => {
     const errors: AttributeFormErrors = {};
-    const {id, defaultValue} = attribute;
+    const { id, defaultValue } = attribute;
     const nameIsEmpty = id === "";
     const defaultValueIsEmpty = defaultValue === "";
 
     const attributeNameExistsWhenAddCommand =
       command === ActionsDict.ADD &&
-      state.data.filter(attribute => attribute.id === id).length !== 0;
+      state.data.filter((attribute) => attribute.id === id).length !== 0;
 
     const attributeNameExistsWhenEditCommand =
       command === ActionsDict.EDIT &&
       state.data.filter(
-        (attribute, index) => index !== state.index && attribute.id === id,
+        (attribute, index) => index !== state.index && attribute.id === id
       ).length !== 0;
 
     if (nameIsEmpty) {
@@ -148,8 +148,8 @@ interface AttributeListProps {
   onClick: (action: Command) => void;
 }
 
-function AttributeList({onClick}: AttributeListProps) {
-  const {state, dispatch} = useContext(AttributesContext);
+function AttributeList({ onClick }: AttributeListProps) {
+  const { state, dispatch } = useContext(AttributesContext);
 
   const renderAttributeItem = (attribute: Attribute) => {
     switch (typeof attribute.defaultValue) {
@@ -187,14 +187,14 @@ function AttributeList({onClick}: AttributeListProps) {
             <Button
               onClick={() => {
                 onClick("edit");
-                dispatch({type: "select_item", index});
+                dispatch({ type: "select_item", index });
               }}
               text="Edit"
             />
             <Button
               onClick={() => {
                 onClick("delete");
-                dispatch({type: "select_item", index});
+                dispatch({ type: "select_item", index });
               }}
               text="Delete"
             />
