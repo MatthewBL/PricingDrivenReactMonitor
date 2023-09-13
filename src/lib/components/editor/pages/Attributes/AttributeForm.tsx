@@ -1,13 +1,9 @@
 import React, { ChangeEvent, useState } from "react";
-import {
-  Attribute,
-  AttributeFormData,
-  AttributeFormErrors,
-  AttributeType,
-} from "../../types";
+import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "../../components/DefaultValue";
 import { Button } from "../../components/Button";
 import { attributeFormToAttribute } from "../../utils";
+import { AttributeFormData, AttributeFormErrors } from ".";
 
 interface AttributeFormProps {
   initialData: AttributeFormData;

@@ -6,7 +6,7 @@ import { Modal } from "../../components/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
-import { AttributeFormErrors, ERROR_MESSAGES, Command } from ".";
+import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
 
 interface AttributePagesProps {
   title: string;
