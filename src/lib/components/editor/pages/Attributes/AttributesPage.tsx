@@ -1,18 +1,12 @@
 import React, { useContext, useState } from "react";
-import {
-  ActionsDict,
-  Attribute,
-  AttributeFormErrors,
-  ERROR_MESSAGES,
-} from "../../types";
+import { Attribute } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
-
-type Command = "add" | "edit" | "delete";
+import { AttributeFormErrors, ERROR_MESSAGES, Command } from ".";
 
 interface AttributePagesProps {
   title: string;
@@ -60,11 +54,11 @@ export function AttributesPage({
     const defaultValueIsEmpty = defaultValue === "";
 
     const attributeNameExistsWhenAddCommand =
-      command === ActionsDict.ADD &&
+      command === "add" &&
       state.data.filter((attribute) => attribute.id === id).length !== 0;
 
     const attributeNameExistsWhenEditCommand =
-      command === ActionsDict.EDIT &&
+      command === "edit" &&
       state.data.filter(
         (attribute, index) => index !== state.index && attribute.id === id
       ).length !== 0;
