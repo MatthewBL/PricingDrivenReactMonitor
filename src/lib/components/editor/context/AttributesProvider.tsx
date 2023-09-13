@@ -10,8 +10,8 @@ interface AttributesContextProps {
   dispatch: Dispatch<Action<Attribute>>;
 }
 
-// TODO !!!!
-//Los valores por defectos hay que darles una vuelta
+// --------------- TODO ----------------------------
+// Reason well about default values when consuming context outside children
 export const AttributesContext = createContext<AttributesContextProps>({
   state: { data: [], index: 0 },
   dispatch: () => null,

@@ -1,5 +1,3 @@
-// NEW
-
 export interface PricingEditor {
   pricingContext: PricingContext;
   returnTo: string;
@@ -50,12 +48,6 @@ export interface PlanValue {
     value: string | number | boolean;
   };
 }
-
-/**
- * Plans
- */
-
-// OLD
 
 export const ActionsDict = {
   ADD: "add",
