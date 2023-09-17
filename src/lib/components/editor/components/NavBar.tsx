@@ -35,12 +35,12 @@ export function NavBar({ onSave }: NavBarProps) {
     isPending: boolean;
   }) => {
     if (isPending) {
-      return "--is-pending";
+      return "pp-link--is-pending";
     } else {
       if (isActive) {
-        return "--is-active";
+        return "pp-link--is-active";
       } else {
-        return "";
+        return "pp-link";
       }
     }
   };

@@ -7,7 +7,7 @@ interface ToggleProps {
 
 export function Toggle({ isHidden, onClick }: ToggleProps) {
   return (
-    <button className="toggle" type="button" onClick={onClick}>
+    <button className="pp-toggle" type="button" onClick={onClick}>
       {isHidden ? ">" : "<"}
     </button>
   );
