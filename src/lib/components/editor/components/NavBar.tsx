@@ -29,7 +29,7 @@ export function NavBar({ onSave }: NavBarProps) {
 
   return (
     <>
-      <nav className={theme} id="sidebar" hidden={hidden}>
+      <nav className="pp-nav" hidden={hidden}>
         <ul>
           <li>
             <NavLink to="attributes">Attributes</NavLink>

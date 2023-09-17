@@ -1,6 +1,5 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import "../assets/Modal.css";
 
 interface ModalProps {
   open: boolean;
@@ -15,8 +14,8 @@ export function Modal({ open, children }: ModalProps) {
   }
 
   return createPortal(
-    <div className="modal-background">
-      <div className="modal">{children}</div>
+    <div className="pp-modal-background">
+      <div className="pp-modal-content">{children}</div>
     </div>,
     portal
   );
