@@ -25,10 +25,10 @@ export function PricingPlansEditor({
       returnTo={returnTo}
     >
       <AttributesProvider>
-        <header>
-          <NavBar onSave={onSave} />
-        </header>
-        <Outlet />
+        <NavBar onSave={onSave} />
+        <main className="pp-content">
+          <Outlet />
+        </main>
       </AttributesProvider>
     </EditorContextProvider>
   );

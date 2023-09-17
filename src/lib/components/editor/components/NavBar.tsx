@@ -27,28 +27,64 @@ export function NavBar({ onSave }: NavBarProps) {
     setPricingContext({ ...pricingContext, features });
   };
 
+  const computeNavLinkStatus = ({
+    isActive,
+    isPending,
+  }: {
+    isActive: boolean;
+    isPending: boolean;
+  }) => {
+    if (isPending) {
+      return "--is-pending";
+    } else {
+      if (isActive) {
+        return "--is-active";
+      } else {
+        return "";
+      }
+    }
+  };
+
   return (
     <>
-      <nav className="pp-nav" hidden={hidden}>
-        <ul>
-          <li>
-            <NavLink to="attributes">Attributes</NavLink>
-          </li>
-          <li>
-            <NavLink to="user-context">User Context</NavLink>
-          </li>
-          <li>
-            <NavLink to="plans">Pricing plans</NavLink>
-          </li>
-          <li>
-            <NavLink to={returnTo}>Return to page</NavLink>
-          </li>
-        </ul>
-      </nav>
+      <header>
+        <div className="pp-brand">
+          <img className="pp-brand__logo" />
+          <h1 className="pp-brand__name">Pricingplans-react</h1>
+        </div>
+        <nav className="pp-nav" hidden={hidden}>
+          <ul>
+            <li>
+              <NavLink className={computeNavLinkStatus} to="attributes">
+                Attributes
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={computeNavLinkStatus} to="user-context">
+                User Context
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={computeNavLinkStatus} to="plans">
+                Pricing plans
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={computeNavLinkStatus} to="evaluation">
+                Evaluation
+              </NavLink>
+            </li>
+            <li>
+              <NavLink className={computeNavLinkStatus} to={returnTo}>
+                Return to page
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+        <Button onClick={updatePricingContext} text="Save" />
+        {/*<Button onClick={() => onSave(pricingContext)} text="Send" />*/}
+      </header>
       <Toggle isHidden={hidden} onClick={handleClick} />
-      <Button onClick={updatePricingContext} text="Save" />
-      <Button onClick={() => onSave(pricingContext)} text="Send" />
-      <pre>{JSON.stringify(pricingContext, null, 2)}</pre>
     </>
   );
 }
