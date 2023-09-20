@@ -48,9 +48,9 @@ export function PricingConfigurationRoutes({
           path="attributes"
           element={
             <AttributesPage
-              title="Plans attributes"
+              title="Plan attributes"
               tableHeaders={["Name", "Type", "Default", "Actions"]}
-              addLabel="Add attribute"
+              addLabel="+"
             />
           }
         />

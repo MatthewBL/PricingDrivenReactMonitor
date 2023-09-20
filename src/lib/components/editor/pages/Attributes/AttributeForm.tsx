@@ -103,7 +103,7 @@ export function AttributeForm({
         onChange={handleDefaultValueChange}
         value={form.defaultValue}
       />
-      <Button text="Save" />
+      <Button className="pp-btn" text="Save" />
     </form>
   );
 }

@@ -47,7 +47,7 @@ export function NavBar({ onSave }: NavBarProps) {
 
   return (
     <>
-      <header>
+      <header className="pp-header">
         <div className="pp-brand">
           <img className="pp-brand__logo" />
           <h1 className="pp-brand__name">Pricingplans-react</h1>
@@ -81,10 +81,10 @@ export function NavBar({ onSave }: NavBarProps) {
             </li>
           </ul>
         </nav>
-        <Button onClick={updatePricingContext} text="Save" />
+        <Button className="pp-btn" onClick={updatePricingContext} text="Save" />
         {/*<Button onClick={() => onSave(pricingContext)} text="Send" />*/}
       </header>
-      <Toggle isHidden={hidden} onClick={handleClick} />
+      <Toggle className="pp-toggle" isHidden={hidden} onClick={handleClick} />
     </>
   );
 }

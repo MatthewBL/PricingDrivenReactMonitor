@@ -127,8 +127,14 @@ export function AttributesPage({
 
   return (
     <>
-      <h1>{title}</h1>
-      <Button onClick={() => handleClick("add")} text={addLabel} />
+      <header className="pp-content-header">
+        <h1 className="pp-content-header__title">{title}</h1>
+        <Button
+          className="pp-btn"
+          onClick={() => handleClick("add")}
+          text={addLabel}
+        />
+      </header>
 
       <Table labels={tableHeaders}>
         <AttributeList onClick={handleClick} />

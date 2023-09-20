@@ -5,9 +5,5 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({ text, ...props }: ButtonProps) {
-  return (
-    <button className="pp-btn" {...props}>
-      {text}
-    </button>
-  );
+  return <button {...props}>{text}</button>;
 }
