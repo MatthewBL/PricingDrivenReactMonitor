@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditorContextProvider } from "./context/EditorContextProvider";
 import { NavBar } from "./components/NavBar";
 import { PricingContext } from "./types";
 import { AttributesProvider } from "./context/AttributesProvider";
+import { Toggle } from "./components/Toggle";
 
 interface PricingPlansEditorProps {
   pricingContext: PricingContext;
@@ -18,6 +19,12 @@ export function PricingPlansEditor({
   returnTo,
   onSave,
 }: PricingPlansEditorProps) {
+  const [hidden, setHidden] = useState(false);
+
+  const handleClick = () => {
+    setHidden(!hidden);
+  };
+
   return (
     <EditorContextProvider
       pricingContext={pricingContext}
@@ -25,10 +32,17 @@ export function PricingPlansEditor({
       returnTo={returnTo}
     >
       <AttributesProvider>
-        <NavBar onSave={onSave} />
-        <main className="pp-content">
-          <Outlet />
-        </main>
+        <div className="pp-editor">
+          <NavBar hidden={hidden} />
+          <main className="pp-content">
+            <Toggle
+              className="pp-toggle"
+              isHidden={hidden}
+              onClick={handleClick}
+            />
+            <Outlet />
+          </main>
+        </div>
       </AttributesProvider>
     </EditorContextProvider>
   );

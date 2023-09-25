@@ -8,18 +8,13 @@ import { AttributesContext } from "../context/AttributesProvider";
 import { PricingContext } from "../types";
 
 interface NavBarProps {
-  onSave: (pricingContext: PricingContext) => void;
+  hidden: boolean;
 }
 
-export function NavBar({ onSave }: NavBarProps) {
+export function NavBar({ hidden }: NavBarProps) {
   const attrCtx = useContext(AttributesContext);
   const { theme, returnTo, pricingContext, setPricingContext } =
     useContext(EditorContext);
-  const [hidden, setHidden] = useState(false);
-
-  const handleClick = () => {
-    setHidden(!hidden);
-  };
 
   const features = attributesToFeatures(attrCtx.state.data);
 
@@ -82,9 +77,7 @@ export function NavBar({ onSave }: NavBarProps) {
           </ul>
         </nav>
         <Button className="pp-btn" onClick={updatePricingContext} text="Save" />
-        {/*<Button onClick={() => onSave(pricingContext)} text="Send" />*/}
       </header>
-      <Toggle className="pp-toggle" isHidden={hidden} onClick={handleClick} />
     </>
   );
 }
