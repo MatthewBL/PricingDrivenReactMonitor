@@ -2,8 +2,8 @@
   "name": "pricingplans-react",
   "version": "2.0.0",
   "description": "A library of components that ease the integration of feature toggling driven by pricing plans into your React application's UI.",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npx tsc -p ."
   },
@@ -32,10 +32,15 @@
     "@types/jest": "^29.5.2",
     "@types/react": "^18.2.12",
     "@types/react-dom": "^18.2.7",
+    "css-loader": "^6.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
     "react-test-renderer": "18.2.0",
-    "typescript": "^4.5.4"
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "typescript": "^4.5.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
