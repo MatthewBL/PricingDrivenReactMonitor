@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
     "target": "es5",
     "lib": ["dom", "es5"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "commonjs",
-    "rootDir": "src",
     "declaration": true,
-    "outDir": "dist",
     "removeComments": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
