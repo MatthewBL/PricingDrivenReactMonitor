@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "../../components/DefaultValue";
 import { Button } from "../../components/Button";

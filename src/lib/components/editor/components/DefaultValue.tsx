@@ -1,4 +1,3 @@
-import React from "react";
 import { AttributeType } from "../types";
 
 interface DefaultValueProps {

@@ -1,9 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, createContext, useState } from "react";
 import { PricingContext } from "../types";
 
 interface EditorContextProps {

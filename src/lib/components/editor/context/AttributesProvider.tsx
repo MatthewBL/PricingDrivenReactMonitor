@@ -1,6 +1,5 @@
-import React, { Dispatch, createContext, useContext, useReducer } from "react";
+import { Dispatch, createContext, useContext, useReducer } from "react";
 import { featuresToAttributesState } from "../utils";
-
 import { EditorContext } from "./EditorContextProvider";
 import { Action, TableState, tableReducer } from "../reducers/tableReducer";
 import { Attribute } from "../types";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditorContextProvider } from "./context/EditorContextProvider";
 import { NavBar } from "./components/NavBar";

@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { PricingPlansEditor } from "./PricingPlansEditor";
 import { AttributesPage } from "./pages/Attributes/AttributesPage";

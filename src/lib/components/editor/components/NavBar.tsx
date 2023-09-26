@@ -1,11 +1,9 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { Toggle } from "../components/Toggle";
 import { EditorContext } from "../context/EditorContextProvider";
 import { Button } from "../components/Button";
 import { attributesToFeatures } from "../utils";
 import { AttributesContext } from "../context/AttributesProvider";
-import { PricingContext } from "../types";
 
 interface NavBarProps {
   hidden: boolean;

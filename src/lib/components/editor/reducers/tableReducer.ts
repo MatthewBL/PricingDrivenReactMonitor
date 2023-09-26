@@ -4,14 +4,14 @@ export interface TableState<T> {
 }
 
 export type Action<T> =
-  | {type: "add_item"; payload: T}
-  | {type: "update_item"; payload: T}
-  | {type: "delete_item"}
-  | {type: "select_item"; index: number};
+  | { type: "add_item"; payload: T }
+  | { type: "update_item"; payload: T }
+  | { type: "delete_item" }
+  | { type: "select_item"; index: number };
 
 export function tableReducer<T>(
   state: TableState<T>,
-  action: Action<T>,
+  action: Action<T>
 ): TableState<T> {
   switch (action.type) {
     case "add_item": {
@@ -24,7 +24,7 @@ export function tableReducer<T>(
       return {
         ...state,
         data: state.data.map((attribute, index) =>
-          index === state.index ? action.payload : attribute,
+          index === state.index ? action.payload : attribute
         ),
       };
     }

@@ -1,5 +1,3 @@
-import React from "react";
-
 interface TableProps {
   readonly labels: Array<string>;
   hasDefault?: true;
