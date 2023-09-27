@@ -40,38 +40,36 @@ export function NavBar({ hidden }: NavBarProps) {
   };
 
   return (
-    <header>
-      <nav className="pp-nav" hidden={hidden}>
-        <img className="pp-logo" />
-        <ul className="pp-nav-items">
-          <li>
-            <NavLink className={computeNavLinkStatus} to="attributes">
-              Attributes
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className={computeNavLinkStatus} to="user-context">
-              User Context
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className={computeNavLinkStatus} to="plans">
-              Pricing plans
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className={computeNavLinkStatus} to="evaluation">
-              Evaluation
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className={computeNavLinkStatus} to={returnTo}>
-              Return to page
-            </NavLink>
-          </li>
-        </ul>
-        <Button onClick={updatePricingContext} text="Save" />
-      </nav>
-    </header>
+    <nav className="pp-nav" hidden={hidden}>
+      <img className="pp-logo" />
+      <ul className="pp-nav-items">
+        <li>
+          <NavLink className={computeNavLinkStatus} to="attributes">
+            Attributes
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={computeNavLinkStatus} to="user-context">
+            User Context
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={computeNavLinkStatus} to="plans">
+            Pricing plans
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={computeNavLinkStatus} to="evaluation">
+            Evaluation
+          </NavLink>
+        </li>
+        <li>
+          <NavLink className={computeNavLinkStatus} to={returnTo}>
+            Return to page
+          </NavLink>
+        </li>
+      </ul>
+      <Button onClick={updatePricingContext} text="Save" />
+    </nav>
   );
 }

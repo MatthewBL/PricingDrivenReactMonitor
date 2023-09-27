@@ -17,6 +17,10 @@ module.exports = {
         loader: "ts-loader",
       },
       {
+        test: /\.(png|jpg)$/,
+        type: "asset/resource",
+      },
+      {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },

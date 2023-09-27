@@ -1,0 +1,7 @@
+.pp-editor {
+  display: flex;
+}
+
+.pp-content {
+  flex: 1;
+}

@@ -5,6 +5,7 @@ import { NavBar } from "./components/NavBar/NavBar";
 import { PricingContext } from "./types";
 import { AttributesProvider } from "./context/AttributesProvider";
 import { Toggle } from "./components/Toggle";
+import "./PricingPlansEditor.css";
 
 interface PricingPlansEditorProps {
   pricingContext: PricingContext;
