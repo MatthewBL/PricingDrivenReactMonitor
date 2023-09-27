@@ -4,7 +4,7 @@ import { EditorContext } from "../../context/EditorContextProvider";
 import { attributesToFeatures } from "../../utils";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { Button } from "../Button";
-import "NavBar.css";
+import "./NavBar.css";
 
 interface NavBarProps {
   hidden: boolean;
