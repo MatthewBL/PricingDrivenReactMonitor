@@ -1,0 +1,18 @@
+.pp-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.pp-logo {
+  padding: 1rem;
+}
+
+.pp-nav-items {
+  list-style-type: none;
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.pp-link {
+  text-decoration: none;
+}

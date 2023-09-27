@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditorContextProvider } from "./context/EditorContextProvider";
-import { NavBar } from "./components/NavBar";
+import { NavBar } from "./components/NavBar/NavBar";
 import { PricingContext } from "./types";
 import { AttributesProvider } from "./context/AttributesProvider";
 import { Toggle } from "./components/Toggle";

@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   mode: "development",
   entry: {
-    index: "./src/index.ts",
+    index: "./src/lib/components/editor/editor.tsx",
   },
   devtool: "inline-source-map",
   devServer: {
@@ -25,7 +25,12 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
   },
-  plugins: [new HtmlWebpackPlugin({ title: "Output Management" })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "Pricingplans Editor",
+      template: "src/lib/components/editor/index.html",
+    }),
+  ],
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
