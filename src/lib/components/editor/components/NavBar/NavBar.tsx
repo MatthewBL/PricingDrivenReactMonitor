@@ -41,7 +41,9 @@ export function NavBar({ hidden }: NavBarProps) {
 
   return (
     <nav className="pp-nav" hidden={hidden}>
-      <img className="pp-logo" />
+      <header className="pp-nav-header">
+        <img className="pp-logo" />
+      </header>
       <ul className="pp-nav-items">
         <li>
           <NavLink className={computeNavLinkStatus} to="attributes">
@@ -69,7 +71,9 @@ export function NavBar({ hidden }: NavBarProps) {
           </NavLink>
         </li>
       </ul>
-      <Button onClick={updatePricingContext} text="Save" />
+      <footer className="pp-nav-footer">
+        <Button onClick={updatePricingContext} text="Save" />
+      </footer>
     </nav>
   );
 }
