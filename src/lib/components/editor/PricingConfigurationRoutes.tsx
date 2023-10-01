@@ -42,7 +42,7 @@ export function PricingConfigurationRoutes({
           />
         }
       >
-        <Route index element={<h1>Welcome to Pricing Plans for React</h1>} />
+        <Route path="/" element={<h1>Pricingplans-react</h1>} />
         <Route
           path="attributes"
           element={
