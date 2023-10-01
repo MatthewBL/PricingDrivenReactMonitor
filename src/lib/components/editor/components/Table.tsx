@@ -1,12 +1,13 @@
 interface TableProps {
   readonly labels: Array<string>;
+  className: string;
   hasDefault?: true;
   children: JSX.Element | JSX.Element[];
 }
 
-export function Table({ labels, children }: TableProps) {
+export function Table({ className, labels, children }: TableProps) {
   return (
-    <table>
+    <table className={className}>
       <TableHeader labels={labels} />
       <tbody>{children}</tbody>
     </table>

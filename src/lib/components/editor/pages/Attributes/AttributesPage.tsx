@@ -2,11 +2,12 @@ import { useContext, useState } from "react";
 import { Attribute } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
-import { Modal } from "../../components/Modal";
+import { Modal } from "../../components/Modal/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
 import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
+import "./AttributesPage.css";
 
 interface AttributePagesProps {
   title: string;
@@ -136,7 +137,7 @@ export function AttributesPage({
         />
       </header>
 
-      <Table labels={tableHeaders}>
+      <Table className="pp-attr-table" labels={tableHeaders}>
         <AttributeList onClick={handleClick} />
       </Table>
       <Modal open={visible}>{content}</Modal>
