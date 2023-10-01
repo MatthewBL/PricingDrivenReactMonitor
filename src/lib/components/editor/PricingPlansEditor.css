@@ -1,7 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-color: #f0f0f0;
+  --secondary-color: white;
+}
+
 .pp-editor {
   display: flex;
+  height: 100vh;
 }
 
 .pp-content {
+  position: relative;
   flex: 1;
+  background-color: var(--primary-color);
+  padding: 4rem;
+}
+
+.pp-content-header {
+  position: relative;
+  border-bottom: 2px solid #707070;
+}
+
+.pp-content-header__btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.pp-toggle {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 25px;
+  height: 25px;
 }
