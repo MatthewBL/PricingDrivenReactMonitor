@@ -7,6 +7,7 @@ import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
 import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
+import { Pencil, Plus, Trash } from "../../components/Icons";
 import "./AttributesPage.css";
 
 interface AttributePagesProps {
@@ -99,7 +100,7 @@ export function AttributesPage({
               onSubmit={addAttribute}
               onValidation={handleValidation}
             />
-            <Button text="Close" onClick={closeModal} />
+            <Button onClick={closeModal}>Close</Button>
           </>
         );
       case "edit":
@@ -110,15 +111,15 @@ export function AttributesPage({
               onSubmit={updateAttribute}
               onValidation={handleValidation}
             />
-            <Button text="Close" onClick={closeModal} />
+            <Button onClick={closeModal}>Close</Button>
           </>
         );
       case "delete":
         return (
           <>
             <h2>Do you want to delete this attribute?</h2>
-            <Button text="NO" onClick={closeModal} />
-            <Button text="YES" onClick={deleteAttribute} />
+            <Button onClick={closeModal}>NO</Button>
+            <Button onClick={deleteAttribute}>YES</Button>
           </>
         );
     }
@@ -133,8 +134,9 @@ export function AttributesPage({
         <Button
           className="pp-content-header__btn"
           onClick={() => handleClick("add")}
-          text={addLabel}
-        />
+        >
+          <Plus />
+        </Button>
       </header>
 
       <Table className="pp-attr-table" labels={tableHeaders}>
@@ -190,15 +192,18 @@ function AttributeList({ onClick }: AttributeListProps) {
                 onClick("edit");
                 dispatch({ type: "select_item", index });
               }}
-              text="Edit"
-            />
+            >
+              <Pencil />
+            </Button>
+
             <Button
               onClick={() => {
                 onClick("delete");
                 dispatch({ type: "select_item", index });
               }}
-              text="Delete"
-            />
+            >
+              <Trash />
+            </Button>
           </td>
         </tr>
       ))}

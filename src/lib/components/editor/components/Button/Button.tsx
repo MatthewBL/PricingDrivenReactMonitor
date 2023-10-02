@@ -1,13 +1,11 @@
 import "./Button.css";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
-}
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export function Button({ text, ...props }: ButtonProps) {
+export function Button({ children, ...props }: ButtonProps) {
   return (
     <button className="pp-btn" {...props}>
-      {text}
+      {children}
     </button>
   );
 }
