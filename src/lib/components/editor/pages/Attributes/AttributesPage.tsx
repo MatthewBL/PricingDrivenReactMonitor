@@ -13,14 +13,9 @@ import "./AttributesPage.css";
 interface AttributePagesProps {
   title: string;
   tableHeaders: string[];
-  addLabel: string;
 }
 
-export function AttributesPage({
-  title,
-  tableHeaders,
-  addLabel,
-}: AttributePagesProps) {
+export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
   const { state, dispatch } = useContext(AttributesContext);
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
