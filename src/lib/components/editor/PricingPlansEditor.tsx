@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { EditorContextProvider } from "./context/EditorContextProvider";
-import { NavBar } from "./components/NavBar/NavBar";
-import { PricingContext } from "./types";
 import { AttributesProvider } from "./context/AttributesProvider";
 import { Toggle } from "./components/Toggle";
+import { NavBar } from "./components/NavBar";
+import { PricingContext } from "./types";
 import "./PricingPlansEditor.css";
 
 interface PricingPlansEditorProps {
@@ -37,7 +37,7 @@ export function PricingPlansEditor({
           <NavBar hidden={hidden} />
           <main className="pp-content">
             <Toggle
-              className="pp-toggle"
+              className="pp-toggle pp-content__toggle"
               isHidden={hidden}
               onClick={handleClick}
             />

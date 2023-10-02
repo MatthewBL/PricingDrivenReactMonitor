@@ -1,4 +1,5 @@
-import { List, X } from "./Icons";
+import { List, X } from "../Icons";
+import "./Toggle.css";
 
 interface ToggleProps {
   className: string;

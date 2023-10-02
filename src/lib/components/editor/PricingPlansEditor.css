@@ -14,10 +14,13 @@
 }
 
 .pp-content {
-  position: relative;
   flex: 3;
   background-color: var(--primary-color);
-  padding: 4rem;
+}
+
+.pp-content__toggle {
+  /*margin: top right bottom left */
+  margin: 1rem 0 1rem 1rem;
 }
 
 .pp-content-header {
@@ -29,13 +32,4 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-}
-
-.pp-toggle {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
 }
