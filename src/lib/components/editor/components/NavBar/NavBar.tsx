@@ -5,6 +5,7 @@ import { attributesToFeatures } from "../../utils";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { Button } from "../Button";
 import "./NavBar.css";
+import logo from "../../assets/logo-200x100.png";
 
 interface NavBarProps {
   hidden: boolean;
@@ -29,10 +30,10 @@ export function NavBar({ hidden }: NavBarProps) {
     isPending: boolean;
   }) => {
     if (isPending) {
-      return "pp-link--is-pending";
+      return "pp-link --is-pending";
     } else {
       if (isActive) {
-        return "pp-link--is-active";
+        return "pp-link --is-active";
       } else {
         return "pp-link";
       }
@@ -41,9 +42,7 @@ export function NavBar({ hidden }: NavBarProps) {
 
   return (
     <nav className="pp-nav" hidden={hidden}>
-      <header className="pp-nav-header">
-        <img className="pp-logo" />
-      </header>
+      <img className="pp-logo" src={logo} />
       <ul className="pp-nav-items">
         <li>
           <NavLink className={computeNavLinkStatus} to="attributes">
@@ -71,9 +70,7 @@ export function NavBar({ hidden }: NavBarProps) {
           </NavLink>
         </li>
       </ul>
-      <footer className="pp-nav-footer">
-        <Button onClick={updatePricingContext} text="Save" />
-      </footer>
+      <Button onClick={updatePricingContext} text="Save" />
     </nav>
   );
 }
