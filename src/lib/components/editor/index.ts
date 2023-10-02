@@ -1,3 +1,1 @@
-import { PricingConfigurationRoutes } from "./PricingConfigurationRoutes";
-
-export { PricingConfigurationRoutes };
+export { PricingConfigurationRoutes } from "./PricingConfigurationRoutes";

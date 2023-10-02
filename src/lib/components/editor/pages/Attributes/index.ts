@@ -24,3 +24,5 @@ export interface AttributeFormData {
   type: AttributeType;
   defaultValue: string;
 }
+
+export { AttributesPage } from "./AttributesPage";

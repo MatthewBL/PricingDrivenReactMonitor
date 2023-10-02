@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { PricingPlansEditor } from "./PricingPlansEditor";
-import { AttributesPage } from "./pages/Attributes/AttributesPage";
+import { AttributesPage } from "./pages/Attributes";
 import { PricingContext } from "./types";
 
 interface PricingConfigurationRoutesProps {
