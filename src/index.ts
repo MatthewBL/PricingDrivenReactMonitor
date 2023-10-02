@@ -5,7 +5,7 @@ import {
   Loading,
   ErrorFallback,
 } from "./lib/components/feature/Feature";
-import { PricingConfigurationRoutes } from "./lib/components/editor";
+export { PricingConfigurationRoutes } from "./lib/components/editor";
 import useGenericFeature from "./lib/components/feature/useGenericFeature";
 import { feature } from "./lib/logic/model/Feature";
 import {
@@ -21,7 +21,6 @@ export {
   Default,
   Loading,
   ErrorFallback,
-  PricingConfigurationRoutes,
   feature,
   useGenericFeature,
   and,
