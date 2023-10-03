@@ -1,2 +1,2 @@
 export { PricingConfigurationRoutes } from "./PricingConfigurationRoutes";
-export { type PricingContext } from "./types";
+export type { PricingContext, Plans } from "./types";
