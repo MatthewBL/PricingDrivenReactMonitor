@@ -7,15 +7,21 @@ export interface Plans {
   [key: string]: Plan;
 }
 
-export interface Features {
-  [key: string]: Feature;
-}
-
 export interface Plan {
   description: string;
   price: number;
   currency: string;
   features: PlanValue;
+}
+
+export interface PlanValue {
+  [key: string]: {
+    value: string | number | boolean;
+  };
+}
+
+export interface Features {
+  [key: string]: Feature;
 }
 
 export interface Feature {
@@ -36,9 +42,3 @@ export interface Attribute {
 export type AttributeType = "NUMERIC" | "CONDITION" | "TEXT";
 
 export type Attributes = Attribute[];
-
-export interface PlanValue {
-  [key: string]: {
-    value: string | number | boolean;
-  };
-}
