@@ -125,7 +125,7 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
   return (
     <>
       <header className="pp-content-header">
-        <h1 className="pp-content-header__title">{title}</h1>
+        <h1>{title}</h1>
         <Button
           className="pp-content-header__btn"
           onClick={() => handleClick("add")}
