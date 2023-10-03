@@ -1,6 +1,7 @@
 .pp-btn {
   color: white;
+  cursor: pointer;
   background-color: cornflowerblue;
   padding: 0.25rem 3rem;
-  border-radius: 1rem;
+  border-radius: 15px;
 }
