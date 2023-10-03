@@ -95,7 +95,9 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
               onSubmit={addAttribute}
               onValidation={handleValidation}
             />
-            <Button onClick={closeModal}>Close</Button>
+            <Button className="pp-btn" onClick={closeModal}>
+              Close
+            </Button>
           </>
         );
       case "edit":
@@ -106,15 +108,21 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
               onSubmit={updateAttribute}
               onValidation={handleValidation}
             />
-            <Button onClick={closeModal}>Close</Button>
+            <Button className="pp-btn" onClick={closeModal}>
+              Close
+            </Button>
           </>
         );
       case "delete":
         return (
           <>
             <h2>Do you want to delete this attribute?</h2>
-            <Button onClick={closeModal}>NO</Button>
-            <Button onClick={deleteAttribute}>YES</Button>
+            <Button className="pp-btn" onClick={closeModal}>
+              NO
+            </Button>
+            <Button className="pp-btn" onClick={deleteAttribute}>
+              YES
+            </Button>
           </>
         );
     }
