@@ -1,3 +1,4 @@
+import { Button } from "../Button";
 import { List, X } from "../Icons";
 import "./Toggle.css";
 
@@ -9,8 +10,8 @@ interface ToggleProps {
 
 export function Toggle({ className, isHidden, onClick }: ToggleProps) {
   return (
-    <button className={className} type="button" onClick={onClick}>
+    <Button className={className} onClick={onClick}>
       {isHidden ? <List /> : <X />}
-    </button>
+    </Button>
   );
 }

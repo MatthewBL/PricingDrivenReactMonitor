@@ -70,7 +70,9 @@ export function NavBar({ hidden }: NavBarProps) {
           </NavLink>
         </li>
       </ul>
-      <Button onClick={updatePricingContext}>Save</Button>
+      <Button className="pp-btn" onClick={updatePricingContext}>
+        Save
+      </Button>
     </nav>
   );
 }

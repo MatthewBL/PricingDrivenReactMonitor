@@ -2,9 +2,9 @@ import "./Button.css";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export function Button({ children, ...props }: ButtonProps) {
+export function Button({ children, className, ...props }: ButtonProps) {
   return (
-    <button className="pp-btn" {...props}>
+    <button className={className} {...props}>
       {children}
     </button>
   );
