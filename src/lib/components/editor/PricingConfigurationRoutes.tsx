@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { PricingPlansEditor } from "./PricingPlansEditor";
 import { AttributesPage } from "./pages/Attributes";
 import { PricingContext } from "./types";
+import { UserContextPage } from "./pages/UserContext";
 
 interface PricingConfigurationRoutesProps {
   pricingContext: PricingContext;
@@ -52,7 +53,15 @@ export function PricingConfigurationRoutes({
             />
           }
         />
-        <Route path="user-context" element={<h1>User Context</h1>} />
+        <Route
+          path="user-context"
+          element={
+            <UserContextPage
+              title="User context"
+              tableHeaders={["Name", "Type", "Actions"]}
+            />
+          }
+        />
         <Route path="plans">
           <Route index element={<h1>Plans</h1>} />
           <Route path=":plan" element={<h1>Specific plan</h1>}></Route>

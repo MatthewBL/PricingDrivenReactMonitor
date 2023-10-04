@@ -6,6 +6,7 @@ import { Toggle } from "./components/Toggle";
 import { NavBar } from "./components/NavBar";
 import { PricingContext } from "./types";
 import "./PricingPlansEditor.css";
+import { UserContextProvider } from "./context/UserContextProvider";
 
 interface PricingPlansEditorProps {
   pricingContext: PricingContext;
@@ -33,17 +34,19 @@ export function PricingPlansEditor({
       returnTo={returnTo}
     >
       <AttributesProvider>
-        <div className="pp-editor">
-          <NavBar hidden={hidden} />
-          <main className="pp-content">
-            <Toggle
-              className="pp-toggle pp-content__toggle"
-              isHidden={hidden}
-              onClick={handleClick}
-            />
-            <Outlet />
-          </main>
-        </div>
+        <UserContextProvider>
+          <div className="pp-editor">
+            <NavBar hidden={hidden} />
+            <main className="pp-content">
+              <Toggle
+                className="pp-toggle pp-content__toggle"
+                isHidden={hidden}
+                onClick={handleClick}
+              />
+              <Outlet />
+            </main>
+          </div>
+        </UserContextProvider>
       </AttributesProvider>
     </EditorContextProvider>
   );

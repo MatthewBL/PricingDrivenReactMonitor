@@ -42,3 +42,8 @@ export interface Attribute {
 export type AttributeType = "NUMERIC" | "CONDITION" | "TEXT";
 
 export type Attributes = Attribute[];
+
+export interface UserContextAttribute {
+  id: string;
+  type: AttributeType;
+}
