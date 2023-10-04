@@ -3,6 +3,7 @@ import { PricingPlansEditor } from "./PricingPlansEditor";
 import { AttributesPage } from "./pages/Attributes";
 import { PricingContext } from "./types";
 import { UserContextPage } from "./pages/UserContext";
+import { EvaluationPage } from "./pages/EvaluationContext";
 
 interface PricingConfigurationRoutesProps {
   pricingContext: PricingContext;
@@ -66,7 +67,7 @@ export function PricingConfigurationRoutes({
           <Route index element={<h1>Plans</h1>} />
           <Route path=":plan" element={<h1>Specific plan</h1>}></Route>
         </Route>
-        <Route path="evaluation" element={<h1>Evaluation Context</h1>} />
+        <Route path="evaluation" element={<EvaluationPage />} />
       </Route>
     </Routes>
   );
