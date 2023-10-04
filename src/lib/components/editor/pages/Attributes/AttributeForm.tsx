@@ -64,7 +64,7 @@ export function AttributeForm({
   };
 
   return (
-    <form className="pp-attribute__form" onSubmit={handleSubmit}>
+    <form className="pp-form" onSubmit={handleSubmit}>
       {errors.emptyName && <small>{errors.emptyName}</small>}
       {errors.duplicateId && <small>{errors.duplicateId}</small>}
       <label htmlFor="name">Name</label>

@@ -6,7 +6,7 @@ export function EvaluationForm() {
   };
 
   return (
-    <form className="pp-attribute__form" onSubmit={handleSubmit}>
+    <form className="pp-form" onSubmit={handleSubmit}>
       <label htmlFor="name">Name</label>
       <input id="name" name="name" value={"test"} readOnly />
       <Button className="pp-btn">Save</Button>

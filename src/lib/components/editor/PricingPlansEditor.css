@@ -39,6 +39,11 @@
   transition: all 300ms ease;
 }
 
+.pp-content-header__btn:hover {
+  transition: all 300ms ease;
+  background-color: #d8d8d8;
+}
+
 .bi.bi-plus {
   width: 24px;
   height: 24px;
@@ -57,9 +62,4 @@
 .bi.bi-list {
   width: 24px;
   height: 24px;
-}
-
-.pp-content-header__btn:hover {
-  transition: all 300ms ease;
-  background-color: #d8d8d8;
 }
