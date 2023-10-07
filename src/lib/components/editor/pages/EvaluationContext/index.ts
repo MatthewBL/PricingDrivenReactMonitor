@@ -8,7 +8,7 @@ type GreaterEquals = ">=";
 type Greater = ">";
 type Different = "!=";
 
-type Operators =
+export type Operators =
   | Noop
   | Lower
   | LowerEquals
@@ -17,7 +17,7 @@ type Operators =
   | Greater
   | Different;
 
-function computeEvaluation(
+export function computeEvaluation(
   leftOperand: string,
   operator: Operators,
   rightOperand: string
@@ -31,7 +31,7 @@ function computeEvaluation(
     case ">=":
     case ">":
     case "!=":
-      return leftOperand + operator + rightOperand;
+      return leftOperand + ` ${operator} ` + rightOperand;
   }
 }
 

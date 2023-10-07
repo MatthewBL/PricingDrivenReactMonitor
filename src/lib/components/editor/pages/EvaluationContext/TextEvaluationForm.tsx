@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "../../components/Button";
+import { Operators, computeEvaluation } from "./index";
 
 export function TextEvaluationForm() {
   const [form, setForm] = useState({
@@ -13,8 +14,25 @@ export function TextEvaluationForm() {
     setCustom(!custom);
   };
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    const leftOperand = `planContext['${"test"}']`;
+    const rightOperand = custom
+      ? `'${form.customValue}'`
+      : `userContext['${form.userContextValue}']`;
+
+    const evaluation = computeEvaluation(
+      leftOperand,
+      form.operator as Operators,
+      rightOperand
+    );
+
+    console.log(evaluation);
+  };
+
   return (
-    <form className="pp-form">
+    <form className="pp-form" onSubmit={handleSubmit}>
       <div className="pp-field">
         <label id="name">Name</label>
         <input id="name" value={"test"} readOnly />
