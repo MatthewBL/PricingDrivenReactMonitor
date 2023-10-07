@@ -16,7 +16,7 @@ export function NavBar({ hidden }: NavBarProps) {
   const { theme, returnTo, pricingContext, setPricingContext } =
     useContext(EditorContext);
 
-  const features = attributesToFeatures(attrCtx.state.data);
+  const features = attributesToFeatures(attrCtx.attributesState.data);
 
   const updatePricingContext = () => {
     setPricingContext({ ...pricingContext, features });

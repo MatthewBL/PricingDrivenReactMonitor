@@ -68,11 +68,11 @@ interface AttributeListProps {
 }
 
 function AttributeList({ onClick }: AttributeListProps) {
-  const { state, dispatch } = useContext(AttributesContext);
+  const { attributesState, dispatch } = useContext(AttributesContext);
 
   return (
     <>
-      {state.data.map((attribute, index) => (
+      {attributesState.data.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
           <td className={attribute.type}>{attribute.type}</td>

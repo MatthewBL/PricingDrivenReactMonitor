@@ -6,12 +6,7 @@ import { Modal } from "../../components/Modal/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
-import {
-  AttributeFormData,
-  AttributeFormErrors,
-  Command,
-  ERROR_MESSAGES,
-} from ".";
+import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
 import { Pencil, Plus, Trash } from "../../components/Icons";
 import "./AttributesPage.css";
 
@@ -21,7 +16,7 @@ interface AttributePagesProps {
 }
 
 export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
-  const { state, dispatch } = useContext(AttributesContext);
+  const { attributesState, dispatch } = useContext(AttributesContext);
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
 
@@ -57,12 +52,14 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
 
     const attributeNameExistsWhenAddCommand =
       command === "add" &&
-      state.data.filter((attribute) => attribute.id === id).length !== 0;
+      attributesState.data.filter((attribute) => attribute.id === id).length !==
+        0;
 
     const attributeNameExistsWhenEditCommand =
       command === "edit" &&
-      state.data.filter(
-        (attribute, index) => index !== state.index && attribute.id === id
+      attributesState.data.filter(
+        (attribute, index) =>
+          index !== attributesState.index && attribute.id === id
       ).length !== 0;
 
     if (nameIsEmpty) {
@@ -110,7 +107,9 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
         return (
           <>
             <AttributeForm
-              initialData={attributeToAttributeForm(state.data[state.index])}
+              initialData={attributeToAttributeForm(
+                attributesState.data[attributesState.index]
+              )}
               onSubmit={updateAttribute}
               onValidation={handleValidation}
             />
@@ -161,7 +160,7 @@ interface AttributeListProps {
 }
 
 function AttributeList({ onClick }: AttributeListProps) {
-  const { state, dispatch } = useContext(AttributesContext);
+  const { attributesState, dispatch } = useContext(AttributesContext);
 
   const renderAttributeItem = (attribute: Attribute) => {
     switch (typeof attribute.defaultValue) {
@@ -191,7 +190,7 @@ function AttributeList({ onClick }: AttributeListProps) {
 
   return (
     <>
-      {state.data.map((attribute, index) => (
+      {attributesState.data.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
           {renderAttributeItem(attribute)}
