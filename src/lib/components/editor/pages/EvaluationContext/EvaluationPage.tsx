@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
-import { Attribute } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
-import { EvaluationForm } from "./EvaluationForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { Command } from "./index";
 import { Pencil, Trash } from "../../components/Icons";
+import { TextEvaluationForm } from "./TextEvaluationForm";
 import "./EvaluationPage.css";
 
 export function EvaluationPage() {
@@ -27,7 +26,7 @@ export function EvaluationPage() {
       case "edit":
         return (
           <>
-            <EvaluationForm />
+            <TextEvaluationForm />
             <Button className="pp-btn" onClick={closeModal}>
               Close
             </Button>
@@ -71,35 +70,12 @@ interface AttributeListProps {
 function AttributeList({ onClick }: AttributeListProps) {
   const { state, dispatch } = useContext(AttributesContext);
 
-  const renderAttributeItem = (attribute: Attribute) => {
-    switch (attribute.type) {
-      case "TEXT":
-        return (
-          <>
-            <td className="text">{attribute.type}</td>
-          </>
-        );
-      case "NUMERIC":
-        return (
-          <>
-            <td className="numeric">{attribute.type}</td>
-          </>
-        );
-      case "CONDITION":
-        return (
-          <>
-            <td className="condition">{attribute.type}</td>
-          </>
-        );
-    }
-  };
-
   return (
     <>
       {state.data.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
-          {renderAttributeItem(attribute)}
+          <td className={attribute.type}>{attribute.type}</td>
           <td>
             {attribute.type != "CONDITION" && (
               <Button
