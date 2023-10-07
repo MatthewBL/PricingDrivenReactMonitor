@@ -23,6 +23,7 @@ export interface AttributeFormData {
   description: string;
   type: AttributeType;
   defaultValue: string;
+  expression: string;
 }
 
 export { AttributesPage } from "./AttributesPage";

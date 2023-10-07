@@ -34,9 +34,10 @@ export interface Feature {
 
 export interface Attribute {
   id: string;
-  type: AttributeType;
   description: string;
+  type: AttributeType;
   defaultValue: string | number | boolean;
+  expression: string;
 }
 
 export type AttributeType = "NUMERIC" | "CONDITION" | "TEXT";

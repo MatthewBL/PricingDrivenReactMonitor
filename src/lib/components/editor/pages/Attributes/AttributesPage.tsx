@@ -6,7 +6,12 @@ import { Modal } from "../../components/Modal/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
-import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
+import {
+  AttributeFormData,
+  AttributeFormErrors,
+  Command,
+  ERROR_MESSAGES,
+} from ".";
 import { Pencil, Plus, Trash } from "../../components/Icons";
 import "./AttributesPage.css";
 
@@ -91,6 +96,7 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
                 description: "",
                 type: "TEXT",
                 defaultValue: "",
+                expression: "",
               }}
               onSubmit={addAttribute}
               onValidation={handleValidation}

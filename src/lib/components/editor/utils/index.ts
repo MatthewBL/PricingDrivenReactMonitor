@@ -30,6 +30,7 @@ function featuresToAttributes(features: Features): Attributes {
       description: feature.description,
       type: feature.type,
       defaultValue: feature.defaultValue,
+      expression: feature.expression,
     };
   });
 }
@@ -68,6 +69,7 @@ export function attributeToAttributeForm(
     description: attribute.description,
     type: attribute.type,
     defaultValue: value,
+    expression: attribute.expression,
   };
 }
 
@@ -91,5 +93,6 @@ export function attributeFormToAttribute(
     description: attributeForm.description,
     type: attributeForm.type,
     defaultValue: value,
+    expression: attributeForm.expression,
   };
 }

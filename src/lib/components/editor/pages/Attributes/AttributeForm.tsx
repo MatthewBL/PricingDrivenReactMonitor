@@ -3,7 +3,7 @@ import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "../../components/DefaultValue";
 import { Button } from "../../components/Button";
 import { attributeFormToAttribute } from "../../utils";
-import { AttributeFormData, AttributeFormErrors } from ".";
+import { AttributeFormData, AttributeFormErrors } from "./index";
 
 interface AttributeFormProps {
   initialData: AttributeFormData;
