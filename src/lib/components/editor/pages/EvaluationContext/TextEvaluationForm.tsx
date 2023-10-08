@@ -1,13 +1,21 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { Button } from "../../components/Button";
 import { Operators, computeEvaluation } from "./index";
+import { AttributesContext } from "../../context/AttributesProvider";
+import { UserContext } from "../../context/UserContextProvider";
 
 export function TextEvaluationForm() {
+  const { attributesState, dispatch } = useContext(AttributesContext);
+  const attribute = attributesState.data[attributesState.index];
   const [form, setForm] = useState({
     operator: "",
     userContextValue: "",
     customValue: "",
   });
+  const userContext = useContext(UserContext);
+  const textAttributes = userContext.state.data.filter(
+    (attribute) => attribute.type === "TEXT"
+  );
   const [custom, setCustom] = useState(false);
 
   const handleToggleChange = () => {
@@ -17,7 +25,7 @@ export function TextEvaluationForm() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const leftOperand = `planContext['${"test"}']`;
+    const leftOperand = `planContext['${attribute.id}']`;
     const rightOperand = custom
       ? `'${form.customValue}'`
       : `userContext['${form.userContextValue}']`;
@@ -27,15 +35,17 @@ export function TextEvaluationForm() {
       form.operator as Operators,
       rightOperand
     );
-
-    console.log(evaluation);
+    dispatch({
+      type: "update_item",
+      payload: { ...attribute, expression: evaluation },
+    });
   };
 
   return (
     <form className="pp-form" onSubmit={handleSubmit}>
       <div className="pp-field">
         <label id="name">Name</label>
-        <input id="name" value={"test"} readOnly />
+        <input id="name" value={attribute.id} readOnly />
       </div>
       <div>
         <label id="operator">Operator</label>
@@ -70,9 +80,11 @@ export function TextEvaluationForm() {
             }
           >
             <option value="">Choose an option</option>
-            <option value="chat">chat</option>
-            <option value="pets">pets</option>
-            <option value="vets">vets</option>
+            {textAttributes.map((attribute) => (
+              <option key={attribute.id} value={attribute.id}>
+                {attribute.id}
+              </option>
+            ))}
           </select>
         )}
         {custom && (

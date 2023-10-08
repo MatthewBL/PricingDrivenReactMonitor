@@ -9,6 +9,9 @@ import { TextEvaluationForm } from "./TextEvaluationForm";
 import "./EvaluationPage.css";
 
 export function EvaluationPage() {
+  const attributes = useContext(AttributesContext);
+  const attribute =
+    attributes.attributesState.data[attributes.attributesState.index];
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("edit" as Command);
 
@@ -19,6 +22,14 @@ export function EvaluationPage() {
   const handleClick = (action: Command) => {
     setCommand(action);
     openModal();
+  };
+
+  const deleteEvaluation = () => {
+    attributes.dispatch({
+      type: "update_item",
+      payload: { ...attribute, expression: "" },
+    });
+    closeModal();
   };
 
   const computeModalContent = () => {
@@ -41,7 +52,9 @@ export function EvaluationPage() {
             <Button className="pp-btn" onClick={closeModal}>
               NO
             </Button>
-            <Button className="pp-btn">YES</Button>
+            <Button className="pp-btn" onClick={deleteEvaluation}>
+              YES
+            </Button>
           </>
         );
     }
@@ -55,7 +68,10 @@ export function EvaluationPage() {
         <h1>Evaluation Configuration</h1>
       </header>
 
-      <Table className="pp-attr-table" labels={["Name", "Type", "Actions"]}>
+      <Table
+        className="pp-attr-table"
+        labels={["Name", "Type", "Expression", "Actions"]}
+      >
         <AttributeList onClick={handleClick} />
       </Table>
       <Modal open={visible}>{content}</Modal>
@@ -76,6 +92,11 @@ function AttributeList({ onClick }: AttributeListProps) {
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
           <td className={attribute.type}>{attribute.type}</td>
+          <td className="expression">
+            {attribute.expression == ""
+              ? "NO EVALUATION"
+              : attribute.expression}
+          </td>
           <td>
             {attribute.type != "CONDITION" && (
               <Button
