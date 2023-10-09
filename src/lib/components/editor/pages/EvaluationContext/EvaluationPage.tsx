@@ -6,6 +6,7 @@ import { AttributesContext } from "../../context/AttributesProvider";
 import { Command } from "./index";
 import { Pencil, Trash } from "../../components/Icons";
 import { TextEvaluationForm } from "./TextEvaluationForm";
+import { NumericEvaluationForm } from "./NumericEvaluationForm";
 import "./EvaluationPage.css";
 
 export function EvaluationPage() {
@@ -37,7 +38,8 @@ export function EvaluationPage() {
       case "edit":
         return (
           <>
-            <TextEvaluationForm />
+            {attribute.type == "TEXT" && <TextEvaluationForm />}
+            {attribute.type == "NUMERIC" && <NumericEvaluationForm />}
             <Button className="pp-btn" onClick={closeModal}>
               Close
             </Button>

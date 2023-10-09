@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { PricingConfigurationRoutes } from ".";
+import { PricingConfigurationRoutes } from "./PricingConfigurationRoutes";
 import { PricingContext } from "./types";
 
 const root = ReactDOM.createRoot(
@@ -10,16 +10,38 @@ const root = ReactDOM.createRoot(
 
 const pricingContext: PricingContext = {
   features: {
-    maxGames: {
-      description: "Max number of games to play",
-      expression: "userContext['gamesPlayed'] < planContext['maxGames']",
-      serverExpression: "userContext['gamesPlayed'] <= planContext['maxGames']",
+    maxPets: {
+      description: "Max pets limit per user in the clinic",
+      expression: "planContext['maxPets'] > userContext['pets']",
+      serverExpression: "planContext['maxPets'] >= userContext['pets']",
       type: "NUMERIC",
-      defaultValue: 0,
+      defaultValue: 2,
     },
-    allowGameSpectators: {
-      description: "Allow spectators in chess games",
-      expression: "planContext['allowGameSpectators']",
+    maxVisitsPerMonthAndPet: {
+      description: "Maximun number of visits per pets of an user",
+      expression:
+        "planContext['maxVisitsPerMonthAndPet'] > userContext['visitsPerMonth']",
+      serverExpression:
+        "planContext['maxVisitsPerMonthAndPet'] >= userContext['visitsPerMonth']",
+      type: "NUMERIC",
+      defaultValue: 5,
+    },
+    supportPriority: {
+      description: "Technical priority support",
+      expression: "planContext['supportPriority']",
+      type: "TEXT",
+      defaultValue: "LOW",
+    },
+    haveCalendar: {
+      description:
+        "User has a calendar to keep track of visits and appointments",
+      expression: "planContext['haveCalendar']",
+      type: "CONDITION",
+      defaultValue: false,
+    },
+    havePetsDashboard: {
+      description: "User has a dashboard to manage their pets",
+      expression: "planContext['havePetsDashboard']",
       type: "CONDITION",
       defaultValue: false,
     },
