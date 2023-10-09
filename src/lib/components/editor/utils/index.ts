@@ -39,7 +39,7 @@ export function attributesToFeatures(attributes: Attributes): Features {
   const entries = attributes.map((attribute) => {
     const feature: Feature = {
       description: attribute.description,
-      expression: "",
+      expression: attribute.expression,
       type: attribute.type,
       defaultValue: attribute.defaultValue,
     };
