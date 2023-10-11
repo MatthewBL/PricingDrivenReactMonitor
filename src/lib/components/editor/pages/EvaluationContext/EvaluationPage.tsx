@@ -65,19 +65,19 @@ export function EvaluationPage() {
   const content = computeModalContent();
 
   return (
-    <>
+    <article className="pp-content__main">
       <header className="pp-content-header">
         <h1>Evaluation Configuration</h1>
       </header>
 
       <Table
-        className="pp-attr-table"
+        className="pp-table"
         labels={["Name", "Type", "Expression", "Actions"]}
       >
         <AttributeList onClick={handleClick} />
       </Table>
       <Modal open={visible}>{content}</Modal>
-    </>
+    </article>
   );
 }
 
@@ -93,13 +93,13 @@ function AttributeList({ onClick }: AttributeListProps) {
       {attributesState.data.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
-          <td className={attribute.type}>{attribute.type}</td>
-          <td className="expression">
-            {attribute.expression == ""
-              ? "NO EVALUATION"
-              : attribute.expression}
+          <td className={`pp-table-type__${attribute.type.toLowerCase()}`}>
+            {attribute.type}
           </td>
-          <td>
+          <td className="expression">
+            {attribute.expression == "" ? "NO EVALUATION" : "EVALUATED"}
+          </td>
+          <td className="pp-table-actions">
             {attribute.type != "CONDITION" && (
               <Button
                 onClick={() => {

@@ -9,7 +9,7 @@ export function Table({ className, labels, children }: TableProps) {
   return (
     <table className={className}>
       <TableHeader labels={labels} />
-      <tbody>{children}</tbody>
+      <tbody className="pp-table__body">{children}</tbody>
     </table>
   );
 }
@@ -19,9 +19,7 @@ function TableHeader({ labels }: { labels: string[] }) {
     <thead>
       <tr>
         {labels.map((label) => (
-          <td key={label}>
-            <strong>{label}</strong>
-          </td>
+          <th key={label}>{label}</th>
         ))}
       </tr>
     </thead>

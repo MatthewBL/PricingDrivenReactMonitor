@@ -6,6 +6,11 @@
 :root {
   --primary-color: #f0f0f0;
   --secondary-color: white;
+  --gold: #d6b91b;
+  --red: #e34444;
+  --purple: #a324c1;
+  --green: #34c93f;
+  --dark-grey: #707070;
 }
 
 .pp-editor {
@@ -26,6 +31,7 @@
 .pp-content-header {
   position: relative;
   border-bottom: 2px solid #707070;
+  margin-bottom: 1rem;
 }
 
 .pp-content-header__btn {
@@ -42,6 +48,39 @@
 .pp-content-header__btn:hover {
   transition: all 300ms ease;
   background-color: #d8d8d8;
+}
+
+.pp-content__main {
+  margin: 0 4rem;
+}
+
+.pp-table {
+  table-layout: fixed;
+  width: 100%;
+  text-align: center;
+}
+
+.pp-table-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.pp-table__body {
+  color: var(--dark-grey);
+  font-weight: bold;
+}
+
+.pp-table-type__text {
+  color: var(--red);
+}
+
+.pp-table-type__numeric {
+  color: var(--gold);
+}
+
+.pp-table-type__condition {
+  color: var(--purple);
 }
 
 .bi.bi-plus {

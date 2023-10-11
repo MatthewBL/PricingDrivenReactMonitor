@@ -123,7 +123,7 @@ export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
   const content = computeModalContent();
 
   return (
-    <>
+    <article className="pp-content__main">
       <header className="pp-content-header">
         <h1>{title}</h1>
         <Button
@@ -134,11 +134,11 @@ export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
         </Button>
       </header>
 
-      <Table className="pp-attr-table" labels={tableHeaders}>
+      <Table className="pp-table" labels={tableHeaders}>
         <AttributeList onClick={handleClick} />
       </Table>
       <Modal open={visible}>{content}</Modal>
-    </>
+    </article>
   );
 }
 
@@ -154,8 +154,10 @@ function AttributeList({ onClick }: AttributeListProps) {
       {state.data.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
-          <td className={attribute.type}>{attribute.type}</td>
-          <td>
+          <td className={`pp-table-type__${attribute.type.toLowerCase()}`}>
+            {attribute.type}
+          </td>
+          <td className="pp-table-actions">
             <Button
               onClick={() => {
                 onClick("edit");
