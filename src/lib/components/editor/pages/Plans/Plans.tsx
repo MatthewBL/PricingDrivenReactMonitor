@@ -9,7 +9,7 @@ export function Plans() {
     <article className="pp-content__main">
       <h1>Plans</h1>
       {Object.keys(plans).map((planKey) => (
-        <Link className="pp-link" to={planKey.toLowerCase()}>
+        <Link key={planKey} className="pp-link" to={planKey.toLowerCase()}>
           <PlanCard
             name={planKey}
             description={plans[planKey].description}
