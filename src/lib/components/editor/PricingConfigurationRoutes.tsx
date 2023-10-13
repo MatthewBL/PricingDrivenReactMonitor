@@ -1,9 +1,11 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import { PricingPlansEditor } from "./PricingPlansEditor";
 import { AttributesPage } from "./pages/Attributes";
 import { PricingContext } from "./types";
 import { UserContextPage } from "./pages/UserContext";
 import { EvaluationPage } from "./pages/EvaluationContext";
+import { PlansContextProvider } from "./context/PlansContext";
+import { Plans } from "./pages/Plans";
 
 interface PricingConfigurationRoutesProps {
   pricingContext: PricingContext;
@@ -63,8 +65,15 @@ export function PricingConfigurationRoutes({
             />
           }
         />
-        <Route path="plans">
-          <Route index element={<h1>Plans</h1>} />
+        <Route
+          path="plans"
+          element={
+            <PlansContextProvider initialPlans={pricingContext.plans}>
+              <Outlet />
+            </PlansContextProvider>
+          }
+        >
+          <Route index element={<Plans />} />
           <Route path=":plan" element={<h1>Specific plan</h1>}></Route>
         </Route>
         <Route path="evaluation" element={<EvaluationPage />} />
