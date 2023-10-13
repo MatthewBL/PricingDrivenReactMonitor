@@ -33,7 +33,7 @@ export function EvaluationPage() {
     closeModal();
   };
 
-  const computeModalContent = () => {
+  function ModalContent() {
     switch (command) {
       case "edit":
         return (
@@ -60,9 +60,7 @@ export function EvaluationPage() {
           </>
         );
     }
-  };
-
-  const content = computeModalContent();
+  }
 
   return (
     <article className="pp-content__main">
@@ -76,7 +74,9 @@ export function EvaluationPage() {
       >
         <AttributeList onClick={handleClick} />
       </Table>
-      <Modal open={visible}>{content}</Modal>
+      <Modal open={visible}>
+        <ModalContent />
+      </Modal>
     </article>
   );
 }

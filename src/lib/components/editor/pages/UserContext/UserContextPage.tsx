@@ -74,7 +74,7 @@ export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
     return errors;
   };
 
-  const computeModalContent = () => {
+  function ModalContent() {
     switch (command) {
       case "add":
         return (
@@ -118,9 +118,7 @@ export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
           </>
         );
     }
-  };
-
-  const content = computeModalContent();
+  }
 
   return (
     <article className="pp-content__main">
@@ -137,7 +135,9 @@ export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
       <Table className="pp-table" labels={tableHeaders}>
         <AttributeList onClick={handleClick} />
       </Table>
-      <Modal open={visible}>{content}</Modal>
+      <Modal open={visible}>
+        <ModalContent />
+      </Modal>
     </article>
   );
 }
