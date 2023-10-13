@@ -19,12 +19,6 @@ export function AttributeForm({
   const [form, setForm] = useState(initialData);
   const errors = onValidation(form);
 
-  const defaultValues = {
-    TEXT: "", // Empty text
-    NUMERIC: "0", // Cero
-    CONDITION: "1", // True computed as 1
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -51,7 +45,7 @@ export function AttributeForm({
     setForm({
       ...form,
       type: e.target.value as AttributeType,
-      defaultValue: defaultValues[e.target.value as AttributeType],
+      defaultValue: "",
     });
 
   const handleDefaultValueChange = (

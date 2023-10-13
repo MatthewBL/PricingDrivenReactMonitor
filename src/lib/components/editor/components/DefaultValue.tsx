@@ -35,12 +35,13 @@ export function DefaultValue({
           name={name}
           type="number"
           onChange={onChange}
-          value={Number(value)}
+          value={value}
         />
       );
     case "CONDITION":
       return (
         <select id={id} name={name} value={value} onChange={onChange}>
+          <option value="">Choose an option</option>
           <option value="1">YES</option>
           <option value="0">NO</option>
         </select>
