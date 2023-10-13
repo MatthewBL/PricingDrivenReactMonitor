@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Attribute } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
-import { Modal } from "../../components/Modal/Modal";
+import { Modal } from "../../components/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
 import { attributeToAttributeForm } from "../../utils";
