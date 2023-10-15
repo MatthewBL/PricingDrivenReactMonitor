@@ -1,23 +1,60 @@
-import { useContext } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { PlansContext } from "../../context/PlansContext";
 import { Link } from "react-router-dom";
+import { Plus } from "../../components/Icons";
+import { Button } from "../../components/Button";
+import { Modal } from "../../components/Modal";
+import { PlanForm } from "./PlanForm";
+import "./Plans.css";
+import { Plan } from "../../types";
 
 export function Plans() {
-  const { plans } = useContext(PlansContext);
+  const { plans, setPlans } = useContext(PlansContext);
+  const [visible, setVisible] = useState(false);
+
+  const addPlan = (newPlan: Plan) => {
+    setPlans([...plans, newPlan]);
+    setVisible(false);
+  };
+
+  const deletePlan = (name: string) => {
+    setPlans(plans.filter((plan) => plan.name != name));
+  };
 
   return (
     <article className="pp-content__main">
-      <h1>Plans</h1>
-      {Object.keys(plans).map((planKey) => (
-        <Link key={planKey} className="pp-link" to={planKey.toLowerCase()}>
-          <PlanCard
-            name={planKey}
-            description={plans[planKey].description}
-            price={plans[planKey].price}
-            currency={plans[planKey].currency}
-          />
-        </Link>
+      <header className="pp-content-header">
+        <h1>Plans</h1>
+        <Button
+          className="pp-content-header__btn"
+          onClick={() => setVisible(true)}
+        >
+          <Plus />
+        </Button>
+      </header>
+      {plans.map((plan) => (
+        <div key={plan.name} className="pp-plan-container">
+          <Link className="pp-link" to={plan.name}>
+            <PlanCard
+              name={plan.name}
+              description={plan.description}
+              price={plan.price}
+              currency={plan.currency}
+            />
+          </Link>
+          <div className="pp-card-actions">
+            <Button className="pp-btn" onClick={() => deletePlan(plan.name)}>
+              Delete
+            </Button>
+            <Button className="pp-btn" onClick={() => console.log("Edit")}>
+              Edit
+            </Button>
+          </div>
+        </div>
       ))}
+      <Modal open={visible}>
+        <PlanForm onSubmit={addPlan} onCancel={() => setVisible(false)} />
+      </Modal>
     </article>
   );
 }
@@ -31,9 +68,12 @@ interface PlanCard {
 
 function PlanCard({ name, description, price, currency }: PlanCard) {
   return (
-    <div style={{ backgroundColor: "white", marginBottom: "5px" }}>
+    <div className="pp-plan-card">
       <h2>{name.toUpperCase()}</h2>
-      <p>{description}</p>
+      <p>
+        <span>Description:</span>
+        {description}
+      </p>
       <p>
         Price: {price} {currency}
       </p>

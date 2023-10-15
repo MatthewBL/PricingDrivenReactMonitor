@@ -7,7 +7,7 @@ interface PlansContextProps {
 }
 
 export const PlansContext = createContext<PlansContextProps>({
-  plans: {} as Plans,
+  plans: [] as Plans,
   setPlans: () => null,
 });
 

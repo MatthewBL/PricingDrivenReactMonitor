@@ -46,8 +46,9 @@ const pricingContext: PricingContext = {
       defaultValue: false,
     },
   },
-  plans: {
-    BASIC: {
+  plans: [
+    {
+      name: "BASIC",
       description: "Plan for basic users",
       price: 0,
       currency: "EUR",
@@ -60,7 +61,8 @@ const pricingContext: PricingContext = {
         },
       },
     },
-    ADVANCED: {
+    {
+      name: "ADVANCED",
       description: "Plan for advanced users",
       price: 9.99,
       currency: "EUR",
@@ -73,7 +75,8 @@ const pricingContext: PricingContext = {
         },
       },
     },
-    PRO: {
+    {
+      name: "PRO",
       description: "Plan for pro users",
       price: 14.99,
       currency: "EUR",
@@ -86,7 +89,7 @@ const pricingContext: PricingContext = {
         },
       },
     },
-  },
+  ],
 };
 
 const onSave = () => console.log("On save");

@@ -3,11 +3,10 @@ export interface PricingContext {
   plans: Plans;
 }
 
-export interface Plans {
-  [key: string]: Plan;
-}
+export type Plans = Plan[];
 
 export interface Plan {
+  name: string;
   description: string;
   price: number;
   currency: string;

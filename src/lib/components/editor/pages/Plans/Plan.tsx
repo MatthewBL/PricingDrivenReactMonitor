@@ -31,17 +31,16 @@ export function Plan() {
         {Object.entries(pricingContext.features).map(
           ([featureName, attributes], index) => (
             <div key={featureName} className="pp-field">
-              <label>
-                {featureName}
-                <input
-                  name={featureName}
-                  type={computeInputType(attributes.type)}
-                  value={planFeatures[index].value}
-                  onChange={(e) =>
-                    changeFeatureValue(featureName, e.target.value)
-                  }
-                ></input>
-              </label>
+              <label htmlFor={featureName}> {featureName}</label>
+              <input
+                id={featureName}
+                name={featureName}
+                type={computeInputType(attributes.type)}
+                value={planFeatures[index].value}
+                onChange={(e) =>
+                  changeFeatureValue(featureName, e.target.value)
+                }
+              ></input>
             </div>
           )
         )}
