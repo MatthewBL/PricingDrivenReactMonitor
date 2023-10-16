@@ -24,8 +24,8 @@ export function DefaultValue({
           id={id}
           name={name}
           type="text"
-          onChange={onChange}
           value={value}
+          onChange={onChange}
         />
       );
     case "NUMERIC":
@@ -34,8 +34,8 @@ export function DefaultValue({
           id={id}
           name={name}
           type="number"
-          onChange={onChange}
           value={value}
+          onChange={onChange}
         />
       );
     case "CONDITION":

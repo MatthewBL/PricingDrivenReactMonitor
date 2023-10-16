@@ -90,37 +90,39 @@ function AttributeList({ onClick }: AttributeListProps) {
 
   return (
     <>
-      {attributesState.data.map((attribute, index) => (
-        <tr key={attribute.id}>
-          <td>{attribute.id}</td>
-          <td className={`pp-table-type__${attribute.type.toLowerCase()}`}>
-            {attribute.type}
-          </td>
-          <td className="expression">
-            {attribute.expression == "" ? "NO EVALUATION" : "EVALUATED"}
-          </td>
-          <td className="pp-table-actions">
-            {attribute.type != "CONDITION" && (
-              <Button
-                onClick={() => {
-                  onClick("edit");
-                  dispatch({ type: "select_item", index });
-                }}
-              >
-                <Pencil />
-              </Button>
-            )}
-            <Button
-              onClick={() => {
-                onClick("delete");
-                dispatch({ type: "select_item", index });
-              }}
-            >
-              <Trash />
-            </Button>
-          </td>
-        </tr>
-      ))}
+      {attributesState.data.map(
+        (attribute, index) =>
+          attribute.type != "CONDITION" && (
+            <tr key={attribute.id}>
+              <td>{attribute.id}</td>
+              <td className={`pp-table-type__${attribute.type.toLowerCase()}`}>
+                {attribute.type}
+              </td>
+              <td className="expression">
+                {attribute.expression == "" ? "NO EVALUATION" : "EVALUATED"}
+              </td>
+              <td className="pp-table-actions">
+                <Button
+                  onClick={() => {
+                    onClick("edit");
+                    dispatch({ type: "select_item", index });
+                  }}
+                >
+                  <Pencil />
+                </Button>
+
+                <Button
+                  onClick={() => {
+                    onClick("delete");
+                    dispatch({ type: "select_item", index });
+                  }}
+                >
+                  <Trash />
+                </Button>
+              </td>
+            </tr>
+          )
+      )}
     </>
   );
 }
