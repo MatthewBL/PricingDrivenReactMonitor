@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Attribute } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
@@ -9,6 +9,14 @@ import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
 import { Pencil, Plus, Trash } from "../../components/Icons";
 import { EditorContext } from "../../context/EditorContextProvider";
 import "./AttributesPage.css";
+
+const emptyAttribute: Attribute = {
+  id: "",
+  description: "",
+  type: "TEXT",
+  defaultValue: "",
+  expression: "",
+};
 
 export function AttributesPage() {
   const { attributes, setAttributes } = useContext(EditorContext);
@@ -28,14 +36,6 @@ export function AttributesPage() {
     setAttributes([...attributes, attribute]);
     closeModal();
   };
-
-  const updateAttribute = (newAttribute: Attribute) => {
-    console.log(newAttribute);
-    closeModal();
-  };
-
-  const deleteAttribute = (name: string) =>
-    setAttributes(attributes.filter((attribute) => attribute.id != name));
 
   const handleValidation = (attribute: Attribute) => {
     const errors: AttributeFormErrors = {};
@@ -73,57 +73,6 @@ export function AttributesPage() {
     return errors;
   };
 
-  function ModalContent() {
-    const emptyAttribute: Attribute = {
-      id: "",
-      description: "",
-      type: "TEXT",
-      defaultValue: "",
-      expression: "",
-    };
-
-    switch (command) {
-      case "add":
-        return (
-          <>
-            <AttributeForm
-              initialData={emptyAttribute}
-              onSubmit={addAttribute}
-              onValidation={handleValidation}
-            />
-            <Button className="pp-btn" onClick={closeModal}>
-              Close
-            </Button>
-          </>
-        );
-      case "edit":
-        return (
-          <>
-            <AttributeForm
-              initialData={emptyAttribute}
-              onSubmit={updateAttribute}
-              onValidation={handleValidation}
-            />
-            <Button className="pp-btn" onClick={closeModal}>
-              Close
-            </Button>
-          </>
-        );
-      case "delete":
-        return (
-          <>
-            <h2>Do you want to delete this attribute?</h2>
-            <Button className="pp-btn" onClick={closeModal}>
-              NO
-            </Button>
-            <Button className="pp-btn" onClick={() => deleteAttribute("")}>
-              YES
-            </Button>
-          </>
-        );
-    }
-  }
-
   return (
     <article className="pp-content__main">
       <header className="pp-content-header">
@@ -134,23 +83,47 @@ export function AttributesPage() {
         >
           <Plus />
         </Button>
+        <Modal open={visible && command === "add"}>
+          <AttributeForm
+            initialData={emptyAttribute}
+            onSubmit={addAttribute}
+            onValidation={handleValidation}
+          />
+          <Button className="pp-btn" onClick={closeModal}>
+            Close
+          </Button>
+        </Modal>
       </header>
 
       <Table
         className="pp-table"
         labels={["Name", "Type", "Default", "Actions"]}
       >
-        <AttributeList />
+        <AttributeList
+          command={command}
+          setCommand={setCommand}
+          isModalVisible={visible}
+          setVisible={setvisible}
+        />
       </Table>
-      <Modal open={visible}>
-        <ModalContent />
-      </Modal>
     </article>
   );
 }
 
-function AttributeList() {
-  const { attributes } = useContext(EditorContext);
+interface AttributeListProps {
+  command: Command;
+  setCommand: Dispatch<SetStateAction<Command>>;
+  isModalVisible: boolean;
+  setVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+function AttributeList({
+  isModalVisible,
+  setVisible,
+  command,
+  setCommand,
+}: AttributeListProps) {
+  const { attributes, setAttributes } = useContext(EditorContext);
 
   const displayDefaulValueText = (defaultValue: string | number | boolean) => {
     switch (typeof defaultValue) {
@@ -163,6 +136,23 @@ function AttributeList() {
     }
   };
 
+  const foo = () => console.log("foo");
+
+  const print = (attribute: Attribute): AttributeFormErrors => {
+    return { emptyName: "", emptyValue: "" };
+  };
+
+  const deleteAttribute = (name: string) =>
+    setAttributes(attributes.filter((attribute) => attribute.id != name));
+
+  const updateAttribute = (newAttribute: Attribute) => {
+    setAttributes(
+      attributes.map((attribute) =>
+        attribute.id === newAttribute.id ? newAttribute : attribute
+      )
+    );
+  };
+
   return (
     <>
       {attributes.map((attribute) => (
@@ -173,13 +163,46 @@ function AttributeList() {
           </td>
           <td>{displayDefaulValueText(attribute.defaultValue)}</td>
           <td className="pp-table-actions">
-            <Button onClick={() => console.log("Edit")}>
+            <Button
+              onClick={() => {
+                setVisible(true);
+                setCommand("edit");
+              }}
+            >
               <Pencil />
             </Button>
+            <Modal open={isModalVisible && command === "edit"}>
+              <AttributeForm
+                initialData={attribute}
+                onSubmit={updateAttribute}
+                onValidation={print}
+              />
+              <Button className="pp-btn" onClick={() => setVisible(false)}>
+                Close
+              </Button>
+            </Modal>
 
-            <Button onClick={() => console.log("Delete")}>
+            <Button
+              onClick={() => {
+                setVisible(true);
+                setCommand("delete");
+              }}
+            >
               <Trash />
             </Button>
+
+            <Modal open={isModalVisible && command === "delete"}>
+              <h2>Do you want to delete this attribute?</h2>
+              <Button className="pp-btn" onClick={() => setVisible(false)}>
+                NO
+              </Button>
+              <Button
+                className="pp-btn"
+                onClick={() => deleteAttribute(attribute.id)}
+              >
+                YES
+              </Button>
+            </Modal>
           </td>
         </tr>
       ))}
