@@ -37,7 +37,7 @@ export function PricingPlansEditor({
       <AttributesProvider>
         <UserContextProvider>
           <div className="pp-editor">
-            <NavBar hidden={hidden} />
+            <NavBar hidden={hidden} onSave={onSave} />
             <main className="pp-content">
               <Toggle
                 className="pp-toggle pp-content__toggle"

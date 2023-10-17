@@ -47,15 +47,7 @@ export function PricingConfigurationRoutes({
         }
       >
         <Route path="/" element={<h1>Pricingplans-react</h1>} />
-        <Route
-          path="attributes"
-          element={
-            <AttributesPage
-              title="Plan attributes"
-              tableHeaders={["Name", "Type", "Default", "Actions"]}
-            />
-          }
-        />
+        <Route path="attributes" element={<AttributesPage />} />
         <Route
           path="user-context"
           element={

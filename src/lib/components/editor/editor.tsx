@@ -92,7 +92,7 @@ const pricingContext: PricingContext = {
   ],
 };
 
-const onSave = () => console.log("On save");
+const onSave = (pricingContext: PricingContext) => console.log(pricingContext);
 
 root.render(
   <React.StrictMode>

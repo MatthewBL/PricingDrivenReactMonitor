@@ -5,18 +5,13 @@ import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { AttributeForm } from "./AttributeForm";
 import { AttributesContext } from "../../context/AttributesProvider";
-import { attributeToAttributeForm } from "../../utils";
 import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
 import { Pencil, Plus, Trash } from "../../components/Icons";
+import { EditorContext } from "../../context/EditorContextProvider";
 import "./AttributesPage.css";
 
-interface AttributePagesProps {
-  title: string;
-  tableHeaders: string[];
-}
-
-export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
-  const { attributesState, dispatch } = useContext(AttributesContext);
+export function AttributesPage() {
+  const { attributes, setAttributes } = useContext(EditorContext);
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
 
@@ -30,19 +25,17 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
   };
 
   const addAttribute = (attribute: Attribute) => {
-    dispatch({ type: "add_item", payload: attribute });
+    setAttributes([...attributes, attribute]);
     closeModal();
   };
 
   const updateAttribute = (newAttribute: Attribute) => {
-    dispatch({ type: "update_item", payload: newAttribute });
+    console.log(newAttribute);
     closeModal();
   };
 
-  const deleteAttribute = () => {
-    dispatch({ type: "delete_item" });
-    closeModal();
-  };
+  const deleteAttribute = (name: string) =>
+    setAttributes(attributes.filter((attribute) => attribute.id != name));
 
   const handleValidation = (attribute: Attribute) => {
     const errors: AttributeFormErrors = {};
@@ -52,14 +45,12 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
 
     const attributeNameExistsWhenAddCommand =
       command === "add" &&
-      attributesState.data.filter((attribute) => attribute.id === id).length !==
-        0;
+      attributes.filter((attribute) => attribute.id === id).length !== 0;
 
     const attributeNameExistsWhenEditCommand =
       command === "edit" &&
-      attributesState.data.filter(
-        (attribute, index) =>
-          index !== attributesState.index && attribute.id === id
+      attributes.filter(
+        (attribute) => attribute.id !== attribute.id && attribute.id === id
       ).length !== 0;
 
     if (nameIsEmpty) {
@@ -83,18 +74,20 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
   };
 
   function ModalContent() {
+    const emptyAttribute: Attribute = {
+      id: "",
+      description: "",
+      type: "TEXT",
+      defaultValue: "",
+      expression: "",
+    };
+
     switch (command) {
       case "add":
         return (
           <>
             <AttributeForm
-              initialData={{
-                id: "",
-                description: "",
-                type: "TEXT",
-                defaultValue: "",
-                expression: "",
-              }}
+              initialData={emptyAttribute}
               onSubmit={addAttribute}
               onValidation={handleValidation}
             />
@@ -107,9 +100,7 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
         return (
           <>
             <AttributeForm
-              initialData={attributeToAttributeForm(
-                attributesState.data[attributesState.index]
-              )}
+              initialData={emptyAttribute}
               onSubmit={updateAttribute}
               onValidation={handleValidation}
             />
@@ -125,7 +116,7 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
             <Button className="pp-btn" onClick={closeModal}>
               NO
             </Button>
-            <Button className="pp-btn" onClick={deleteAttribute}>
+            <Button className="pp-btn" onClick={() => deleteAttribute("")}>
               YES
             </Button>
           </>
@@ -136,7 +127,7 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
   return (
     <article className="pp-content__main">
       <header className="pp-content-header">
-        <h1>{title}</h1>
+        <h1>Plan's attributes</h1>
         <Button
           className="pp-content-header__btn"
           onClick={() => handleClick("add")}
@@ -145,8 +136,11 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
         </Button>
       </header>
 
-      <Table className="pp-table" labels={tableHeaders}>
-        <AttributeList onClick={handleClick} />
+      <Table
+        className="pp-table"
+        labels={["Name", "Type", "Default", "Actions"]}
+      >
+        <AttributeList />
       </Table>
       <Modal open={visible}>
         <ModalContent />
@@ -155,61 +149,35 @@ export function AttributesPage({ title, tableHeaders }: AttributePagesProps) {
   );
 }
 
-interface AttributeListProps {
-  onClick: (action: Command) => void;
-}
+function AttributeList() {
+  const { attributes } = useContext(EditorContext);
 
-function AttributeList({ onClick }: AttributeListProps) {
-  const { attributesState, dispatch } = useContext(AttributesContext);
-
-  const renderAttributeItem = (attribute: Attribute) => {
-    switch (typeof attribute.defaultValue) {
+  const displayDefaulValueText = (defaultValue: string | number | boolean) => {
+    switch (typeof defaultValue) {
       case "string":
-        return (
-          <>
-            <td className="pp-table-type__text">{attribute.type}</td>
-            <td>{attribute.defaultValue}</td>
-          </>
-        );
       case "number":
-        return (
-          <>
-            <td className="pp-table-type__numeric">{attribute.type}</td>
-            <td>{attribute.defaultValue}</td>
-          </>
-        );
-      case "boolean":
-        return (
-          <>
-            <td className="pp-table-type__condition">{attribute.type}</td>
-            <td>{attribute.defaultValue ? "YES" : "NO"}</td>
-          </>
-        );
+        return defaultValue;
+      case "boolean": {
+        return defaultValue ? "YES" : "NO";
+      }
     }
   };
 
   return (
     <>
-      {attributesState.data.map((attribute, index) => (
+      {attributes.map((attribute) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
-          {renderAttributeItem(attribute)}
+          <td className={`pp-table-type__${attribute.type}`}>
+            {attribute.type}
+          </td>
+          <td>{displayDefaulValueText(attribute.defaultValue)}</td>
           <td className="pp-table-actions">
-            <Button
-              onClick={() => {
-                onClick("edit");
-                dispatch({ type: "select_item", index });
-              }}
-            >
+            <Button onClick={() => console.log("Edit")}>
               <Pencil />
             </Button>
 
-            <Button
-              onClick={() => {
-                onClick("delete");
-                dispatch({ type: "select_item", index });
-              }}
-            >
+            <Button onClick={() => console.log("Delete")}>
               <Trash />
             </Button>
           </td>

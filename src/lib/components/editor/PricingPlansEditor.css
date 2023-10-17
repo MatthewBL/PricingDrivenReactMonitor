@@ -71,15 +71,15 @@
   font-weight: bold;
 }
 
-.pp-table-type__text {
+.pp-table-type__TEXT {
   color: var(--red);
 }
 
-.pp-table-type__numeric {
+.pp-table-type__NUMERIC {
   color: var(--gold);
 }
 
-.pp-table-type__condition {
+.pp-table-type__CONDITION {
   color: var(--purple);
 }
 

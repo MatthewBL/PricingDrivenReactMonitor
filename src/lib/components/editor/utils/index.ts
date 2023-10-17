@@ -23,7 +23,7 @@ export function featuresToAttributesState(
   };
 }
 
-function featuresToAttributes(features: Features): Attributes {
+export function featuresToAttributes(features: Features): Attributes {
   return Object.entries(features).map(([id, feature]) => {
     return {
       id,
@@ -47,52 +47,4 @@ export function attributesToFeatures(attributes: Attributes): Features {
   });
 
   return Object.fromEntries(entries);
-}
-
-export function attributeToAttributeForm(
-  attribute: Attribute
-): AttributeFormData {
-  let value: string;
-  switch (attribute.type) {
-    case "TEXT":
-      value = attribute.defaultValue.toString();
-      break;
-    case "NUMERIC":
-      value = attribute.defaultValue.toString();
-      break;
-    case "CONDITION":
-      value = Number(attribute.defaultValue).toString();
-      break;
-  }
-  return {
-    id: attribute.id,
-    description: attribute.description,
-    type: attribute.type,
-    defaultValue: value,
-    expression: attribute.expression,
-  };
-}
-
-export function attributeFormToAttribute(
-  attributeForm: AttributeFormData
-): Attribute {
-  let value: string | boolean | number;
-  switch (attributeForm.type) {
-    case "TEXT":
-      value = attributeForm.defaultValue.toString();
-      break;
-    case "NUMERIC":
-      value = Number(attributeForm.defaultValue);
-      break;
-    case "CONDITION":
-      value = Boolean(Number(attributeForm.defaultValue));
-      break;
-  }
-  return {
-    id: attributeForm.id,
-    description: attributeForm.description,
-    type: attributeForm.type,
-    defaultValue: value,
-    expression: attributeForm.expression,
-  };
 }

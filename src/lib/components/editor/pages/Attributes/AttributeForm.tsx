@@ -2,11 +2,10 @@ import { ChangeEvent, useState } from "react";
 import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "../../components/DefaultValue";
 import { Button } from "../../components/Button";
-import { attributeFormToAttribute } from "../../utils";
-import { AttributeFormData, AttributeFormErrors } from "./index";
+import { AttributeFormErrors } from "./index";
 
 interface AttributeFormProps {
-  initialData: AttributeFormData;
+  initialData: Attribute;
   onValidation: (attribute: Attribute) => AttributeFormErrors;
   onSubmit: (attribute: Attribute) => void;
 }
@@ -30,8 +29,7 @@ export function AttributeForm({
     }
     console.log(">>> Submited attribute:", form);
 
-    const attribute = attributeFormToAttribute(form);
-    onSubmit(attribute);
+    onSubmit(form);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +93,7 @@ export function AttributeForm({
         name="default"
         type={form.type}
         onChange={handleDefaultValueChange}
-        value={form.defaultValue}
+        value={form.defaultValue.toString()}
       />
       <Button className="pp-btn">Save</Button>
     </form>
