@@ -4,7 +4,6 @@ import { AttributesPage } from "./pages/Attributes";
 import { PricingContext } from "./types";
 import { UserContextPage } from "./pages/UserContext";
 import { EvaluationPage } from "./pages/EvaluationContext";
-import { PlansContextProvider } from "./context/PlansContext";
 import { Plan, Plans } from "./pages/Plans";
 
 interface PricingConfigurationRoutesProps {
@@ -57,14 +56,7 @@ export function PricingConfigurationRoutes({
             />
           }
         />
-        <Route
-          path="plans"
-          element={
-            <PlansContextProvider initialPlans={pricingContext.plans}>
-              <Outlet />
-            </PlansContextProvider>
-          }
-        >
+        <Route path="plans" element={<Outlet />}>
           <Route index element={<Plans />} />
           <Route path=":plan" element={<Plan />}></Route>
         </Route>

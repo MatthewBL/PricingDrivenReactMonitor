@@ -1,15 +1,15 @@
-import { FormEvent, useContext, useState } from "react";
-import { PlansContext } from "../../context/PlansContext";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus } from "../../components/Icons";
 import { Button } from "../../components/Button";
 import { Modal } from "../../components/Modal";
 import { PlanForm } from "./PlanForm";
-import "./Plans.css";
 import { Plan } from "../../types";
+import { EditorContext } from "../../context/EditorContextProvider";
+import "./Plans.css";
 
 export function Plans() {
-  const { plans, setPlans } = useContext(PlansContext);
+  const { plans, setPlans } = useContext(EditorContext);
   const [visible, setVisible] = useState(false);
 
   const addPlan = (newPlan: Plan) => {

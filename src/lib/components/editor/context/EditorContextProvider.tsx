@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useState } from "react";
-import { Attributes, PricingContext } from "../types";
+import { Attributes, Plans, PricingContext } from "../types";
 import { featuresToAttributes } from "../utils";
 
 interface EditorContextProps {
@@ -7,6 +7,8 @@ interface EditorContextProps {
   setPricingContext: Dispatch<SetStateAction<PricingContext>>;
   attributes: Attributes;
   setAttributes: Dispatch<SetStateAction<Attributes>>;
+  plans: Plans;
+  setPlans: Dispatch<SetStateAction<Plans>>;
   theme: string;
   returnTo: string;
 }
@@ -18,6 +20,8 @@ export const EditorContext = createContext<EditorContextProps>({
   setPricingContext: () => null,
   attributes: [] as Attributes,
   setAttributes: () => null,
+  plans: [] as Plans,
+  setPlans: () => null,
 });
 
 interface EditorContextProviderProps {
@@ -38,8 +42,11 @@ export function EditorContextProvider({
   const features = pricingContext.features
     ? featuresToAttributes(pricingContext.features)
     : [];
+
+  const initialPlans = pricingContext.plans ? pricingContext.plans : [];
   const [pricingState, setPricingState] = useState(pricingContext);
   const [attributes, setAttributes] = useState(features);
+  const [plans, setPlans] = useState(initialPlans);
   return (
     <EditorContext.Provider
       value={{
@@ -47,6 +54,8 @@ export function EditorContextProvider({
         setPricingContext: setPricingState,
         attributes,
         setAttributes,
+        plans,
+        setPlans,
         theme: editorTheme,
         returnTo: retTo,
       }}
