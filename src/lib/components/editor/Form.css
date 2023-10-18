@@ -1,8 +1,15 @@
+.pp-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+}
+
 .pp-form__group {
   position: relative;
   padding: 20px 0 0;
-  width: 100%;
-  max-width: 180px;
+  max-width: 300px;
+  margin-bottom: 1rem;
 }
 
 .pp-form__field {
@@ -58,4 +65,9 @@
 .pp-form__field:required,
 .pp-form__field:invalid {
   box-shadow: none;
+}
+
+.pp-form__errors {
+  color: #ff5252;
+  margin-top: 0.5rem;
 }

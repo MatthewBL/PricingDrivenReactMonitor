@@ -59,21 +59,22 @@ export function AttributeForm({
   return (
     <form className="pp-form" onSubmit={handleSubmit}>
       <div className="pp-form__group">
-        {hasErrors && (
-          <div className="pp-form__errors">
-            {errors.nameIsEmpty && (
-              <span>
-                Attribute name is <strong>required</strong>{" "}
-              </span>
-            )}
-            {errors.duplicatedAttribute && (
-              <span>
-                Cannot add <strong>{form.id}</strong>. Attribute name is
-                duplicated
-              </span>
-            )}
-          </div>
-        )}
+        {errors.nameIsEmpty ||
+          (errors.duplicatedAttribute && (
+            <div className="pp-form__errors">
+              {errors.nameIsEmpty && (
+                <span>
+                  Attribute name is <strong>required</strong>{" "}
+                </span>
+              )}
+              {errors.duplicatedAttribute && (
+                <span>
+                  Cannot add <strong>{form.id}</strong>. Attribute name is
+                  duplicated
+                </span>
+              )}
+            </div>
+          ))}
         <label htmlFor="name" className="pp-form__label">
           Name
         </label>
