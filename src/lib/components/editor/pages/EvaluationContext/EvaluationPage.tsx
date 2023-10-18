@@ -51,9 +51,6 @@ export function EvaluationPage() {
           setCommand={setCommand}
         />
       </Table>
-      <Modal open={visible}>
-        <ModalContent />
-      </Modal>
     </article>
   );
 }
@@ -130,7 +127,7 @@ function EvaluationList({
                   }
                 >
                   <h2>
-                    This action will stop evaluating this attribute. Are you
+                    This action will stop evaluating {attribute.id}. Are you
                     sure?
                   </h2>
                   <Button className="pp-btn" onClick={() => setVisible(false)}>
