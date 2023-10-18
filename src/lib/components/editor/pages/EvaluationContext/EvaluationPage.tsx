@@ -2,37 +2,16 @@ import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
-import { AttributesContext } from "../../context/AttributesProvider";
-import { Command } from "./index";
 import { Pencil, Trash } from "../../components/Icons";
+import { EditorContext } from "../../context/EditorContextProvider";
+import { Command } from "./index";
 import { TextEvaluationForm } from "./TextEvaluationForm";
 import { NumericEvaluationForm } from "./NumericEvaluationForm";
 import "./EvaluationPage.css";
-import { EditorContext } from "../../context/EditorContextProvider";
 
 export function EvaluationPage() {
-  const attributes = useContext(AttributesContext);
-  const attribute =
-    attributes.attributesState.data[attributes.attributesState.index];
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("edit" as Command);
-
-  const closeModal = () => setvisible(false);
-
-  function ModalContent() {
-    switch (command) {
-      case "edit":
-        return (
-          <>
-            <Button className="pp-btn" onClick={closeModal}>
-              Close
-            </Button>
-          </>
-        );
-      case "delete":
-        return <></>;
-    }
-  }
 
   return (
     <article className="pp-content__main">
