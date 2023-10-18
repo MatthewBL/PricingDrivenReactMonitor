@@ -16,27 +16,21 @@ export function AttributeForm({
 }: AttributeFormProps) {
   const [form, setForm] = useState(initialData);
   const [errors, setErrors] = useState({
-    nameIsEmpty: "",
-    defaultValueIsEmpty: "",
-    duplicatedAttribute: "",
+    nameIsEmpty: false,
+    defaultValueIsEmpty: false,
+    duplicatedAttribute: false,
   });
 
-  const nameIsEmpty = form.id === "" ? "Attribute name is required" : "";
-  const defaultValueIsEmpty =
-    form.defaultValue === "" ? "Attribute default value is required" : "";
-  const hasNoErrors = Object.values(errors).every((error) => error === "");
-  const duplicatedAttribute = onValidation(form.id)
-    ? `Tried to add duplicated attribute '${form.id}'`
-    : "";
-
+  const nameIsEmpty = form.id === "";
+  const defaultValueIsEmpty = form.defaultValue === "";
+  const hasErrors = Object.values(errors).some((errorMessage) => errorMessage);
+  const duplicatedAttribute = onValidation(form.id);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (hasNoErrors) {
+    if (!hasErrors) {
       onSubmit(form);
     }
-
-    console.log(errors);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,8 +59,21 @@ export function AttributeForm({
   return (
     <form className="pp-form" onSubmit={handleSubmit}>
       <div className="pp-form__group">
-        <small>{errors.nameIsEmpty}</small>
-        <small>{errors.duplicatedAttribute}</small>
+        {hasErrors && (
+          <div className="pp-form__errors">
+            {errors.nameIsEmpty && (
+              <span>
+                Attribute name is <strong>required</strong>{" "}
+              </span>
+            )}
+            {errors.duplicatedAttribute && (
+              <span>
+                Cannot add <strong>{form.id}</strong>. Attribute name is
+                duplicated
+              </span>
+            )}
+          </div>
+        )}
         <label htmlFor="name" className="pp-form__label">
           Name
         </label>
@@ -106,7 +113,15 @@ export function AttributeForm({
       </div>
 
       <div>
-        <small>{errors.defaultValueIsEmpty}</small>
+        {hasErrors && (
+          <div className="pp-form__errors">
+            {errors.defaultValueIsEmpty && (
+              <span>
+                Attribute default value is <strong>required</strong>
+              </span>
+            )}
+          </div>
+        )}
         <label htmlFor="default">Default value</label>
         <DefaultValue
           id="default"
