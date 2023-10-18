@@ -1,7 +1,7 @@
 import { Routes, Route, Outlet } from "react-router-dom";
+import { PricingContext } from "./types";
 import { PricingPlansEditor } from "./PricingPlansEditor";
 import { AttributesPage } from "./pages/Attributes";
-import { PricingContext } from "./types";
 import { UserContextPage } from "./pages/UserContext";
 import { EvaluationPage } from "./pages/EvaluationContext";
 import { Plan, Plans } from "./pages/Plans";

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
@@ -8,6 +8,7 @@ import { Pencil, Trash } from "../../components/Icons";
 import { TextEvaluationForm } from "./TextEvaluationForm";
 import { NumericEvaluationForm } from "./NumericEvaluationForm";
 import "./EvaluationPage.css";
+import { EditorContext } from "../../context/EditorContextProvider";
 
 export function EvaluationPage() {
   const attributes = useContext(AttributesContext);
@@ -16,49 +17,20 @@ export function EvaluationPage() {
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("edit" as Command);
 
-  const openModal = () => setvisible(true);
-
   const closeModal = () => setvisible(false);
-
-  const handleClick = (action: Command) => {
-    setCommand(action);
-    openModal();
-  };
-
-  const deleteEvaluation = () => {
-    attributes.dispatch({
-      type: "update_item",
-      payload: { ...attribute, expression: "" },
-    });
-    closeModal();
-  };
 
   function ModalContent() {
     switch (command) {
       case "edit":
         return (
           <>
-            {attribute.type == "TEXT" && <TextEvaluationForm />}
-            {attribute.type == "NUMERIC" && <NumericEvaluationForm />}
             <Button className="pp-btn" onClick={closeModal}>
               Close
             </Button>
           </>
         );
       case "delete":
-        return (
-          <>
-            <h2>
-              This action will stop evaluating this attribute. Are you sure?
-            </h2>
-            <Button className="pp-btn" onClick={closeModal}>
-              NO
-            </Button>
-            <Button className="pp-btn" onClick={deleteEvaluation}>
-              YES
-            </Button>
-          </>
-        );
+        return <></>;
     }
   }
 
@@ -72,7 +44,12 @@ export function EvaluationPage() {
         className="pp-table"
         labels={["Name", "Type", "Expression", "Actions"]}
       >
-        <AttributeList onClick={handleClick} />
+        <EvaluationList
+          isModalVisible={visible}
+          setVisible={setvisible}
+          command={command}
+          setCommand={setCommand}
+        />
       </Table>
       <Modal open={visible}>
         <ModalContent />
@@ -81,44 +58,91 @@ export function EvaluationPage() {
   );
 }
 
-interface AttributeListProps {
-  onClick: (action: Command) => void;
+interface EvaluationListProps {
+  isModalVisible: boolean;
+  setVisible: Dispatch<SetStateAction<boolean>>;
+  command: Command;
+  setCommand: Dispatch<SetStateAction<Command>>;
 }
 
-function AttributeList({ onClick }: AttributeListProps) {
-  const { attributesState, dispatch } = useContext(AttributesContext);
+function EvaluationList({
+  isModalVisible,
+  setVisible,
+  command,
+  setCommand,
+}: EvaluationListProps) {
+  const { attributes, setAttributes } = useContext(EditorContext);
+  const [position, setPosition] = useState(-1);
+
+  const deleteEvaluation = (name: string) =>
+    setAttributes(
+      attributes.map((attribute) =>
+        attribute.id === name ? { ...attribute, expression: "" } : attribute
+      )
+    );
 
   return (
     <>
-      {attributesState.data.map(
+      {attributes.map(
         (attribute, index) =>
           attribute.type != "CONDITION" && (
             <tr key={attribute.id}>
               <td>{attribute.id}</td>
-              <td className={`pp-table-type__${attribute.type.toLowerCase()}`}>
+              <td className={`pp-table-type__${attribute.type}`}>
                 {attribute.type}
               </td>
               <td className="expression">
-                {attribute.expression == "" ? "NO EVALUATION" : "EVALUATED"}
+                {attribute.expression == "" ? "NOT EVALUATED" : "EVALUATED"}
               </td>
               <td className="pp-table-actions">
                 <Button
                   onClick={() => {
-                    onClick("edit");
-                    dispatch({ type: "select_item", index });
+                    setCommand("edit");
+                    setVisible(true);
+                    setPosition(index);
                   }}
                 >
                   <Pencil />
                 </Button>
+                <Modal
+                  open={
+                    isModalVisible && command === "edit" && position === index
+                  }
+                >
+                  <>
+                    {attribute.type == "TEXT" && <TextEvaluationForm />}
+                    {attribute.type == "NUMERIC" && <NumericEvaluationForm />}
+                  </>
+                </Modal>
 
                 <Button
                   onClick={() => {
-                    onClick("delete");
-                    dispatch({ type: "select_item", index });
+                    setVisible(true);
+                    setCommand("delete");
+                    setPosition(index);
                   }}
                 >
                   <Trash />
                 </Button>
+                <Modal
+                  open={
+                    isModalVisible && command === "delete" && position === index
+                  }
+                >
+                  <h2>
+                    This action will stop evaluating this attribute. Are you
+                    sure?
+                  </h2>
+                  <Button className="pp-btn" onClick={() => setVisible(false)}>
+                    NO
+                  </Button>
+                  <Button
+                    className="pp-btn"
+                    onClick={() => deleteEvaluation(attribute.id)}
+                  >
+                    YES
+                  </Button>
+                </Modal>
               </td>
             </tr>
           )
