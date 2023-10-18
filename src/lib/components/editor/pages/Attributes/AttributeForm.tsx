@@ -1,12 +1,11 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "../../components/DefaultValue";
 import { Button } from "../../components/Button";
-import { AttributeFormErrors } from "./index";
 
 interface AttributeFormProps {
   initialData: Attribute;
-  onValidation: (attribute: Attribute) => AttributeFormErrors;
+  onValidation: (name: string) => boolean;
   onSubmit: (attribute: Attribute) => void;
 }
 
@@ -16,20 +15,28 @@ export function AttributeForm({
   onValidation,
 }: AttributeFormProps) {
   const [form, setForm] = useState(initialData);
-  const errors = onValidation(form);
+  const [errors, setErrors] = useState({
+    nameIsEmpty: "",
+    defaultValueIsEmpty: "",
+    duplicatedAttribute: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const nameIsEmpty = form.id === "" ? "Attribute name is required" : "";
+  const defaultValueIsEmpty =
+    form.defaultValue === "" ? "Attribute default value is required" : "";
+  const hasNoErrors = Object.values(errors).every((error) => error === "");
+  const duplicatedAttribute = onValidation(form.id)
+    ? `Tried to add duplicated attribute '${form.id}'`
+    : "";
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const errorsExist = Object.keys(errors).length !== 0;
-    console.log("Errors exists:", errorsExist);
-    if (errorsExist) {
-      console.log("[ERROR]", errors);
-      return;
+    if (hasNoErrors) {
+      onSubmit(form);
     }
-    console.log(">>> Submited attribute:", form);
 
-    onSubmit(form);
+    console.log(errors);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,45 +64,66 @@ export function AttributeForm({
 
   return (
     <form className="pp-form" onSubmit={handleSubmit}>
-      {errors.emptyName && <small>{errors.emptyName}</small>}
-      {errors.duplicateId && <small>{errors.duplicateId}</small>}
-      <label htmlFor="name">Name</label>
-      <input
-        id="name"
-        name="name"
-        value={form.id}
-        onChange={handleNameChange}
-      />
-      <label htmlFor="description">Description</label>
-      <input
-        id="description"
-        name="description"
-        type="text"
-        value={form.description}
-        onChange={handleDescriptionChange}
-      />
+      <div className="pp-form__group">
+        <small>{errors.nameIsEmpty}</small>
+        <small>{errors.duplicatedAttribute}</small>
+        <label htmlFor="name" className="pp-form__label">
+          Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          className="pp-form__field"
+          value={form.id}
+          onChange={handleNameChange}
+        />
+      </div>
+      <div className="pp-form__group">
+        <label htmlFor="description" className="pp-form__label">
+          Description
+        </label>
+        <input
+          id="description"
+          name="description"
+          className="pp-form__field"
+          value={form.description}
+          onChange={handleDescriptionChange}
+        />
+      </div>
 
-      <label htmlFor="type">Type</label>
-      <select
-        id="type"
-        name="type"
-        value={form.type}
-        onChange={handleTypeChange}
+      <div>
+        <label htmlFor="type">Type</label>
+        <select
+          id="type"
+          name="type"
+          value={form.type}
+          onChange={handleTypeChange}
+        >
+          <option value="NUMERIC">NUMERIC</option>
+          <option value="TEXT">TEXT</option>
+          <option value="CONDITION">CONDITION</option>
+        </select>
+      </div>
+
+      <div>
+        <small>{errors.defaultValueIsEmpty}</small>
+        <label htmlFor="default">Default value</label>
+        <DefaultValue
+          id="default"
+          name="default"
+          type={form.type}
+          onChange={handleDefaultValueChange}
+          value={form.defaultValue.toString()}
+        />
+      </div>
+      <Button
+        className="pp-btn"
+        onClick={() =>
+          setErrors({ nameIsEmpty, defaultValueIsEmpty, duplicatedAttribute })
+        }
       >
-        <option value="NUMERIC">NUMERIC</option>
-        <option value="TEXT">TEXT</option>
-        <option value="CONDITION">CONDITION</option>
-      </select>
-      {errors.emptyValue && <small>{errors.emptyValue}</small>}
-      <label htmlFor="default">Default value</label>
-      <DefaultValue
-        id="default"
-        name="default"
-        type={form.type}
-        onChange={handleDefaultValueChange}
-        value={form.defaultValue.toString()}
-      />
-      <Button className="pp-btn">Save</Button>
+        Save
+      </Button>
     </form>
   );
 }

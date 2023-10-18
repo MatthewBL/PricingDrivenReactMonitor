@@ -1,4 +1,3 @@
-import { AttributeFormData } from "../pages/Attributes";
 import { TableState } from "../reducers/tableReducer";
 import { Attribute, Attributes, Feature, Features } from "../types";
 

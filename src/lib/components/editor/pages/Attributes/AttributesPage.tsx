@@ -4,8 +4,7 @@ import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { AttributeForm } from "./AttributeForm";
-import { AttributesContext } from "../../context/AttributesProvider";
-import { AttributeFormErrors, Command, ERROR_MESSAGES } from ".";
+import { Command } from "./index";
 import { Pencil, Plus, Trash } from "../../components/Icons";
 import { EditorContext } from "../../context/EditorContextProvider";
 import "./AttributesPage.css";
@@ -27,51 +26,13 @@ export function AttributesPage() {
 
   const closeModal = () => setvisible(false);
 
-  const handleClick = (action: Command) => {
-    setCommand(action);
-    openModal();
-  };
-
   const addAttribute = (attribute: Attribute) => {
     setAttributes([...attributes, attribute]);
     closeModal();
   };
 
-  const handleValidation = (attribute: Attribute) => {
-    const errors: AttributeFormErrors = {};
-    const { id, defaultValue } = attribute;
-    const nameIsEmpty = id === "";
-    const defaultValueIsEmpty = defaultValue === "";
-
-    const attributeNameExistsWhenAddCommand =
-      command === "add" &&
-      attributes.filter((attribute) => attribute.id === id).length !== 0;
-
-    const attributeNameExistsWhenEditCommand =
-      command === "edit" &&
-      attributes.filter(
-        (attribute) => attribute.id !== attribute.id && attribute.id === id
-      ).length !== 0;
-
-    if (nameIsEmpty) {
-      errors.emptyName = ERROR_MESSAGES.EMPTY_NAME;
-    }
-
-    if (defaultValueIsEmpty) {
-      errors.emptyValue = ERROR_MESSAGES.EMPTY_VALUE;
-    }
-
-    if (
-      attributeNameExistsWhenAddCommand ||
-      attributeNameExistsWhenEditCommand
-    ) {
-      errors.duplicateId =
-        ERROR_MESSAGES.DUPLICATE_ATTRIBUTE.PREFIX +
-        `"${id}"` +
-        ERROR_MESSAGES.DUPLICATE_ATTRIBUTE.SUFFIX;
-    }
-    return errors;
-  };
+  const isAttributeDuplicatedWhenAdding = (name: string) =>
+    attributes.filter((attribute) => attribute.id === name).length !== 0;
 
   return (
     <article className="pp-content__main">
@@ -79,7 +40,10 @@ export function AttributesPage() {
         <h1>Plan's attributes</h1>
         <Button
           className="pp-content-header__btn"
-          onClick={() => handleClick("add")}
+          onClick={() => {
+            setCommand("add");
+            openModal();
+          }}
         >
           <Plus />
         </Button>
@@ -87,7 +51,7 @@ export function AttributesPage() {
           <AttributeForm
             initialData={emptyAttribute}
             onSubmit={addAttribute}
-            onValidation={handleValidation}
+            onValidation={isAttributeDuplicatedWhenAdding}
           />
           <Button className="pp-btn" onClick={closeModal}>
             Close
@@ -124,6 +88,7 @@ function AttributeList({
   setCommand,
 }: AttributeListProps) {
   const { attributes, setAttributes } = useContext(EditorContext);
+  const [position, setPosition] = useState(-1);
 
   const displayDefaulValueText = (defaultValue: string | number | boolean) => {
     switch (typeof defaultValue) {
@@ -136,26 +101,28 @@ function AttributeList({
     }
   };
 
-  const foo = () => console.log("foo");
+  const duplicatedAttributeWhenEditing = (name: string) =>
+    attributes.filter(
+      (attribute, index) => index !== position && attribute.id === name
+    ).length !== 0;
 
-  const print = (attribute: Attribute): AttributeFormErrors => {
-    return { emptyName: "", emptyValue: "" };
+  const deleteAttribute = (name: string) => {
+    setAttributes(attributes.filter((attribute) => attribute.id != name));
+    setVisible(false);
   };
 
-  const deleteAttribute = (name: string) =>
-    setAttributes(attributes.filter((attribute) => attribute.id != name));
-
-  const updateAttribute = (newAttribute: Attribute) => {
+  const handleSubmit = (newAttribute: Attribute) => {
     setAttributes(
       attributes.map((attribute) =>
         attribute.id === newAttribute.id ? newAttribute : attribute
       )
     );
+    setVisible(false);
   };
 
   return (
     <>
-      {attributes.map((attribute) => (
+      {attributes.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
           <td className={`pp-table-type__${attribute.type}`}>
@@ -165,17 +132,20 @@ function AttributeList({
           <td className="pp-table-actions">
             <Button
               onClick={() => {
+                setPosition(index);
                 setVisible(true);
                 setCommand("edit");
               }}
             >
               <Pencil />
             </Button>
-            <Modal open={isModalVisible && command === "edit"}>
+            <Modal
+              open={isModalVisible && command === "edit" && position === index}
+            >
               <AttributeForm
                 initialData={attribute}
-                onSubmit={updateAttribute}
-                onValidation={print}
+                onSubmit={handleSubmit}
+                onValidation={duplicatedAttributeWhenEditing}
               />
               <Button className="pp-btn" onClick={() => setVisible(false)}>
                 Close
@@ -184,6 +154,7 @@ function AttributeList({
 
             <Button
               onClick={() => {
+                setPosition(index);
                 setVisible(true);
                 setCommand("delete");
               }}
@@ -191,8 +162,12 @@ function AttributeList({
               <Trash />
             </Button>
 
-            <Modal open={isModalVisible && command === "delete"}>
-              <h2>Do you want to delete this attribute?</h2>
+            <Modal
+              open={
+                isModalVisible && command === "delete" && position === index
+              }
+            >
+              <h2>Do you want to delete {attribute.id}?</h2>
               <Button className="pp-btn" onClick={() => setVisible(false)}>
                 NO
               </Button>
