@@ -50,6 +50,7 @@ export function TextEvaluationForm({
       rightOperand
     );
     onSubmit(attribute.id, expression);
+    setVisible(false);
   };
 
   return (
@@ -116,9 +117,7 @@ export function TextEvaluationForm({
         Close
       </Button>
 
-      <Button className="pp-btn" onClick={() => setVisible(false)}>
-        Save
-      </Button>
+      <Button className="pp-btn">Save</Button>
     </form>
   );
 }

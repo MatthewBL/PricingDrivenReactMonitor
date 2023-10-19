@@ -40,7 +40,9 @@ export function NumericEvaluationForm({
       form.operator as Operators,
       rightOperand
     );
+    console.log(expression);
     onSubmit(attribute.id, expression);
+    setVisible(false);
   };
 
   return (
@@ -75,7 +77,9 @@ export function NumericEvaluationForm({
         >
           <option value="">Choose an option</option>
           {numericAttributes.map((attribute) => (
-            <option value={attribute.id}>{attribute.id}</option>
+            <option key={attribute.id} value={attribute.id}>
+              {attribute.id}
+            </option>
           ))}
         </select>
       </div>
@@ -87,9 +91,7 @@ export function NumericEvaluationForm({
         Close
       </Button>
 
-      <Button className="pp-btn" onClick={() => setVisible(false)}>
-        Save
-      </Button>
+      <Button className="pp-btn">Save</Button>
     </form>
   );
 }
