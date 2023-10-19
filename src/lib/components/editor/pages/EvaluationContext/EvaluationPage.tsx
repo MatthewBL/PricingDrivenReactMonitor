@@ -59,12 +59,14 @@ function EvaluationList({
       })
     );
 
-  const deleteEvaluation = (name: string) =>
+  const deleteEvaluation = (name: string) => {
     setAttributes(
       attributes.map((attribute) =>
         attribute.id === name ? { ...attribute, expression: "" } : attribute
       )
     );
+    setVisible(false);
+  };
 
   return (
     <>
