@@ -8,9 +8,10 @@ import { Command } from "./index";
 import { TextEvaluationForm } from "./TextEvaluationForm";
 import { NumericEvaluationForm } from "./NumericEvaluationForm";
 import "./EvaluationPage.css";
+import { Attribute } from "../../types";
 
 export function EvaluationPage() {
-  const [visible, setvisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [command, setCommand] = useState("edit" as Command);
 
   return (
@@ -25,7 +26,7 @@ export function EvaluationPage() {
       >
         <EvaluationList
           isModalVisible={visible}
-          setVisible={setvisible}
+          setVisible={setVisible}
           command={command}
           setCommand={setCommand}
         />
@@ -50,6 +51,14 @@ function EvaluationList({
   const { attributes, setAttributes } = useContext(EditorContext);
   const [position, setPosition] = useState(-1);
 
+  const updateEvaluation = (name: string, expression: string) =>
+    setAttributes(
+      attributes.map((attribute) => {
+        const updatedAttribute: Attribute = { ...attribute, expression };
+        return attribute.id === name ? updatedAttribute : attribute;
+      })
+    );
+
   const deleteEvaluation = (name: string) =>
     setAttributes(
       attributes.map((attribute) =>
@@ -61,14 +70,14 @@ function EvaluationList({
     <>
       {attributes.map(
         (attribute, index) =>
-          attribute.type != "CONDITION" && (
+          attribute.type !== "CONDITION" && (
             <tr key={attribute.id}>
               <td>{attribute.id}</td>
               <td className={`pp-table-type__${attribute.type}`}>
                 {attribute.type}
               </td>
               <td className="expression">
-                {attribute.expression == "" ? "NOT EVALUATED" : "EVALUATED"}
+                {attribute.expression === "" ? "NOT EVALUATED" : "EVALUATED"}
               </td>
               <td className="pp-table-actions">
                 <Button
@@ -86,8 +95,20 @@ function EvaluationList({
                   }
                 >
                   <>
-                    {attribute.type == "TEXT" && <TextEvaluationForm />}
-                    {attribute.type == "NUMERIC" && <NumericEvaluationForm />}
+                    {attribute.type === "TEXT" && (
+                      <TextEvaluationForm
+                        attribute={attribute}
+                        onSubmit={updateEvaluation}
+                        setVisible={setVisible}
+                      />
+                    )}
+                    {attribute.type === "NUMERIC" && (
+                      <NumericEvaluationForm
+                        attribute={attribute}
+                        onSubmit={updateEvaluation}
+                        setVisible={setVisible}
+                      />
+                    )}
                   </>
                 </Modal>
 

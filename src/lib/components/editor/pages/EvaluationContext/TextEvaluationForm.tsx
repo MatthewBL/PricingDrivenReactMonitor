@@ -1,12 +1,26 @@
-import { FormEvent, useContext, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { Button } from "../../components/Button";
-import { Operators, computeEvaluation } from "./index";
-import { AttributesContext } from "../../context/AttributesProvider";
 import { UserContext } from "../../context/UserContextProvider";
+import { Operators, computeEvaluation } from "./index";
+import { Attribute } from "../../types";
 
-export function TextEvaluationForm() {
-  const { attributesState, dispatch } = useContext(AttributesContext);
-  const attribute = attributesState.data[attributesState.index];
+interface TextEvaluationFormProps {
+  attribute: Attribute;
+  onSubmit: (name: string, expression: string) => void;
+  setVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+export function TextEvaluationForm({
+  attribute,
+  onSubmit,
+  setVisible,
+}: TextEvaluationFormProps) {
   const [form, setForm] = useState({
     operator: "",
     userContextValue: "",
@@ -30,15 +44,12 @@ export function TextEvaluationForm() {
       ? `'${form.customValue}'`
       : `userContext['${form.userContextValue}']`;
 
-    const evaluation = computeEvaluation(
+    const expression = computeEvaluation(
       leftOperand,
       form.operator as Operators,
       rightOperand
     );
-    dispatch({
-      type: "update_item",
-      payload: { ...attribute, expression: evaluation },
-    });
+    onSubmit(attribute.id, expression);
   };
 
   return (
@@ -97,10 +108,17 @@ export function TextEvaluationForm() {
           />
         )}
       </div>
-      <Button className="pp-btn">Save</Button>
-      <div>
-        <p>{JSON.stringify(form, null, 2)}</p>
-      </div>
+      <Button
+        type="button"
+        className="pp-btn"
+        onClick={() => setVisible(false)}
+      >
+        Close
+      </Button>
+
+      <Button className="pp-btn" onClick={() => setVisible(false)}>
+        Save
+      </Button>
     </form>
   );
 }

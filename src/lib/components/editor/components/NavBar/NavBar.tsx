@@ -12,7 +12,7 @@ interface NavBarProps {
 }
 
 export function NavBar({ hidden, onSave }: NavBarProps) {
-  const { returnTo } = useContext(EditorContext);
+  const { attributes, plans, returnTo } = useContext(EditorContext);
 
   const computeNavLinkStatus = ({
     isActive,
@@ -62,7 +62,7 @@ export function NavBar({ hidden, onSave }: NavBarProps) {
           </NavLink>
         </li>
       </ul>
-      <Button className="pp-btn" onClick={() => onSave({} as PricingContext)}>
+      <Button className="pp-btn" onClick={() => console.log(attributes, plans)}>
         Save
       </Button>
     </nav>

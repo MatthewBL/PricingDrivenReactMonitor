@@ -1,14 +1,28 @@
-import { FormEvent, useContext, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { Button } from "../../components/Button";
-import { AttributesContext } from "../../context/AttributesProvider";
 import { UserContext } from "../../context/UserContextProvider";
 import { Operators, computeEvaluation } from "./index";
+import { Attribute } from "../../types";
 
-export function NumericEvaluationForm() {
-  const { attributesState, dispatch } = useContext(AttributesContext);
+interface NumericEvaluationFormProps {
+  attribute: Attribute;
+  onSubmit: (name: string, expression: string) => void;
+  setVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+export function NumericEvaluationForm({
+  attribute,
+  onSubmit,
+  setVisible,
+}: NumericEvaluationFormProps) {
   const userContext = useContext(UserContext);
 
-  const attribute = attributesState.data[attributesState.index];
   const numericAttributes = userContext.state.data.filter(
     (attribute) => attribute.type == "NUMERIC"
   );
@@ -21,15 +35,12 @@ export function NumericEvaluationForm() {
     const leftOperand = `planContext['${attribute.id}']`;
     const rightOperand = `userContext['${form.valueToCompare}']`;
 
-    const evaluation = computeEvaluation(
+    const expression = computeEvaluation(
       leftOperand,
       form.operator as Operators,
       rightOperand
     );
-    dispatch({
-      type: "update_item",
-      payload: { ...attribute, expression: evaluation },
-    });
+    onSubmit(attribute.id, expression);
   };
 
   return (
@@ -68,8 +79,17 @@ export function NumericEvaluationForm() {
           ))}
         </select>
       </div>
+      <Button
+        type="button"
+        className="pp-btn"
+        onClick={() => setVisible(false)}
+      >
+        Close
+      </Button>
 
-      <Button className="pp-btn">Save</Button>
+      <Button className="pp-btn" onClick={() => setVisible(false)}>
+        Save
+      </Button>
     </form>
   );
 }
