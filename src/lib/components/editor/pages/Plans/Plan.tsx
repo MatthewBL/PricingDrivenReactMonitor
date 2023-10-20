@@ -31,7 +31,7 @@ export function Plan() {
         <Button onClick={() => navigate("..")}>
           <ArrowLeft />
         </Button>
-        <h1>{plan.name}</h1>
+        <h1>{isPlanIncluded ? plan.name : "New Plan"}</h1>
       </header>
       <form className="pp-form" onSubmit={handleSubmit}>
         <div className="pp-form__group">
