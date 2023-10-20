@@ -21,12 +21,9 @@ export function UserContextForm({
     e.preventDefault();
 
     const errorsExist = Object.keys(errors).length !== 0;
-    console.log("Errors exists:", errorsExist);
     if (errorsExist) {
-      console.log("[ERROR]", errors);
       return;
     }
-    console.log(">>> Submited attribute:", form);
 
     onSubmit(form);
   };

@@ -19,16 +19,11 @@ export interface PlanValue {
   };
 }
 
-export interface Features {
-  [key: string]: Feature;
-}
+export type Features = Feature[];
 
 export interface Feature {
-  description: string;
-  expression: string;
-  serverExpression?: string;
-  type: AttributeType;
-  defaultValue: string | number | boolean;
+  name: string;
+  value: string | number | boolean;
 }
 
 export interface Attribute {
@@ -46,4 +41,38 @@ export type Attributes = Attribute[];
 export interface UserContextAttribute {
   id: string;
   type: AttributeType;
+}
+
+export interface RawPricingContext {
+  features: RawFeatureAttributes;
+  plans: RawPlans;
+}
+
+export interface RawFeatureAttributes {
+  [key: string]: RawAttributes;
+}
+
+export interface RawAttributes {
+  description: string;
+  expression: string;
+  serverExpression?: string;
+  type: AttributeType;
+  defaultValue: string | number | boolean;
+}
+
+export interface RawPlans {
+  [key: string]: RawPlan;
+}
+
+export interface RawPlan {
+  description: string;
+  price: number;
+  currency: string;
+  features: RawFeatures;
+}
+
+export interface RawFeatures {
+  [key: string]: {
+    value: string | number | boolean;
+  };
 }

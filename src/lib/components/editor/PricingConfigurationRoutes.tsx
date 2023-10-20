@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet } from "react-router-dom";
-import { PricingContext } from "./types";
+import { RawPricingContext } from "./types";
 import { PricingPlansEditor } from "./PricingPlansEditor";
 import { AttributesPage } from "./pages/Attributes";
 import { UserContextPage } from "./pages/UserContext";
@@ -7,10 +7,10 @@ import { EvaluationPage } from "./pages/EvaluationContext";
 import { Plan, Plans } from "./pages/Plans";
 
 interface PricingConfigurationRoutesProps {
-  pricingContext: PricingContext;
+  pricingContext: RawPricingContext;
   returnTo: string;
   theme?: string;
-  onSave: (pricingContext: PricingContext) => void;
+  onSave: (pricingContext: RawPricingContext) => void;
 }
 
 export function PricingConfigurationRoutes({
@@ -58,7 +58,7 @@ export function PricingConfigurationRoutes({
         />
         <Route path="plans" element={<Outlet />}>
           <Route index element={<Plans />} />
-          <Route path=":plan" element={<Plan />}></Route>
+          <Route path=":planId" element={<Plan />}></Route>
         </Route>
         <Route path="evaluation" element={<EvaluationPage />} />
       </Route>

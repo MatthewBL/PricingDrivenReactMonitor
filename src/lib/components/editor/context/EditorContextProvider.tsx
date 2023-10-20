@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, createContext, useState } from "react";
-import { Attributes, Plans, PricingContext } from "../types";
-import { featuresToAttributes } from "../utils";
+import { Attributes, Plans, PricingContext, RawPricingContext } from "../types";
+import { rawFeatureAttributesToAttributes, rawPlansToPlans } from "../utils";
 
 interface EditorContextProps {
-  pricingContext: PricingContext;
-  setPricingContext: Dispatch<SetStateAction<PricingContext>>;
+  pricingContext: RawPricingContext;
+  setPricingContext: Dispatch<SetStateAction<RawPricingContext>>;
   attributes: Attributes;
   setAttributes: Dispatch<SetStateAction<Attributes>>;
   plans: Plans;
@@ -16,7 +16,7 @@ interface EditorContextProps {
 export const EditorContext = createContext<EditorContextProps>({
   theme: "blue",
   returnTo: "/",
-  pricingContext: {} as PricingContext,
+  pricingContext: {} as RawPricingContext,
   setPricingContext: () => null,
   attributes: [] as Attributes,
   setAttributes: () => null,
@@ -25,7 +25,7 @@ export const EditorContext = createContext<EditorContextProps>({
 });
 
 interface EditorContextProviderProps {
-  pricingContext: PricingContext;
+  pricingContext: RawPricingContext;
   theme?: string;
   returnTo?: string;
   children: JSX.Element | JSX.Element[];
@@ -40,10 +40,12 @@ export function EditorContextProvider({
   const editorTheme = theme ? theme : "blue";
   const retTo = returnTo ? returnTo : "/";
   const features = pricingContext.features
-    ? featuresToAttributes(pricingContext.features)
+    ? rawFeatureAttributesToAttributes(pricingContext.features)
     : [];
 
-  const initialPlans = pricingContext.plans ? pricingContext.plans : [];
+  const initialPlans = pricingContext.plans
+    ? rawPlansToPlans(pricingContext.plans)
+    : [];
   const [pricingState, setPricingState] = useState(pricingContext);
   const [attributes, setAttributes] = useState(features);
   const [plans, setPlans] = useState(initialPlans);

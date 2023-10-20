@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "../../components/DefaultValue";
 import { Button } from "../../components/Button";
+import { EditorContext } from "../../context/EditorContextProvider";
 
 interface AttributeFormProps {
   initialData: Attribute;
@@ -14,6 +15,7 @@ export function AttributeForm({
   onSubmit,
   onValidation,
 }: AttributeFormProps) {
+  const { plans, setPlans } = useContext(EditorContext);
   const [form, setForm] = useState(initialData);
   const [errors, setErrors] = useState({
     nameIsEmpty: false,
@@ -25,11 +27,24 @@ export function AttributeForm({
   const defaultValueIsEmpty = form.defaultValue === "";
   const hasErrors = Object.values(errors).some((errorMessage) => errorMessage);
   const duplicatedAttribute = onValidation(form.id);
+
+  const updatePlanAttributes = () => {
+    const updatedPlans = plans.map((plan) => {
+      const features = {
+        ...plan.features,
+        [form.id]: { value: form.defaultValue },
+      };
+      return { ...plan, features };
+    });
+    setPlans(updatedPlans);
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     if (!hasErrors) {
       onSubmit(form);
+      updatePlanAttributes();
     }
   };
 

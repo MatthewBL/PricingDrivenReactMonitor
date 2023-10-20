@@ -1,5 +1,11 @@
-import { TableState } from "../reducers/tableReducer";
-import { Attribute, Attributes, Feature, Features } from "../types";
+import {
+  Attribute,
+  Attributes,
+  Plan,
+  Plans,
+  RawFeatureAttributes,
+  RawPlans,
+} from "../types";
 
 export function isNumeric(value: any) {
   return typeof value === "number";
@@ -13,37 +19,32 @@ export function isText(value: any) {
   return typeof value === "string";
 }
 
-export function featuresToAttributesState(
-  features: Features
-): TableState<Attribute> {
-  return {
-    index: 0,
-    data: featuresToAttributes(features),
-  };
+export function rawFeatureAttributesToAttributes(
+  rawFeatureAttributes: RawFeatureAttributes
+): Attributes {
+  return Object.entries(rawFeatureAttributes).map(
+    ([attributeName, attributes]) => {
+      const attribute: Attribute = {
+        id: attributeName,
+        description: attributes.description,
+        expression: attributes.description,
+        type: attributes.type,
+        defaultValue: attributes.defaultValue,
+      };
+      return attribute;
+    }
+  );
 }
 
-export function featuresToAttributes(features: Features): Attributes {
-  return Object.entries(features).map(([id, feature]) => {
-    return {
-      id,
-      description: feature.description,
-      type: feature.type,
-      defaultValue: feature.defaultValue,
-      expression: feature.expression,
+export function rawPlansToPlans(rawPlans: RawPlans): Plans {
+  return Object.entries(rawPlans).map(([planName, attributes]) => {
+    const plan: Plan = {
+      name: planName,
+      description: attributes.description,
+      price: attributes.price,
+      currency: attributes.currency,
+      features: attributes.features,
     };
+    return plan;
   });
-}
-
-export function attributesToFeatures(attributes: Attributes): Features {
-  const entries = attributes.map((attribute) => {
-    const feature: Feature = {
-      description: attribute.description,
-      expression: attribute.expression,
-      type: attribute.type,
-      defaultValue: attribute.defaultValue,
-    };
-    return [attribute.id, feature];
-  });
-
-  return Object.fromEntries(entries);
 }

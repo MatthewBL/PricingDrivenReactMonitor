@@ -40,7 +40,6 @@ export function NumericEvaluationForm({
       form.operator as Operators,
       rightOperand
     );
-    console.log(expression);
     onSubmit(attribute.id, expression);
     setVisible(false);
   };

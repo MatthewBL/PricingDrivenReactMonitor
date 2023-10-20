@@ -1,20 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Plus } from "../../components/Icons";
-import { Button } from "../../components/Button";
-import { Modal } from "../../components/Modal";
-import { PlanForm } from "./PlanForm";
 import { Plan } from "../../types";
 import { EditorContext } from "../../context/EditorContextProvider";
 import "./Plans.css";
 
 export function Plans() {
   const { plans, setPlans } = useContext(EditorContext);
-  const [visible, setVisible] = useState(false);
 
   const addPlan = (newPlan: Plan) => {
     setPlans([...plans, newPlan]);
-    setVisible(false);
   };
 
   const deletePlan = (name: string) => {
@@ -25,36 +19,25 @@ export function Plans() {
     <article className="pp-content__main">
       <header className="pp-content-header">
         <h1>Plans</h1>
-        <Button
-          className="pp-content-header__btn"
-          onClick={() => setVisible(true)}
-        >
-          <Plus />
-        </Button>
       </header>
       {plans.map((plan) => (
-        <div key={plan.name} className="pp-plan-container">
-          <Link className="pp-link" to={plan.name}>
-            <PlanCard
-              name={plan.name}
-              description={plan.description}
-              price={plan.price}
-              currency={plan.currency}
-            />
-          </Link>
-          <div className="pp-card-actions">
-            <Button className="pp-btn" onClick={() => deletePlan(plan.name)}>
-              Delete
-            </Button>
-            <Button className="pp-btn" onClick={() => console.log("Edit")}>
-              Edit
-            </Button>
-          </div>
-        </div>
+        <Link
+          key={plan.name}
+          className="pp-link"
+          to={plan.name}
+          state={{ plan, addPlan, deletePlan }}
+        >
+          <PlanCard
+            name={plan.name}
+            description={plan.description}
+            price={plan.price}
+            currency={plan.currency}
+          />
+        </Link>
       ))}
-      <Modal open={visible}>
-        <PlanForm onSubmit={addPlan} onCancel={() => setVisible(false)} />
-      </Modal>
+      <Link className="pp-link" to="new">
+        Add plan
+      </Link>
     </article>
   );
 }
@@ -69,7 +52,7 @@ interface PlanCard {
 function PlanCard({ name, description, price, currency }: PlanCard) {
   return (
     <div className="pp-plan-card">
-      <h2>{name.toUpperCase()}</h2>
+      <h2>{name}</h2>
       <p>
         <span>Description:</span>
         {description}
