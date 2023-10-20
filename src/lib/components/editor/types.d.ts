@@ -10,13 +10,7 @@ export interface Plan {
   description: string;
   price: number;
   currency: string;
-  features: PlanValue;
-}
-
-export interface PlanValue {
-  [key: string]: {
-    value: string | number | boolean;
-  };
+  features: Features;
 }
 
 export type Features = Feature[];

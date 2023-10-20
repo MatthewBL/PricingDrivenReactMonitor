@@ -43,7 +43,12 @@ export function rawPlansToPlans(rawPlans: RawPlans): Plans {
       description: attributes.description,
       price: attributes.price,
       currency: attributes.currency,
-      features: attributes.features,
+      features: Object.entries(attributes.features).map(
+        ([featureName, values]) => ({
+          name: featureName,
+          value: values.value,
+        })
+      ),
     };
     return plan;
   });

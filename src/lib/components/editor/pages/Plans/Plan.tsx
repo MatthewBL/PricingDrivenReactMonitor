@@ -1,17 +1,24 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { EditorContext } from "../../context/EditorContextProvider";
-import { AttributeType, Features } from "../../types";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AttributeType, Plan } from "../../types";
 import { Button } from "../../components/Button";
+import { EditorContext } from "../../context/EditorContextProvider";
+import { ArrowLeft } from "../../components/Icons";
 
 export function Plan() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const [plan, setPlan] = useState(state.plan);
+  const { plans } = useContext(EditorContext);
+  const isPlanIncluded = state.index !== null;
+
+  const [plan, setPlan] = useState(
+    isPlanIncluded
+      ? plans[state.index]
+      : { name: "", description: "", price: "", currency: "" }
+  );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    state.addPlan();
     navigate("..");
   };
 
@@ -20,7 +27,12 @@ export function Plan() {
 
   return (
     <article className="pp-content__main">
-      <h1>{plan?.toUpperCase()}</h1>
+      <header className="pp-content-header">
+        <Button onClick={() => navigate("..")}>
+          <ArrowLeft />
+        </Button>
+        <h1>{plan.name}</h1>
+      </header>
       <form className="pp-form" onSubmit={handleSubmit}>
         <div className="pp-form__group">
           <label htmlFor="name" className="pp-form__label">
@@ -71,6 +83,7 @@ export function Plan() {
             onChange={handleChange}
           />
         </div>
+        {}
         <Button className="pp-btn">Save</Button>
       </form>
     </article>

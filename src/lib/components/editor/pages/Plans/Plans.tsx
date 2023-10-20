@@ -1,31 +1,26 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Plan } from "../../types";
 import { EditorContext } from "../../context/EditorContextProvider";
 import "./Plans.css";
+import { Plus } from "../../components/Icons";
 
 export function Plans() {
-  const { plans, setPlans } = useContext(EditorContext);
-
-  const addPlan = (newPlan: Plan) => {
-    setPlans([...plans, newPlan]);
-  };
-
-  const deletePlan = (name: string) => {
-    setPlans(plans.filter((plan) => plan.name != name));
-  };
+  const { plans } = useContext(EditorContext);
 
   return (
     <article className="pp-content__main">
       <header className="pp-content-header">
         <h1>Plans</h1>
+        <Link className="pp-link" to="new" state={{ index: null }}>
+          <Plus />
+        </Link>
       </header>
-      {plans.map((plan) => (
+      {plans.map((plan, index) => (
         <Link
           key={plan.name}
           className="pp-link"
           to={plan.name}
-          state={{ plan, addPlan, deletePlan }}
+          state={{ index }}
         >
           <PlanCard
             name={plan.name}
@@ -35,9 +30,6 @@ export function Plans() {
           />
         </Link>
       ))}
-      <Link className="pp-link" to="new">
-        Add plan
-      </Link>
     </article>
   );
 }
