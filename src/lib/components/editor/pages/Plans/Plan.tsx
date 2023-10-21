@@ -1,20 +1,59 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AttributeType, Plan } from "../../types";
 import { Button } from "../../components/Button";
 import { EditorContext } from "../../context/EditorContextProvider";
 import { ArrowLeft } from "../../components/Icons";
+import { computeType } from "../../utils";
+
+interface PlanLocation {
+  plan: Plan;
+}
+
+interface FeatureState {
+  name: string;
+  type: AttributeType;
+  value: string | number | boolean;
+}
 
 export function Plan() {
-  const { state } = useLocation();
+  const location = useLocation();
+  const state = location.state as PlanLocation;
   const navigate = useNavigate();
-  const { plans } = useContext(EditorContext);
-  const isPlanIncluded = state.index !== null;
+  const { attributes } = useContext(EditorContext);
+  const isPlanIncluded = state.plan !== null;
 
-  const [plan, setPlan] = useState(
-    isPlanIncluded
-      ? plans[state.index]
-      : { name: "", description: "", price: "", currency: "" }
+  const emptyPlan = {
+    name: "",
+    description: "",
+    price: 0,
+    currency: "",
+  };
+
+  const defaultFeatures: FeatureState[] = attributes.map((attribute) => ({
+    name: attribute.id,
+    type: computeType(attribute.defaultValue),
+    value: attribute.defaultValue,
+  }));
+
+  const existingFeatureValues: FeatureState[] = Object.entries(
+    state.plan.features
+  ).map(([attributeName, values]) => ({
+    name: attributeName,
+    type: computeType(values.value),
+    value: values.value,
+  }));
+
+  const [plan, setPlan] = useState(isPlanIncluded ? state.plan : emptyPlan);
+  const [features, setFeatures] = useState<FeatureState[]>(
+    isPlanIncluded ? existingFeatureValues : defaultFeatures
   );
 
   const handleSubmit = (e: FormEvent) => {
@@ -83,20 +122,86 @@ export function Plan() {
             onChange={handleChange}
           />
         </div>
-        {}
+        <FeatureList features={features} setFeatures={setFeatures} />
         <Button className="pp-btn">Save</Button>
       </form>
     </article>
   );
 }
 
-function computeInputType(type: AttributeType) {
-  switch (type) {
-    case "CONDITION":
-      return "checkbox";
-    case "NUMERIC":
-      return "number";
-    case "TEXT":
-      return "text";
-  }
+interface FeatureListProps {
+  features: FeatureState[];
+  setFeatures: Dispatch<SetStateAction<FeatureState[]>>;
+}
+
+function FeatureList({ features, setFeatures }: FeatureListProps) {
+  const handleTextChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setFeatures(
+      features.map((feature) => ({ ...feature, value: e.target.value }))
+    );
+
+  const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setFeatures(
+      features.map((feature) => ({ ...feature, value: Number(e.target.value) }))
+    );
+
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.checked);
+    setFeatures(
+      features.map((feature) => ({ ...feature, value: e.target.checked }))
+    );
+  };
+
+  return (
+    <>
+      {features.map((feature) => {
+        switch (feature.type) {
+          case "TEXT": {
+            return (
+              <div key={feature.name} className="pp-form__group">
+                <label className="pp-form__label">{feature.name}</label>
+                <input
+                  className="pp-form__field"
+                  type="text"
+                  id={feature.name}
+                  name={feature.name}
+                  value={feature.value.toString()}
+                  onChange={handleTextChange}
+                />
+              </div>
+            );
+          }
+          case "NUMERIC": {
+            return (
+              <div key={feature.name} className="pp-form__group">
+                <label className="pp-form__label">{feature.name}</label>
+                <input
+                  className="pp-form__field"
+                  type="number"
+                  id={feature.name}
+                  name={feature.name}
+                  value={feature.value.toString()}
+                  onChange={handleNumberChange}
+                />
+              </div>
+            );
+          }
+          case "CONDITION": {
+            return (
+              <div key={feature.name}>
+                <label>{feature.name}</label>
+                <input
+                  type="checkbox"
+                  id={feature.name}
+                  name={feature.name}
+                  checked={feature.value as boolean}
+                  onChange={handleCheckboxChange}
+                />
+              </div>
+            );
+          }
+        }
+      })}
+    </>
+  );
 }

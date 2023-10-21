@@ -13,11 +13,10 @@ export interface Plan {
   features: Features;
 }
 
-export type Features = Feature[];
-
-export interface Feature {
-  name: string;
-  value: string | number | boolean;
+export interface Features {
+  [key: string]: {
+    value: string | number | boolean;
+  };
 }
 
 export interface Attribute {

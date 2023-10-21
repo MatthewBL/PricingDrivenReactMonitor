@@ -1,5 +1,6 @@
 import {
   Attribute,
+  AttributeType,
   Attributes,
   Plan,
   Plans,
@@ -7,16 +8,17 @@ import {
   RawPlans,
 } from "../types";
 
-export function isNumeric(value: any) {
-  return typeof value === "number";
-}
-
-export function isCondition(value: any) {
-  return typeof value === "boolean" || value === "true" || value === "false";
-}
-
-export function isText(value: any) {
-  return typeof value === "string";
+export function computeType(value: any): AttributeType {
+  switch (typeof value) {
+    case "string":
+      return "TEXT";
+    case "number":
+      return "NUMERIC";
+    case "boolean":
+      return "CONDITION";
+    default:
+      return "TEXT";
+  }
 }
 
 export function rawFeatureAttributesToAttributes(
@@ -43,12 +45,7 @@ export function rawPlansToPlans(rawPlans: RawPlans): Plans {
       description: attributes.description,
       price: attributes.price,
       currency: attributes.currency,
-      features: Object.entries(attributes.features).map(
-        ([featureName, values]) => ({
-          name: featureName,
-          value: values.value,
-        })
-      ),
+      features: attributes.features,
     };
     return plan;
   });
