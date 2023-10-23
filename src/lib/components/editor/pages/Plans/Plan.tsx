@@ -1,6 +1,13 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AttributeType, Plan } from "../../types";
+import { AttributeType, Features, Plan, Plans } from "../../types";
 import { Button } from "../../components/Button";
 import { EditorContext } from "../../context/EditorContextProvider";
 import { ArrowLeft } from "../../components/Icons";
@@ -10,14 +17,45 @@ interface PlanLocation {
   index: number;
 }
 
-export function Plan() {
-  const location = useLocation();
-  const state = location.state as PlanLocation;
-  const isPlanIncluded = state.index !== null;
+interface PlanState {
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+}
 
+interface FeatureState {
+  name: string;
+  type: AttributeType;
+  value: string | number | boolean;
+}
+
+function featureStateToFeatures(featureState: FeatureState[]): Features {
+  return Object.fromEntries(
+    featureState.map((state) => [state.name, { value: state.value }])
+  );
+}
+
+export function Plan() {
+  const { state } = useLocation();
+  const { index } = state as PlanLocation;
+  const isPlanIncluded = index !== null;
   const navigate = useNavigate();
 
-  const { plans } = useContext(EditorContext);
+  const computeInitialFeatures = (index: number | null) =>
+    index !== null
+      ? Object.entries(plans[index].features).map(
+          ([attributeName, values]) => ({
+            name: attributeName,
+            type: computeType(values.value),
+            value: values.value,
+          })
+        )
+      : attributes.map((attribute) => ({
+          name: attribute.id,
+          type: computeType(attribute.defaultValue),
+          value: attribute.defaultValue,
+        }));
 
   const calculateInitialPlanState = (index: number | null) =>
     index !== null
@@ -34,10 +72,43 @@ export function Plan() {
           currency: "",
         };
 
-  const [plan, setPlan] = useState(calculateInitialPlanState(state.index));
+  const { attributes, plans, setPlans } = useContext(EditorContext);
+  const [plan, setPlan] = useState<PlanState>(
+    calculateInitialPlanState(state.index)
+  );
+  const [features, setFeatures] = useState<FeatureState[]>(
+    computeInitialFeatures(index)
+  );
+
+  const addPlan = () => {
+    setPlans([
+      ...plans,
+      { ...plan, features: featureStateToFeatures(features) },
+    ]);
+  };
+
+  const editPlan = (planPosition: number) => {
+    const newPlans: Plans = plans.map((oldPlan, index) =>
+      index === planPosition
+        ? { ...plan, features: featureStateToFeatures(features) }
+        : oldPlan
+    );
+    console.log(newPlans);
+    setPlans(newPlans);
+  };
+
+  const deletePlan = () => {
+    setPlans(plans.filter((_, index) => index !== state.index));
+    navigate("..");
+  };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (isPlanIncluded) {
+      editPlan(index);
+    } else {
+      addPlan();
+    }
     navigate("..");
   };
 
@@ -50,7 +121,7 @@ export function Plan() {
         <Button onClick={() => navigate("..")}>
           <ArrowLeft />
         </Button>
-        <h1>{isPlanIncluded ? plan.name : "New Plan"}</h1>
+        <h1>{isPlanIncluded ? plans[index].name : "New Plan"}</h1>
       </header>
       <form className="pp-form" onSubmit={handleSubmit}>
         <div className="pp-form__group">
@@ -102,45 +173,33 @@ export function Plan() {
             onChange={handleChange}
           />
         </div>
-        <FeatureList planIndex={state.index} />
-        <Button className="pp-btn">Save</Button>
+        <FeatureList features={features} setFeatures={setFeatures} />
+        <footer className="pp-plan-actions">
+          {isPlanIncluded && (
+            <Button
+              className="pp-btn"
+              style={{ backgroundColor: "red" }}
+              type="button"
+              onClick={deletePlan}
+            >
+              Delete plan
+            </Button>
+          )}
+          <Button className="pp-btn">
+            {isPlanIncluded ? "Save changes" : "Add plan"}
+          </Button>
+        </footer>
       </form>
     </article>
   );
 }
 
-interface FeatureState {
-  name: string;
-  type: AttributeType;
-  value: string | number | boolean;
-}
-
 interface FeatureListProps {
-  planIndex: number;
+  features: FeatureState[];
+  setFeatures: Dispatch<SetStateAction<FeatureState[]>>;
 }
 
-function FeatureList({ planIndex }: FeatureListProps) {
-  const { plans, attributes } = useContext(EditorContext);
-
-  const computeInitialFeatures = (index: number | null) =>
-    index !== null
-      ? Object.entries(plans[planIndex].features).map(
-          ([attributeName, values]) => ({
-            name: attributeName,
-            type: computeType(values.value),
-            value: values.value,
-          })
-        )
-      : attributes.map((attribute) => ({
-          name: attribute.id,
-          type: computeType(attribute.defaultValue),
-          value: attribute.defaultValue,
-        }));
-
-  const [features, setFeatures] = useState<FeatureState[]>(
-    computeInitialFeatures(planIndex)
-  );
-
+function FeatureList({ features, setFeatures }: FeatureListProps) {
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) =>
     setFeatures(
       features.map((feature) =>
