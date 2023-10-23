@@ -87,7 +87,8 @@ function AttributeList({
   command,
   setCommand,
 }: AttributeListProps) {
-  const { attributes, setAttributes } = useContext(EditorContext);
+  const { attributes, setAttributes, plans, setPlans } =
+    useContext(EditorContext);
   const [position, setPosition] = useState(-1);
 
   const displayDefaulValueText = (defaultValue: string | number | boolean) => {
@@ -108,6 +109,7 @@ function AttributeList({
 
   const deleteAttribute = (name: string) => {
     setAttributes(attributes.filter((attribute) => attribute.id != name));
+    setPlans(plans.filter((plan) => plan.features));
     setVisible(false);
   };
 
