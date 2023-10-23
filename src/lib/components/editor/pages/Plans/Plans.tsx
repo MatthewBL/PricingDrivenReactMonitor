@@ -14,18 +14,18 @@ export function Plans() {
         <Link
           className="pp-content-header__btn"
           to="new"
-          state={{ plan: null }}
+          state={{ index: null }}
         >
           <Plus />
         </Link>
       </header>
       <ul className="pp-plan-items">
-        {plans.map((plan) => (
+        {plans.map((plan, index) => (
           <li key={plan.name}>
             <Link
               className="pp-plan-item pp-plan-card"
               to={plan.name}
-              state={{ plan }}
+              state={{ index }}
             >
               <div>
                 <h2>{plan.name}</h2>

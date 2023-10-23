@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AttributeType, Plan } from "../../types";
 import { Button } from "../../components/Button";
@@ -14,47 +7,34 @@ import { ArrowLeft } from "../../components/Icons";
 import { computeType } from "../../utils";
 
 interface PlanLocation {
-  plan: Plan;
-}
-
-interface FeatureState {
-  name: string;
-  type: AttributeType;
-  value: string | number | boolean;
+  index: number;
 }
 
 export function Plan() {
   const location = useLocation();
   const state = location.state as PlanLocation;
+  const isPlanIncluded = state.index !== null;
+
   const navigate = useNavigate();
-  const { attributes } = useContext(EditorContext);
-  const isPlanIncluded = state.plan !== null;
 
-  const emptyPlan = {
-    name: "",
-    description: "",
-    price: 0,
-    currency: "",
-  };
+  const { plans } = useContext(EditorContext);
 
-  const defaultFeatures: FeatureState[] = attributes.map((attribute) => ({
-    name: attribute.id,
-    type: computeType(attribute.defaultValue),
-    value: attribute.defaultValue,
-  }));
+  const calculateInitialPlanState = (index: number | null) =>
+    index !== null
+      ? {
+          name: plans[state.index].name,
+          description: plans[state.index].description,
+          price: plans[state.index].price,
+          currency: plans[state.index].currency,
+        }
+      : {
+          name: "",
+          description: "",
+          price: 0,
+          currency: "",
+        };
 
-  const existingFeatureValues: FeatureState[] = Object.entries(
-    state.plan.features
-  ).map(([attributeName, values]) => ({
-    name: attributeName,
-    type: computeType(values.value),
-    value: values.value,
-  }));
-
-  const [plan, setPlan] = useState(isPlanIncluded ? state.plan : emptyPlan);
-  const [features, setFeatures] = useState<FeatureState[]>(
-    isPlanIncluded ? existingFeatureValues : defaultFeatures
-  );
+  const [plan, setPlan] = useState(calculateInitialPlanState(state.index));
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -122,33 +102,70 @@ export function Plan() {
             onChange={handleChange}
           />
         </div>
-        <FeatureList features={features} setFeatures={setFeatures} />
+        <FeatureList planIndex={state.index} />
         <Button className="pp-btn">Save</Button>
       </form>
     </article>
   );
 }
 
-interface FeatureListProps {
-  features: FeatureState[];
-  setFeatures: Dispatch<SetStateAction<FeatureState[]>>;
+interface FeatureState {
+  name: string;
+  type: AttributeType;
+  value: string | number | boolean;
 }
 
-function FeatureList({ features, setFeatures }: FeatureListProps) {
+interface FeatureListProps {
+  planIndex: number;
+}
+
+function FeatureList({ planIndex }: FeatureListProps) {
+  const { plans, attributes } = useContext(EditorContext);
+
+  const computeInitialFeatures = (index: number | null) =>
+    index !== null
+      ? Object.entries(plans[planIndex].features).map(
+          ([attributeName, values]) => ({
+            name: attributeName,
+            type: computeType(values.value),
+            value: values.value,
+          })
+        )
+      : attributes.map((attribute) => ({
+          name: attribute.id,
+          type: computeType(attribute.defaultValue),
+          value: attribute.defaultValue,
+        }));
+
+  const [features, setFeatures] = useState<FeatureState[]>(
+    computeInitialFeatures(planIndex)
+  );
+
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) =>
     setFeatures(
-      features.map((feature) => ({ ...feature, value: e.target.value }))
+      features.map((feature) =>
+        feature.name === e.target.name
+          ? { ...feature, value: e.target.value }
+          : feature
+      )
     );
 
   const handleNumberChange = (e: ChangeEvent<HTMLInputElement>) =>
     setFeatures(
-      features.map((feature) => ({ ...feature, value: Number(e.target.value) }))
+      features.map((feature) =>
+        feature.name === e.target.name
+          ? { ...feature, value: e.currentTarget.valueAsNumber }
+          : feature
+      )
     );
-
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.checked);
     setFeatures(
-      features.map((feature) => ({ ...feature, value: e.target.checked }))
+      features.map((feature) =>
+        feature.name === e.target.name
+          ? { ...feature, value: e.target.checked }
+          : feature
+      )
     );
   };
 
