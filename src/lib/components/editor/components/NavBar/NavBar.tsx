@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { EditorContext } from "../../context/EditorContextProvider";
 import { Button } from "../Button";
-import { PricingContext, RawPricingContext } from "../../types";
+import { RawPricingContext } from "../../types";
 import logo from "../../assets/logo-200x100.png";
 import "./NavBar.css";
 

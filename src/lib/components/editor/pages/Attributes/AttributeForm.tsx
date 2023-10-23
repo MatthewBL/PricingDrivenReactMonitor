@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Attribute, AttributeType } from "../../types";
-import { DefaultValue } from "../../components/DefaultValue";
+import { DefaultValue } from "./DefaultValue";
 import { Button } from "../../components/Button";
 import { EditorContext } from "../../context/EditorContextProvider";
 
@@ -61,15 +61,6 @@ export function AttributeForm({
       type: e.target.value as AttributeType,
       defaultValue: "",
     });
-
-  const handleDefaultValueChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm({
-      ...form,
-      defaultValue: e.target.value,
-    });
-  };
 
   return (
     <form className="pp-form" onSubmit={handleSubmit}>
@@ -142,9 +133,8 @@ export function AttributeForm({
         <DefaultValue
           id="default"
           name="default"
-          type={form.type}
-          onChange={handleDefaultValueChange}
-          value={form.defaultValue.toString()}
+          form={form}
+          setForm={setForm}
         />
       </div>
       <Button

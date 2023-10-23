@@ -9,39 +9,20 @@ const root = ReactDOM.createRoot(
 );
 
 const features: RawFeatureAttributes = {
-  maxPets: {
-    description: "Max pets limit per user in the clinic",
-    expression: "planContext['maxPets'] > userContext['pets']",
+  allowGameSpectators: {
+    description: "Max games limit per user in the clinic",
+    expression: "planContext['allowGameSpectators']",
     serverExpression: "planContext['maxPets'] >= userContext['pets']",
-    type: "NUMERIC",
-    defaultValue: 2,
+    type: "CONDITION",
+    defaultValue: false,
   },
-  maxVisitsPerMonthAndPet: {
-    description: "Maximun number of visits per pets of an user",
-    expression:
-      "planContext['maxVisitsPerMonthAndPet'] > userContext['visitsPerMonth']",
+  maxGames: {
+    description: "Maximun games",
+    expression: "planContext['maxGames'] > userContext['games']",
     serverExpression:
       "planContext['maxVisitsPerMonthAndPet'] >= userContext['visitsPerMonth']",
     type: "NUMERIC",
     defaultValue: 5,
-  },
-  supportPriority: {
-    description: "Technical priority support",
-    expression: "planContext['supportPriority']",
-    type: "TEXT",
-    defaultValue: "LOW",
-  },
-  haveCalendar: {
-    description: "User has a calendar to keep track of visits and appointments",
-    expression: "planContext['haveCalendar']",
-    type: "CONDITION",
-    defaultValue: false,
-  },
-  havePetsDashboard: {
-    description: "User has a dashboard to manage their pets",
-    expression: "planContext['havePetsDashboard']",
-    type: "CONDITION",
-    defaultValue: false,
   },
 };
 
