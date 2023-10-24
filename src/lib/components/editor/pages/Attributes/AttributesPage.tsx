@@ -20,6 +20,7 @@ const emptyAttribute: Attribute = {
 export function AttributesPage() {
   const { plans, setPlans, attributes, setAttributes } =
     useContext(EditorContext);
+
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
 
@@ -46,7 +47,6 @@ export function AttributesPage() {
 
   const addAttribute = (attribute: Attribute) => {
     setAttributes([...attributes, attribute]);
-    addPlanAttributes(attribute);
     closeModal();
   };
 
