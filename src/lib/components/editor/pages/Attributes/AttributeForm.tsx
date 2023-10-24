@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { Attribute, AttributeType } from "../../types";
 import { DefaultValue } from "./DefaultValue";
 import { Button } from "../../components/Button";
-import { EditorContext } from "../../context/EditorContextProvider";
 
 interface AttributeFormProps {
   initialData: Attribute;
@@ -15,49 +14,37 @@ export function AttributeForm({
   onSubmit,
   onValidation,
 }: AttributeFormProps) {
-  const { plans, setPlans } = useContext(EditorContext);
-  const [form, setForm] = useState(initialData);
+  const [attribute, setAttribute] = useState(initialData);
   const [errors, setErrors] = useState({
     nameIsEmpty: false,
     defaultValueIsEmpty: false,
     duplicatedAttribute: false,
   });
 
-  const nameIsEmpty = form.id === "";
-  const defaultValueIsEmpty = form.defaultValue === "";
+  const nameIsEmpty = attribute.id === "";
+  const defaultValueIsEmpty = attribute.defaultValue === "";
   const hasErrors = Object.values(errors).some((errorMessage) => errorMessage);
-  const duplicatedAttribute = onValidation(form.id);
-
-  const updatePlanAttributes = () => {
-    const updatedPlans = plans.map((plan) => {
-      const features = {
-        ...plan.features,
-        [form.id]: { value: form.defaultValue },
-      };
-      return { ...plan, features };
-    });
-    setPlans(updatedPlans);
-  };
+  const duplicatedAttribute = onValidation(attribute.id);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
+    console.log(attribute);
+    console.log(hasErrors);
     if (!hasErrors) {
-      onSubmit(form);
-      updatePlanAttributes();
+      onSubmit(attribute);
     }
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, id: e.target.value });
+    setAttribute({ ...attribute, id: e.target.value });
   };
 
   const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, description: e.target.value });
+    setAttribute({ ...attribute, description: e.target.value });
 
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setForm({
-      ...form,
+    setAttribute({
+      ...attribute,
       type: e.target.value as AttributeType,
       defaultValue: "",
     });
@@ -75,7 +62,7 @@ export function AttributeForm({
               )}
               {errors.duplicatedAttribute && (
                 <span>
-                  Cannot add <strong>{form.id}</strong>. Attribute name is
+                  Cannot add <strong>{attribute.id}</strong>. Attribute name is
                   duplicated
                 </span>
               )}
@@ -88,7 +75,7 @@ export function AttributeForm({
           id="name"
           name="name"
           className="pp-form__field"
-          value={form.id}
+          value={attribute.id}
           onChange={handleNameChange}
         />
       </div>
@@ -100,7 +87,7 @@ export function AttributeForm({
           id="description"
           name="description"
           className="pp-form__field"
-          value={form.description}
+          value={attribute.description}
           onChange={handleDescriptionChange}
         />
       </div>
@@ -110,7 +97,7 @@ export function AttributeForm({
         <select
           id="type"
           name="type"
-          value={form.type}
+          value={attribute.type}
           onChange={handleTypeChange}
         >
           <option value="NUMERIC">NUMERIC</option>
@@ -133,8 +120,8 @@ export function AttributeForm({
         <DefaultValue
           id="default"
           name="default"
-          form={form}
-          setForm={setForm}
+          form={attribute}
+          setForm={setAttribute}
         />
       </div>
       <Button

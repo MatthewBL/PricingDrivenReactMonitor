@@ -34,11 +34,7 @@ export function Plan() {
   const { attributes, plans, setPlans } = useContext(EditorContext);
 
   const initialFeatures = isPlanIncluded
-    ? plans[index].features.map((feature) => ({
-        name: feature.name,
-        type: feature.type,
-        value: feature.value,
-      }))
+    ? plans[index].features
     : attributes.map((attribute) => ({
         name: attribute.id,
         type: computeType(attribute.defaultValue),

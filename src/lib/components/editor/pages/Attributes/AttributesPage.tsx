@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { Attribute } from "../../types";
+import { Attribute, Feature } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
@@ -18,7 +18,8 @@ const emptyAttribute: Attribute = {
 };
 
 export function AttributesPage() {
-  const { attributes, setAttributes } = useContext(EditorContext);
+  const { plans, setPlans, attributes, setAttributes } =
+    useContext(EditorContext);
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
 
@@ -26,8 +27,26 @@ export function AttributesPage() {
 
   const closeModal = () => setvisible(false);
 
+  const addPlanAttributes = (attribute: Attribute) => {
+    const updatedPlans = plans.map((plan) => {
+      return {
+        ...plan,
+        features: [
+          ...plan.features,
+          {
+            name: attribute.id,
+            type: attribute.type,
+            value: attribute.defaultValue,
+          },
+        ],
+      };
+    });
+    setPlans(updatedPlans);
+  };
+
   const addAttribute = (attribute: Attribute) => {
     setAttributes([...attributes, attribute]);
+    addPlanAttributes(attribute);
     closeModal();
   };
 
@@ -108,17 +127,62 @@ function AttributeList({
     ).length !== 0;
 
   const deleteAttribute = (name: string) => {
-    setAttributes(attributes.filter((attribute) => attribute.id != name));
-    setPlans(plans.filter((plan) => plan.features));
+    setAttributes(attributes.filter((attribute) => attribute.id !== name));
+    setPlans(
+      plans.map((plan) => {
+        const newFeatures = plan.features.filter(
+          (feature) => feature.name !== name
+        );
+        return { ...plan, features: newFeatures };
+      })
+    );
     setVisible(false);
   };
 
-  const handleSubmit = (newAttribute: Attribute) => {
-    setAttributes(
-      attributes.map((attribute) =>
-        attribute.id === newAttribute.id ? newAttribute : attribute
-      )
+  const computeNextFeature = (
+    previousFeature: Feature,
+    newFeature: Feature
+  ): Feature => {
+    if (
+      previousFeature.name !== newFeature.name &&
+      previousFeature.type === newFeature.type
+    ) {
+      return { ...previousFeature, name: newFeature.name };
+    }
+
+    if (previousFeature.type !== newFeature.type) {
+      return newFeature;
+    }
+    return previousFeature;
+  };
+
+  const editPlanAttributes = (attribute: Attribute) => {
+    const newFeature: Feature = {
+      name: attribute.id,
+      type: attribute.type,
+      value: attribute.defaultValue,
+    };
+    const updatedPlans = plans.map((plan) => {
+      const oldAttribute = attributes[position];
+      return {
+        ...plan,
+        features: plan.features.map((feature) =>
+          feature.name === oldAttribute.id
+            ? computeNextFeature(feature, newFeature)
+            : feature
+        ),
+      };
+    });
+    setPlans(updatedPlans);
+  };
+
+  const handleEditAttribute = (newAttribute: Attribute) => {
+    setAttributes((attributes) =>
+      attributes.map((previousAttribute, index) => {
+        return index === position ? newAttribute : previousAttribute;
+      })
     );
+    editPlanAttributes(newAttribute);
     setVisible(false);
   };
 
@@ -146,7 +210,7 @@ function AttributeList({
             >
               <AttributeForm
                 initialData={attribute}
-                onSubmit={handleSubmit}
+                onSubmit={handleEditAttribute}
                 onValidation={duplicatedAttributeWhenEditing}
               />
               <Button className="pp-btn" onClick={() => setVisible(false)}>
