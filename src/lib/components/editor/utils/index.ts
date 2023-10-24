@@ -2,9 +2,11 @@ import {
   Attribute,
   AttributeType,
   Attributes,
+  Features,
   Plan,
   Plans,
   RawFeatureAttributes,
+  RawFeatures,
   RawPlans,
 } from "../types";
 
@@ -45,8 +47,16 @@ export function rawPlansToPlans(rawPlans: RawPlans): Plans {
       description: attributes.description,
       price: attributes.price,
       currency: attributes.currency,
-      features: attributes.features,
+      features: rawFeaturesToFeatures(attributes.features),
     };
     return plan;
   });
+}
+
+function rawFeaturesToFeatures(features: RawFeatures): Features {
+  return Object.entries(features).map(([featureName, attributes]) => ({
+    name: featureName,
+    type: computeType(attributes.value),
+    value: attributes.value,
+  }));
 }

@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AttributeType, Features, Plan, Plans } from "../../types";
+import { Features, Plan, Plans } from "../../types";
 import { Button } from "../../components/Button";
 import { EditorContext } from "../../context/EditorContextProvider";
 import { ArrowLeft } from "../../components/Icons";
@@ -24,82 +24,56 @@ interface PlanState {
   currency: string;
 }
 
-interface FeatureState {
-  name: string;
-  type: AttributeType;
-  value: string | number | boolean;
-}
-
-function featureStateToFeatures(featureState: FeatureState[]): Features {
-  return Object.fromEntries(
-    featureState.map((state) => [state.name, { value: state.value }])
-  );
-}
-
 export function Plan() {
   const { state } = useLocation();
   const { index } = state as PlanLocation;
   const isPlanIncluded = index !== null;
   const navigate = useNavigate();
-
-  const computeInitialFeatures = (index: number | null) =>
-    index !== null
-      ? Object.entries(plans[index].features).map(
-          ([attributeName, values]) => ({
-            name: attributeName,
-            type: computeType(values.value),
-            value: values.value,
-          })
-        )
-      : attributes.map((attribute) => ({
-          name: attribute.id,
-          type: computeType(attribute.defaultValue),
-          value: attribute.defaultValue,
-        }));
-
-  const calculateInitialPlanState = (index: number | null) =>
-    index !== null
-      ? {
-          name: plans[state.index].name,
-          description: plans[state.index].description,
-          price: plans[state.index].price,
-          currency: plans[state.index].currency,
-        }
-      : {
-          name: "",
-          description: "",
-          price: 0,
-          currency: "",
-        };
+  const goBack = () => navigate("..");
 
   const { attributes, plans, setPlans } = useContext(EditorContext);
-  const [plan, setPlan] = useState<PlanState>(
-    calculateInitialPlanState(state.index)
-  );
-  const [features, setFeatures] = useState<FeatureState[]>(
-    computeInitialFeatures(index)
-  );
 
-  const addPlan = () => {
-    setPlans([
-      ...plans,
-      { ...plan, features: featureStateToFeatures(features) },
-    ]);
-  };
+  const initialFeatures = isPlanIncluded
+    ? plans[index].features.map((feature) => ({
+        name: feature.name,
+        type: feature.type,
+        value: feature.value,
+      }))
+    : attributes.map((attribute) => ({
+        name: attribute.id,
+        type: computeType(attribute.defaultValue),
+        value: attribute.defaultValue,
+      }));
+
+  const initialPlan = isPlanIncluded
+    ? {
+        name: plans[state.index].name,
+        description: plans[state.index].description,
+        price: plans[state.index].price,
+        currency: plans[state.index].currency,
+      }
+    : {
+        name: "",
+        description: "",
+        price: 0,
+        currency: "",
+      };
+
+  const [plan, setPlan] = useState<PlanState>(initialPlan);
+  const [features, setFeatures] = useState<Features>(initialFeatures);
+
+  const addPlan = () => setPlans([...plans, { ...plan, features }]);
 
   const editPlan = (planPosition: number) => {
     const newPlans: Plans = plans.map((oldPlan, index) =>
-      index === planPosition
-        ? { ...plan, features: featureStateToFeatures(features) }
-        : oldPlan
+      index === planPosition ? { ...plan, features } : oldPlan
     );
-    console.log(newPlans);
     setPlans(newPlans);
   };
 
   const deletePlan = () => {
     setPlans(plans.filter((_, index) => index !== state.index));
-    navigate("..");
+    goBack();
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -109,7 +83,7 @@ export function Plan() {
     } else {
       addPlan();
     }
-    navigate("..");
+    goBack();
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
@@ -118,7 +92,7 @@ export function Plan() {
   return (
     <article className="pp-content__main">
       <header className="pp-content-header">
-        <Button onClick={() => navigate("..")}>
+        <Button onClick={goBack}>
           <ArrowLeft />
         </Button>
         <h1>{isPlanIncluded ? plans[index].name : "New Plan"}</h1>
@@ -195,8 +169,8 @@ export function Plan() {
 }
 
 interface FeatureListProps {
-  features: FeatureState[];
-  setFeatures: Dispatch<SetStateAction<FeatureState[]>>;
+  features: Features;
+  setFeatures: Dispatch<SetStateAction<Features>>;
 }
 
 function FeatureList({ features, setFeatures }: FeatureListProps) {
