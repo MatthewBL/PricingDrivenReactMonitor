@@ -47,6 +47,7 @@ export function AttributesPage() {
 
   const addAttribute = (attribute: Attribute) => {
     setAttributes([...attributes, attribute]);
+    addPlanAttributes(attribute);
     closeModal();
   };
 
