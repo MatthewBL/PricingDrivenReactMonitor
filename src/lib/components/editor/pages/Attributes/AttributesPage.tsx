@@ -18,7 +18,8 @@ const emptyAttribute: Attribute = {
 };
 
 export function AttributesPage() {
-  const { attributes, setAttributes } = useContext(EditorContext);
+  const { plans, setPlans, attributes, setAttributes } =
+    useContext(EditorContext);
   const [visible, setvisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
 
@@ -26,8 +27,26 @@ export function AttributesPage() {
 
   const closeModal = () => setvisible(false);
 
+  const updatePlanAttributes = (attribute: Attribute) => {
+    const updatedPlans = plans.map((plan) => {
+      return {
+        ...plan,
+        features: [
+          ...plan.features,
+          {
+            name: attribute.id,
+            type: attribute.type,
+            value: attribute.defaultValue,
+          },
+        ],
+      };
+    });
+    setPlans(updatedPlans);
+  };
+
   const addAttribute = (attribute: Attribute) => {
     setAttributes([...attributes, attribute]);
+    updatePlanAttributes(attribute);
     closeModal();
   };
 
@@ -108,8 +127,15 @@ function AttributeList({
     ).length !== 0;
 
   const deleteAttribute = (name: string) => {
-    setAttributes(attributes.filter((attribute) => attribute.id != name));
-    setPlans(plans.filter((plan) => plan.features));
+    setAttributes(attributes.filter((attribute) => attribute.id !== name));
+    setPlans(
+      plans.map((plan) => {
+        const newFeatures = plan.features.filter(
+          (feature) => feature.name !== name
+        );
+        return { ...plan, features: newFeatures };
+      })
+    );
     setVisible(false);
   };
 
