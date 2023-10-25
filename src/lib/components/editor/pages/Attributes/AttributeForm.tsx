@@ -28,8 +28,7 @@ export function AttributeForm({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(attribute);
-    console.log(hasErrors);
+
     if (!hasErrors) {
       onSubmit(attribute);
     }

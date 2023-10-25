@@ -5,9 +5,12 @@ import {
   Features,
   Plan,
   Plans,
+  RawAttributes,
   RawFeatureAttributes,
   RawFeatures,
+  RawPlan,
   RawPlans,
+  RawPricingContext,
 } from "../types";
 
 export function computeType(value: any): AttributeType {
@@ -21,6 +24,52 @@ export function computeType(value: any): AttributeType {
     default:
       return "TEXT";
   }
+}
+
+export function buildRawPricingContext(
+  attributes: Attributes,
+  plans: Plans
+): RawPricingContext {
+  return {
+    features: attributesToRawAttributes(attributes),
+    plans: plansToRawPlans(plans),
+  };
+}
+
+function attributesToRawAttributes(
+  attributes: Attributes
+): RawFeatureAttributes {
+  return Object.fromEntries(
+    attributes.map((attribute) => {
+      const rawAttributes: RawAttributes = {
+        description: attribute.description,
+        expression: attribute.expression,
+        type: attribute.type,
+        defaultValue: attribute.defaultValue,
+      };
+      return [attribute.id, rawAttributes];
+    })
+  );
+}
+
+function plansToRawPlans(plans: Plans): RawPlans {
+  return Object.fromEntries(
+    plans.map((plan) => {
+      const rawPlan: RawPlan = {
+        description: plan.description,
+        price: plan.price,
+        currency: plan.currency,
+        features: featuresToRawFeatures(plan.features),
+      };
+      return [plan.name, rawPlan];
+    })
+  );
+}
+
+function featuresToRawFeatures(features: Features): RawFeatures {
+  return Object.fromEntries(
+    features.map((feature) => [feature.name, { value: feature.value }])
+  );
 }
 
 export function rawFeatureAttributesToAttributes(
