@@ -7,8 +7,9 @@ import {
 } from "react";
 import { Button } from "../../components/Button";
 import { UserContext } from "../../context/UserContextProvider";
-import { Operators, computeEvaluation } from "./index";
-import { Attribute } from "../../types";
+import { computeEvaluation } from "./index";
+import { Attribute, Operators } from "../../types";
+import { parseExpression } from "../../utils";
 
 interface NumericEvaluationFormProps {
   attribute: Attribute;
@@ -22,12 +23,15 @@ export function NumericEvaluationForm({
   setVisible,
 }: NumericEvaluationFormProps) {
   const userContext = useContext(UserContext);
-
+  const expression = parseExpression(attribute.expression);
   const numericAttributes = userContext.state.data.filter(
     (attribute) => attribute.type == "NUMERIC"
   );
 
-  const [form, setForm] = useState({ operator: "", valueToCompare: "" });
+  const [form, setForm] = useState({
+    operator: expression.operator,
+    valueToCompare: expression.userContext,
+  });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -55,7 +59,9 @@ export function NumericEvaluationForm({
         <select
           id="operator"
           value={form.operator}
-          onChange={(e) => setForm({ ...form, operator: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, operator: e.target.value as Operators })
+          }
         >
           <option value="">DON'T EVALUATE</option>
           <option value="<">LOWER</option>

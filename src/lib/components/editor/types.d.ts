@@ -33,6 +33,45 @@ export type AttributeType = "NUMERIC" | "CONDITION" | "TEXT";
 
 export type Attributes = Attribute[];
 
+type Noop = "";
+type Lower = "<";
+type LowerEquals = "<=";
+type Equals = "==";
+type GreaterEquals = ">=";
+type Greater = ">";
+type Different = "!=";
+
+export type Operators =
+  | Noop
+  | Lower
+  | LowerEquals
+  | Equals
+  | GreaterEquals
+  | Greater
+  | Different;
+
+export type Tokens =
+  | NoopToken
+  | OperatorToken
+  | UserContextToken
+  | PlanContextToken
+  | CustomValueToken
+  | UnknownToken;
+
+export type NoopToken = "Noop";
+export type OperatorToken = "Operator";
+export type UserContextToken = "UserContext";
+export type PlanContextToken = "PlanContext";
+export type CustomValueToken = "CustomValue";
+export type UnknownToken = "Unknown";
+export type ParsedToken = { type: Tokens; value: string };
+export interface Expression {
+  operator: Operators;
+  planContext: string;
+  userContext?: string;
+  customValue?: string;
+}
+
 export interface UserContextAttribute {
   id: string;
   type: AttributeType;

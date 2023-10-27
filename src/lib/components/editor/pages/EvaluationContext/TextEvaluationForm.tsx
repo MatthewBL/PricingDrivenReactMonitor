@@ -7,8 +7,9 @@ import {
 } from "react";
 import { Button } from "../../components/Button";
 import { UserContext } from "../../context/UserContextProvider";
-import { Operators, computeEvaluation } from "./index";
-import { Attribute } from "../../types";
+import { computeEvaluation } from "./index";
+import { Attribute, Operators } from "../../types";
+import { parseExpression } from "../../utils";
 
 interface TextEvaluationFormProps {
   attribute: Attribute;
@@ -21,10 +22,12 @@ export function TextEvaluationForm({
   onSubmit,
   setVisible,
 }: TextEvaluationFormProps) {
+  const expression = parseExpression(attribute.expression);
+
   const [form, setForm] = useState({
-    operator: "",
-    userContextValue: "",
-    customValue: "",
+    operator: expression.operator,
+    userContextValue: expression.userContext,
+    customValue: expression.customValue,
   });
   const userContext = useContext(UserContext);
   const textAttributes = userContext.state.data.filter(
@@ -64,7 +67,9 @@ export function TextEvaluationForm({
         <select
           id="operator"
           value={form.operator}
-          onChange={(e) => setForm({ ...form, operator: e.target.value })}
+          onChange={(e) =>
+            setForm({ ...form, operator: e.target.value as Operators })
+          }
         >
           <option value="">DON'T EVALUATE</option>
           <option value="==">EQUALS</option>

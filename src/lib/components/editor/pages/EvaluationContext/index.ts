@@ -1,21 +1,6 @@
+import { Operators } from "../../types";
+
 export type Command = "edit" | "delete";
-
-type Noop = "";
-type Lower = "<";
-type LowerEquals = "<=";
-type Equals = "==";
-type GreaterEquals = ">=";
-type Greater = ">";
-type Different = "!=";
-
-export type Operators =
-  | Noop
-  | Lower
-  | LowerEquals
-  | Equals
-  | GreaterEquals
-  | Greater
-  | Different;
 
 export function computeEvaluation(
   leftOperand: string,

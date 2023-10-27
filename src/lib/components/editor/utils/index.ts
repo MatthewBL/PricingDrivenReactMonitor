@@ -2,7 +2,10 @@ import {
   Attribute,
   AttributeType,
   Attributes,
+  Expression,
   Features,
+  Operators,
+  ParsedToken,
   Plan,
   Plans,
   RawAttributes,
@@ -23,6 +26,69 @@ export function computeType(value: any): AttributeType {
       return "CONDITION";
     default:
       return "TEXT";
+  }
+}
+
+export function parseExpression(expression: string): Expression {
+  const tokens = expression
+    .trim()
+    .split(" ")
+    .map((token) => parseToken(token));
+
+  let res: Expression = { operator: "", planContext: "" };
+
+  tokens.map((token) => {
+    switch (token.type) {
+      case "PlanContext": {
+        res.planContext = token.value;
+        break;
+      }
+      case "UserContext": {
+        res.userContext = token.value;
+        break;
+      }
+      case "CustomValue": {
+        res.customValue = token.value;
+        break;
+      }
+      case "Operator":
+        res.operator = token.value as Operators;
+      case "Noop":
+      case "Unknown":
+        break;
+    }
+  });
+  return res;
+}
+
+function parseToken(token: string): ParsedToken {
+  const userContextRegex = /userContext\['(\w+)'\]/gm;
+  const planContextRegex = /planContext\['(\w+)'\]/gm;
+  const userContextMatch = Array.from(token.matchAll(userContextRegex));
+  const planContextMatch = Array.from(token.matchAll(planContextRegex));
+
+  if (token === "<") {
+    return { type: "Operator", value: "<" };
+  } else if (token === "<=") {
+    return { type: "Operator", value: "<=" };
+  } else if (token === "==") {
+    return { type: "Operator", value: "==" };
+  } else if (token === ">=") {
+    return { type: "Operator", value: ">=" };
+  } else if (token === ">") {
+    return { type: "Operator", value: ">" };
+  } else if (token === "!=") {
+    return { type: "Operator", value: "!=" };
+  } else if (token === "") {
+    return { type: "Noop", value: "" };
+  } else if (userContextMatch.length === 0 && planContextMatch.length > 0) {
+    return { type: "PlanContext", value: planContextMatch[0][1] };
+  } else if (userContextMatch.length > 0 && planContextMatch.length === 0) {
+    return { type: "UserContext", value: userContextMatch[0][1] };
+  } else if (userContextMatch.length === 0 && planContextMatch.length === 0) {
+    return { type: "CustomValue", value: token };
+  } else {
+    return { type: "Unknown", value: "" };
   }
 }
 
@@ -80,7 +146,7 @@ export function rawFeatureAttributesToAttributes(
       const attribute: Attribute = {
         id: attributeName,
         description: attributes.description,
-        expression: attributes.description,
+        expression: attributes.expression,
         type: attributes.type,
         defaultValue: attributes.defaultValue,
       };
