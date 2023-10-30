@@ -20,7 +20,7 @@ interface PlanLocation {
 interface PlanState {
   name: string;
   description: string;
-  price: number;
+  price: string;
   currency: string;
 }
 
@@ -45,24 +45,27 @@ export function Plan() {
     ? {
         name: plans[state.index].name,
         description: plans[state.index].description,
-        price: plans[state.index].price,
+        price: plans[state.index].price.toString(),
         currency: plans[state.index].currency,
       }
     : {
         name: "",
         description: "",
-        price: 0,
+        price: "",
         currency: "",
       };
 
   const [plan, setPlan] = useState<PlanState>(initialPlan);
   const [features, setFeatures] = useState<Features>(initialFeatures);
 
-  const addPlan = () => setPlans([...plans, { ...plan, features }]);
+  const addPlan = () =>
+    setPlans([...plans, { ...plan, price: Number(plan.price), features }]);
 
   const editPlan = (planPosition: number) => {
     const newPlans: Plans = plans.map((oldPlan, index) =>
-      index === planPosition ? { ...plan, features } : oldPlan
+      index === planPosition
+        ? { ...plan, price: Number(plan.price), features }
+        : oldPlan
     );
     setPlans(newPlans);
   };
