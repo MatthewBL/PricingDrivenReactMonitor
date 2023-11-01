@@ -6,10 +6,10 @@ import {
   useState,
 } from "react";
 import { Button } from "../../components/Button";
-import { UserContext } from "../../context/UserContextProvider";
 import { computeEvaluation } from "./index";
 import { Attribute, Operators } from "../../types";
 import { parseExpression } from "../../utils";
+import { EditorContext } from "../../context/EditorContextProvider";
 
 interface NumericEvaluationFormProps {
   attribute: Attribute;
@@ -22,9 +22,9 @@ export function NumericEvaluationForm({
   onSubmit,
   setVisible,
 }: NumericEvaluationFormProps) {
-  const userContext = useContext(UserContext);
+  const { userContextAttributes } = useContext(EditorContext);
   const expression = parseExpression(attribute.expression);
-  const numericAttributes = userContext.state.data.filter(
+  const numericAttributes = userContextAttributes.filter(
     (attribute) => attribute.type == "NUMERIC"
   );
 

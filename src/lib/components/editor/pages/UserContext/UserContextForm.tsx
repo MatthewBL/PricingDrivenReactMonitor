@@ -1,29 +1,20 @@
 import { useState } from "react";
 import { AttributeType, UserContextAttribute } from "../../types";
 import { Button } from "../../components/Button";
-import { UserContextFormErrors } from "./index";
 
 interface UserContextFormProps {
   initialData: UserContextAttribute;
-  onValidation: (attribute: UserContextAttribute) => UserContextFormErrors;
   onSubmit: (attribute: UserContextAttribute) => void;
 }
 
 export function UserContextForm({
   initialData,
   onSubmit,
-  onValidation,
 }: UserContextFormProps) {
   const [form, setForm] = useState(initialData);
-  const errors = onValidation(form);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const errorsExist = Object.keys(errors).length !== 0;
-    if (errorsExist) {
-      return;
-    }
 
     onSubmit(form);
   };
@@ -40,8 +31,6 @@ export function UserContextForm({
 
   return (
     <form className="pp-form" onSubmit={handleSubmit}>
-      {errors.emptyName && <small>{errors.emptyName}</small>}
-      {errors.duplicateId && <small>{errors.duplicateId}</small>}
       <label htmlFor="name">Name</label>
       <input
         id="name"

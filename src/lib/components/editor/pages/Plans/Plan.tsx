@@ -58,6 +58,11 @@ export function Plan() {
   const [plan, setPlan] = useState<PlanState>(initialPlan);
   const [features, setFeatures] = useState<Features>(initialFeatures);
 
+  const isPlanNameEmpty = plan.name === "";
+  const isPlanNameCompound = plan.name.trim().split(" ").length > 1;
+  const priceRegex = /^\d+.?\d{0,2}?$/;
+  const isValidPrice = priceRegex.test(plan.price);
+
   const addPlan = () =>
     setPlans([...plans, { ...plan, price: Number(plan.price), features }]);
 
@@ -98,6 +103,12 @@ export function Plan() {
       </header>
       <form className="pp-form" onSubmit={handleSubmit}>
         <div className="pp-form__group">
+          {isPlanNameEmpty && <small>Plan name is required</small>}
+          {isPlanNameCompound && (
+            <small>
+              Compound plan names are not allowed. Use only one word
+            </small>
+          )}
           <label htmlFor="name" className="pp-form__label">
             Plan name
           </label>
@@ -122,6 +133,11 @@ export function Plan() {
           />
         </div>
         <div className="pp-form__group">
+          {!isValidPrice && (
+            <small>
+              Invalid price. Plan has to be zero or positive and contain a dot
+            </small>
+          )}
           <label htmlFor="price" className="pp-form__label">
             Price
           </label>

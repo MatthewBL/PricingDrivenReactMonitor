@@ -6,10 +6,10 @@ import {
   useState,
 } from "react";
 import { Button } from "../../components/Button";
-import { UserContext } from "../../context/UserContextProvider";
 import { computeEvaluation } from "./index";
 import { Attribute, Operators } from "../../types";
 import { parseExpression } from "../../utils";
+import { EditorContext } from "../../context/EditorContextProvider";
 
 interface TextEvaluationFormProps {
   attribute: Attribute;
@@ -29,8 +29,8 @@ export function TextEvaluationForm({
     userContextValue: expression.userContext,
     customValue: expression.customValue,
   });
-  const userContext = useContext(UserContext);
-  const textAttributes = userContext.state.data.filter(
+  const { userContextAttributes } = useContext(EditorContext);
+  const textAttributes = userContextAttributes.filter(
     (attribute) => attribute.type === "TEXT"
   );
   const [custom, setCustom] = useState(false);

@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { UserContextAttribute } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { UserContextForm } from "./UserContextForm";
-import { UserContextFormErrors, Command, ERROR_MESSAGES } from "./index";
 import { Pencil, Plus, Trash } from "../../components/Icons";
-import { UserContext } from "../../context/UserContextProvider";
 import "./UserContextPage.css";
+import { EditorContext } from "../../context/EditorContextProvider";
+import { Command } from "../Attributes";
 
 interface UserContextPageProps {
   title: string;
@@ -15,110 +15,17 @@ interface UserContextPageProps {
 }
 
 export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
-  const { state, dispatch } = useContext(UserContext);
-  const [visible, setvisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [command, setCommand] = useState("add" as Command);
+  const [selected, setSelected] = useState<null | number>(null);
 
-  const openModal = () => setvisible(true);
+  const openModal = () => setVisible(true);
 
-  const closeModal = () => setvisible(false);
-
-  const handleClick = (action: Command) => {
-    setCommand(action);
+  const handleClickAdd = () => {
+    setCommand("add");
+    setSelected(null);
     openModal();
   };
-
-  const addAttribute = (attribute: UserContextAttribute) => {
-    dispatch({ type: "add_item", payload: attribute });
-    closeModal();
-  };
-
-  const updateAttribute = (newAttribute: UserContextAttribute) => {
-    dispatch({ type: "update_item", payload: newAttribute });
-    closeModal();
-  };
-
-  const deleteAttribute = () => {
-    dispatch({ type: "delete_item" });
-    closeModal();
-  };
-
-  const handleValidation = (attribute: UserContextAttribute) => {
-    const errors: UserContextFormErrors = {};
-    const { id } = attribute;
-    const nameIsEmpty = id === "";
-
-    const attributeNameExistsWhenAddCommand =
-      command === "add" &&
-      state.data.filter((attribute) => attribute.id === id).length !== 0;
-
-    const attributeNameExistsWhenEditCommand =
-      command === "edit" &&
-      state.data.filter(
-        (attribute, index) => index !== state.index && attribute.id === id
-      ).length !== 0;
-
-    if (nameIsEmpty) {
-      errors.emptyName = ERROR_MESSAGES.EMPTY_NAME;
-    }
-
-    if (
-      attributeNameExistsWhenAddCommand ||
-      attributeNameExistsWhenEditCommand
-    ) {
-      errors.duplicateId =
-        ERROR_MESSAGES.DUPLICATE_ATTRIBUTE.PREFIX +
-        `"${id}"` +
-        ERROR_MESSAGES.DUPLICATE_ATTRIBUTE.SUFFIX;
-    }
-    return errors;
-  };
-
-  function ModalContent() {
-    switch (command) {
-      case "add":
-        return (
-          <>
-            <UserContextForm
-              initialData={{
-                id: "",
-                type: "TEXT",
-              }}
-              onSubmit={addAttribute}
-              onValidation={handleValidation}
-            />
-            <Button className="pp-btn" onClick={closeModal}>
-              Close
-            </Button>
-          </>
-        );
-      case "edit":
-        return (
-          <>
-            <UserContextForm
-              initialData={state.data[state.index]}
-              onSubmit={updateAttribute}
-              onValidation={handleValidation}
-            />
-            <Button className="pp-btn" onClick={closeModal}>
-              Close
-            </Button>
-          </>
-        );
-      case "delete":
-        return (
-          <>
-            <h2>Do you want to delete this attribute?</h2>
-            <Button className="pp-btn" onClick={closeModal}>
-              NO
-            </Button>
-            <Button className="pp-btn" onClick={deleteAttribute}>
-              YES
-            </Button>
-          </>
-        );
-    }
-  }
 
   return (
     <article className="pp-content__main">
@@ -126,42 +33,139 @@ export function UserContextPage({ title, tableHeaders }: UserContextPageProps) {
         <h1>{title}</h1>
         <Button
           className="pp-content-header__btn"
-          onClick={() => handleClick("add")}
+          onClick={() => handleClickAdd()}
         >
           <Plus />
         </Button>
       </header>
 
       <Table className="pp-table" labels={tableHeaders}>
-        <AttributeList onClick={handleClick} />
+        <UserAttributeList
+          setCommand={setCommand}
+          setSelected={setSelected}
+          setVisible={setVisible}
+        />
       </Table>
       <Modal open={visible}>
-        <ModalContent />
+        <ModalContent
+          command={command}
+          userAtributePosition={selected}
+          setVisible={setVisible}
+        />
       </Modal>
     </article>
   );
 }
 
-interface AttributeListProps {
-  onClick: (action: Command) => void;
+interface ModalContentProps {
+  command: Command;
+  userAtributePosition: number | null;
+  setVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-function AttributeList({ onClick }: AttributeListProps) {
-  const { state, dispatch } = useContext(UserContext);
+function ModalContent({
+  command,
+  userAtributePosition,
+  setVisible,
+}: ModalContentProps) {
+  const { userContextAttributes, setUserContextAttributes } =
+    useContext(EditorContext);
+  const emptyUserAttribute: UserContextAttribute = {
+    id: "",
+    type: "TEXT",
+  };
+
+  const hasSelectedUserAttribute = userAtributePosition !== null;
+  const userContextNameRender = hasSelectedUserAttribute
+    ? userContextAttributes[userAtributePosition].id
+    : "";
+
+  const closeModal = () => setVisible(false);
+
+  const addUserAttribute = (attribute: UserContextAttribute) => {
+    setUserContextAttributes([...userContextAttributes, attribute]);
+    setVisible(false);
+  };
+
+  const updateUserAttribute = (newAttribute: UserContextAttribute) => {
+    const newUserContextAttributes = userContextAttributes.map(
+      (userAttribute, index) =>
+        index === userAtributePosition ? newAttribute : userAttribute
+    );
+    setUserContextAttributes(newUserContextAttributes);
+    closeModal();
+  };
+
+  const deleteAttribute = () => {
+    const newUserContextAttributes = userContextAttributes.filter(
+      (_, index) => index !== userAtributePosition
+    );
+    setUserContextAttributes(newUserContextAttributes);
+    closeModal();
+  };
+
+  switch (command) {
+    case "add":
+    case "edit":
+      return (
+        <>
+          <UserContextForm
+            initialData={
+              hasSelectedUserAttribute
+                ? userContextAttributes[userAtributePosition]
+                : emptyUserAttribute
+            }
+            onSubmit={
+              hasSelectedUserAttribute ? updateUserAttribute : addUserAttribute
+            }
+          />
+          <Button className="pp-btn" onClick={closeModal}>
+            Close
+          </Button>
+        </>
+      );
+    case "delete":
+      return (
+        <>
+          <h2>Do you want to delete {userContextNameRender}?</h2>
+          <Button className="pp-btn" onClick={closeModal}>
+            NO
+          </Button>
+          <Button className="pp-btn" onClick={deleteAttribute}>
+            YES
+          </Button>
+        </>
+      );
+  }
+}
+
+interface UserAttributeListProps {
+  setCommand: Dispatch<SetStateAction<Command>>;
+  setSelected: Dispatch<SetStateAction<null | number>>;
+  setVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+function UserAttributeList({
+  setCommand,
+  setSelected,
+  setVisible,
+}: UserAttributeListProps) {
+  const { userContextAttributes } = useContext(EditorContext);
 
   return (
     <>
-      {state.data.map((attribute, index) => (
+      {userContextAttributes.map((attribute, index) => (
         <tr key={attribute.id}>
           <td>{attribute.id}</td>
-          <td className={`pp-table-type__${attribute.type.toLowerCase()}`}>
+          <td className={`pp-table-type__${attribute.type}`}>
             {attribute.type}
           </td>
           <td className="pp-table-actions">
             <Button
               onClick={() => {
-                onClick("edit");
-                dispatch({ type: "select_item", index });
+                setCommand("edit");
+                setSelected(index);
+                setVisible(true);
               }}
             >
               <Pencil />
@@ -169,8 +173,9 @@ function AttributeList({ onClick }: AttributeListProps) {
 
             <Button
               onClick={() => {
-                onClick("delete");
-                dispatch({ type: "select_item", index });
+                setCommand("delete");
+                setSelected(index);
+                setVisible(true);
               }}
             >
               <Trash />

@@ -1,10 +1,17 @@
 import { Dispatch, SetStateAction, createContext, useState } from "react";
-import { Attributes, Plans, PricingContext, RawPricingContext } from "../types";
+import {
+  Attributes,
+  Plans,
+  RawPricingContext,
+  UserContextAttributes,
+} from "../types";
 import { rawFeatureAttributesToAttributes, rawPlansToPlans } from "../utils";
 
 interface EditorContextProps {
   attributes: Attributes;
   setAttributes: Dispatch<SetStateAction<Attributes>>;
+  userContextAttributes: UserContextAttributes;
+  setUserContextAttributes: Dispatch<SetStateAction<UserContextAttributes>>;
   plans: Plans;
   setPlans: Dispatch<SetStateAction<Plans>>;
   theme: string;
@@ -16,6 +23,8 @@ export const EditorContext = createContext<EditorContextProps>({
   returnTo: "/",
   attributes: [] as Attributes,
   setAttributes: () => null,
+  userContextAttributes: [] as UserContextAttributes,
+  setUserContextAttributes: () => null,
   plans: [] as Plans,
   setPlans: () => null,
 });
@@ -43,12 +52,17 @@ export function EditorContextProvider({
     ? rawPlansToPlans(pricingContext.plans)
     : [];
   const [attributes, setAttributes] = useState(features);
+  const [userContextAttributes, setUserContextAttributes] = useState(
+    [] as UserContextAttributes
+  );
   const [plans, setPlans] = useState(initialPlans);
   return (
     <EditorContext.Provider
       value={{
         attributes,
         setAttributes,
+        userContextAttributes,
+        setUserContextAttributes,
         plans,
         setPlans,
         theme: editorTheme,

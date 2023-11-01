@@ -41,6 +41,13 @@ type GreaterEquals = ">=";
 type Greater = ">";
 type Different = "!=";
 
+export type UserContextAttributes = UserContextAttribute[];
+
+export interface UserContextAttribute {
+  id: string;
+  type: AttributeType;
+}
+
 export type Operators =
   | Noop
   | Lower
@@ -65,16 +72,12 @@ export type PlanContextToken = "PlanContext";
 export type CustomValueToken = "CustomValue";
 export type UnknownToken = "Unknown";
 export type ParsedToken = { type: Tokens; value: string };
+
 export interface Expression {
   operator: Operators;
   planContext: string;
   userContext?: string;
   customValue?: string;
-}
-
-export interface UserContextAttribute {
-  id: string;
-  type: AttributeType;
 }
 
 export interface RawPricingContext {
