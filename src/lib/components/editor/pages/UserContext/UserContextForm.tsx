@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { AttributeType, UserContextAttribute } from "../../types";
 import { Button } from "../../components/Button";
 
@@ -11,21 +11,21 @@ export function UserContextForm({
   initialData,
   onSubmit,
 }: UserContextFormProps) {
-  const [form, setForm] = useState(initialData);
+  const [userAttribute, setUserAttribute] = useState(initialData);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    onSubmit(form);
+    onSubmit(userAttribute);
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, id: e.target.value });
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserAttribute({ ...userAttribute, id: e.target.value });
   };
 
-  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    setForm({
-      ...form,
+  const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) =>
+    setUserAttribute({
+      ...userAttribute,
       type: e.target.value as AttributeType,
     });
 
@@ -35,14 +35,14 @@ export function UserContextForm({
       <input
         id="name"
         name="name"
-        value={form.id}
+        value={userAttribute.id}
         onChange={handleNameChange}
       />
       <label htmlFor="type">Type</label>
       <select
         id="type"
         name="type"
-        value={form.type}
+        value={userAttribute.type}
         onChange={handleTypeChange}
       >
         <option value="NUMERIC">NUMERIC</option>

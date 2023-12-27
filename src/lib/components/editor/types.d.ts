@@ -40,6 +40,9 @@ type Equals = "==";
 type GreaterEquals = ">=";
 type Greater = ">";
 type Different = "!=";
+type And = "&&";
+type Or = "||";
+type None = "None";
 
 export type UserContextAttributes = UserContextAttribute[];
 
@@ -55,7 +58,10 @@ export type Operators =
   | Equals
   | GreaterEquals
   | Greater
-  | Different;
+  | Different
+  | And
+  | Or
+  | None;
 
 export type Tokens =
   | NoopToken

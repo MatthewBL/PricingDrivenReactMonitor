@@ -5,7 +5,6 @@ import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { UserContextForm } from "./UserContextForm";
 import { Pencil, Plus, Trash } from "../../components/Icons";
-import "./UserContextPage.css";
 import { EditorContext } from "../../context/EditorContextProvider";
 import { Command } from "../Attributes";
 

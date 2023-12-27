@@ -9,6 +9,7 @@ import { TextEvaluationForm } from "./TextEvaluationForm";
 import { NumericEvaluationForm } from "./NumericEvaluationForm";
 import "./EvaluationPage.css";
 import { Attribute } from "../../types";
+import { ConditionEvaluationForm } from "./ConditionEvaluationForm";
 
 export function EvaluationPage() {
   const [visible, setVisible] = useState(false);
@@ -70,82 +71,83 @@ function EvaluationList({
 
   return (
     <>
-      {attributes.map(
-        (attribute, index) =>
-          attribute.type !== "CONDITION" && (
-            <tr key={attribute.id}>
-              <td>{attribute.id}</td>
-              <td className={`pp-table-type__${attribute.type}`}>
-                {attribute.type}
-              </td>
-              <td className="expression">
-                {attribute.expression === "" ? "NOT EVALUATED" : "EVALUATED"}
-              </td>
-              <td className="pp-table-actions">
-                <Button
-                  onClick={() => {
-                    setCommand("edit");
-                    setVisible(true);
-                    setPosition(index);
-                  }}
-                >
-                  <Pencil />
-                </Button>
-                <Modal
-                  open={
-                    isModalVisible && command === "edit" && position === index
-                  }
-                >
-                  <>
-                    {attribute.type === "TEXT" && (
-                      <TextEvaluationForm
-                        attribute={attribute}
-                        onSubmit={updateEvaluation}
-                        setVisible={setVisible}
-                      />
-                    )}
-                    {attribute.type === "NUMERIC" && (
-                      <NumericEvaluationForm
-                        attribute={attribute}
-                        onSubmit={updateEvaluation}
-                        setVisible={setVisible}
-                      />
-                    )}
-                  </>
-                </Modal>
+      {attributes.map((attribute, index) => (
+        <tr key={attribute.id}>
+          <td>{attribute.id}</td>
+          <td className={`pp-table-type__${attribute.type}`}>
+            {attribute.type}
+          </td>
+          <td className="expression">
+            {attribute.expression === "" ? "NOT EVALUATED" : "EVALUATED"}
+          </td>
+          <td className="pp-table-actions">
+            <Button
+              onClick={() => {
+                setCommand("edit");
+                setVisible(true);
+                setPosition(index);
+              }}
+            >
+              <Pencil />
+            </Button>
+            <Modal
+              open={isModalVisible && command === "edit" && position === index}
+            >
+              <>
+                {attribute.type === "TEXT" && (
+                  <TextEvaluationForm
+                    attribute={attribute}
+                    onSubmit={updateEvaluation}
+                    setVisible={setVisible}
+                  />
+                )}
+                {attribute.type === "NUMERIC" && (
+                  <NumericEvaluationForm
+                    attribute={attribute}
+                    onSubmit={updateEvaluation}
+                    setVisible={setVisible}
+                  />
+                )}
+                {attribute.type === "CONDITION" && (
+                  <ConditionEvaluationForm
+                    attribute={attribute}
+                    onSubmit={updateEvaluation}
+                    setVisible={setVisible}
+                  />
+                )}
+              </>
+            </Modal>
 
-                <Button
-                  onClick={() => {
-                    setVisible(true);
-                    setCommand("delete");
-                    setPosition(index);
-                  }}
-                >
-                  <Trash />
-                </Button>
-                <Modal
-                  open={
-                    isModalVisible && command === "delete" && position === index
-                  }
-                >
-                  <h2>
-                    This action will stop evaluating {attribute.id}. Are you
-                    sure?
-                  </h2>
-                  <Button className="pp-btn" onClick={() => setVisible(false)}>
-                    NO
-                  </Button>
-                  <Button
-                    className="pp-btn"
-                    onClick={() => deleteEvaluation(attribute.id)}
-                  >
-                    YES
-                  </Button>
-                </Modal>
-              </td>
-            </tr>
-          )
-      )}
+            <Button
+              onClick={() => {
+                setVisible(true);
+                setCommand("delete");
+                setPosition(index);
+              }}
+            >
+              <Trash />
+            </Button>
+            <Modal
+              open={
+                isModalVisible && command === "delete" && position === index
+              }
+            >
+              <h2>
+                This action will stop evaluating {attribute.id}. Are you sure?
+              </h2>
+              <Button className="pp-btn" onClick={() => setVisible(false)}>
+                NO
+              </Button>
+              <Button
+                className="pp-btn"
+                onClick={() => deleteEvaluation(attribute.id)}
+              >
+                YES
+              </Button>
+            </Modal>
+          </td>
+        </tr>
+      ))}
     </>
   );
 }

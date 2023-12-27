@@ -14,6 +14,7 @@ import {
   RawPlan,
   RawPlans,
   RawPricingContext,
+  UserContextAttributes,
 } from "../types";
 
 export function computeType(value: any): AttributeType {
@@ -27,6 +28,16 @@ export function computeType(value: any): AttributeType {
     default:
       return "TEXT";
   }
+}
+
+export function parseAttributeExpressionToUserAttributes(
+  attributes: Attributes
+): UserContextAttributes {
+  return attributes.map((attribute) => {
+    const expression = parseExpression(attribute.expression);
+
+    return { type: attribute.type, id: expression.userContext ?? "" };
+  });
 }
 
 export function parseExpression(expression: string): Expression {
@@ -79,6 +90,12 @@ function parseToken(token: string): ParsedToken {
     return { type: "Operator", value: ">" };
   } else if (token === "!=") {
     return { type: "Operator", value: "!=" };
+  } else if (token === "&&") {
+    return { type: "Operator", value: "&&" };
+  } else if (token === "||") {
+    return { type: "Operator", value: "||" };
+  } else if (token === "None") {
+    return { type: "Operator", value: "None" };
   } else if (token === "") {
     return { type: "Noop", value: "" };
   } else if (userContextMatch.length === 0 && planContextMatch.length > 0) {

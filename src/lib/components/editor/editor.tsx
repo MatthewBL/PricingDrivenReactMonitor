@@ -4,10 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { PricingConfigurationRoutes } from "./PricingConfigurationRoutes";
 import { RawFeatureAttributes, RawPlans, RawPricingContext } from "./types";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
 const features: RawFeatureAttributes = {
   allowGameSpectators: {
     description: "Max games limit per user in the clinic",
@@ -75,6 +71,10 @@ const pricingContext: RawPricingContext = {
 
 const onSave = (pricingContext: RawPricingContext) =>
   console.log(pricingContext);
+
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 
 root.render(
   <React.StrictMode>

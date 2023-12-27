@@ -16,7 +16,11 @@ export function computeEvaluation(
     case ">=":
     case ">":
     case "!=":
-      return leftOperand + ` ${operator} ` + rightOperand;
+    case "||":
+    case "&&":
+      return `${leftOperand} ${operator} ${rightOperand}`;
+    case "None":
+      return leftOperand;
   }
 }
 

@@ -5,7 +5,11 @@ import {
   RawPricingContext,
   UserContextAttributes,
 } from "../types";
-import { rawFeatureAttributesToAttributes, rawPlansToPlans } from "../utils";
+import {
+  parseAttributeExpressionToUserAttributes,
+  rawFeatureAttributesToAttributes,
+  rawPlansToPlans,
+} from "../utils";
 
 interface EditorContextProps {
   attributes: Attributes;
@@ -51,9 +55,13 @@ export function EditorContextProvider({
   const initialPlans = pricingContext.plans
     ? rawPlansToPlans(pricingContext.plans)
     : [];
+
+  const initialUserAttributes = parseAttributeExpressionToUserAttributes(
+    features
+  ).filter((userAttribute) => userAttribute.id !== "");
   const [attributes, setAttributes] = useState(features);
   const [userContextAttributes, setUserContextAttributes] = useState(
-    [] as UserContextAttributes
+    initialUserAttributes
   );
   const [plans, setPlans] = useState(initialPlans);
   return (
