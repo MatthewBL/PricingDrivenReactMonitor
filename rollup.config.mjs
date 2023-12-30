@@ -5,22 +5,25 @@ import copy from "rollup-plugin-copy";
 import commonjs from "@rollup/plugin-commonjs";
 import watchAssets from "rollup-plugin-watch-assets";
 import { dts } from "rollup-plugin-dts";
+import terser from "@rollup/plugin-terser";
 
 //Postcss Plugins
 import cssnano from "cssnano";
 
 export default [
   {
-    input: "src/lib/components/editor/index.ts",
+    input: "src/index.ts",
     output: {
       file: "dist/index.js",
       format: "esm",
+      sourcemap: "true",
     },
     plugins: [
       nodeResolve({ preferBuiltins: true }),
       commonjs(),
       typescript(),
-      postcss({ extract: true, plugins: [cssnano()] }),
+      terser(),
+      postcss({ plugins: [cssnano()] }),
       copy({
         targets: [
           { src: "src/lib/components/editor/assets/**/*", dest: "dist/assets" },
@@ -28,7 +31,15 @@ export default [
       }),
       watchAssets({ assets: ["src"] }),
     ],
-    external: ["react", "react-dom", "react-router-dom"],
+    external: [
+      "axios",
+      "buffer",
+      "long",
+      "protobufjs/minimal",
+      "react",
+      "react-dom",
+      "react-router-dom",
+    ],
   },
   {
     input: "src/lib/components/editor/types.d.ts",

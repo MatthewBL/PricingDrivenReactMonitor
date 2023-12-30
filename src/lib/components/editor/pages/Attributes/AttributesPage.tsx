@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { Attribute, Feature, Command } from "../../types";
+import { Attribute, Feat, Command } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
@@ -140,9 +140,9 @@ function AttributeList({
   };
 
   const computeNextFeature = (
-    previousFeature: Feature,
-    newFeature: Feature
-  ): Feature => {
+    previousFeature: Feat,
+    newFeature: Feat
+  ): Feat => {
     if (
       previousFeature.name !== newFeature.name &&
       previousFeature.type === newFeature.type
@@ -157,7 +157,7 @@ function AttributeList({
   };
 
   const editPlanAttributes = (attribute: Attribute) => {
-    const newFeature: Feature = {
+    const newFeature: Feat = {
       name: attribute.id,
       type: attribute.type,
       value: attribute.defaultValue,

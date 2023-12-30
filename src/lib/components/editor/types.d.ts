@@ -13,9 +13,9 @@ export interface Plan {
   features: Features;
 }
 
-export type Features = Feature[];
+export type Features = Feat[];
 
-export interface Feature {
+export interface Feat {
   name: string;
   type: AttributeType;
   value: string | number | boolean;

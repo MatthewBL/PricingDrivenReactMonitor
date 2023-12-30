@@ -1,14 +1,7 @@
-import {
-  Feature,
-  On,
-  Default,
-  Loading,
-  ErrorFallback,
-} from "./lib/components/feature/Feature";
-export { PricingConfigurationRoutes } from "./lib/components/editor";
-import useGenericFeature from "./lib/components/feature/useGenericFeature";
-import { feature } from "./lib/logic/model/Feature";
-import {
+export * from "./lib/components/editor";
+export { default } from "./lib/components/feature/useGenericFeature";
+export { feature } from "./lib/logic/model/Feature";
+export {
   and,
   or,
   iff,
@@ -21,10 +14,4 @@ export {
   Default,
   Loading,
   ErrorFallback,
-  feature,
-  useGenericFeature,
-  and,
-  or,
-  iff,
-  implies,
-};
+} from "./lib/components/feature/Feature";
