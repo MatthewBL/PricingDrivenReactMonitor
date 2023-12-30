@@ -6,9 +6,8 @@ import {
   useState,
 } from "react";
 import { Button } from "../../components/Button";
-import { computeEvaluation } from "./index";
 import { Attribute, Operators } from "../../types";
-import { parseExpression } from "../../utils";
+import { computeEvaluation, parseExpression } from "../../utils";
 import { EditorContext } from "../../context/EditorContextProvider";
 
 interface NumericEvaluationFormProps {

@@ -4,7 +4,6 @@ import { Button } from "../Button";
 import { EditorContext } from "../../context/EditorContextProvider";
 import { RawPricingContext } from "../../types";
 import { buildRawPricingContext } from "../../utils";
-import logo from "../../assets/logo-200x100.png";
 import "./NavBar.css";
 
 interface NavBarProps {
@@ -36,7 +35,10 @@ export function NavBar({ hidden, onSave }: NavBarProps) {
 
   return (
     <nav className="pp-nav" hidden={hidden}>
-      <img className="pp-logo" src={logo} />
+      <img
+        className="pp-logo"
+        src="https://placehold.co/200x100?text=pricingplans-react"
+      />
       <ul className="pp-nav-items">
         <li>
           <NavLink className={computeNavLinkStatus} to="attributes">

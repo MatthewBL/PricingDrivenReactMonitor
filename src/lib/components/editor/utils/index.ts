@@ -17,6 +17,28 @@ import {
   UserContextAttributes,
 } from "../types";
 
+export function computeEvaluation(
+  leftOperand: string,
+  operator: Operators,
+  rightOperand: string
+) {
+  switch (operator) {
+    case "":
+      return "";
+    case "<":
+    case "<=":
+    case "==":
+    case ">=":
+    case ">":
+    case "!=":
+    case "||":
+    case "&&":
+      return `${leftOperand} ${operator} ${rightOperand}`;
+    case "None":
+      return leftOperand;
+  }
+}
+
 export function computeType(value: any): AttributeType {
   switch (typeof value) {
     case "string":

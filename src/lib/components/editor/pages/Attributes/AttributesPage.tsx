@@ -1,10 +1,9 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
-import { Attribute, Feature } from "../../types";
+import { Attribute, Feature, Command } from "../../types";
 import { Button } from "../../components/Button";
 import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { AttributeForm } from "./AttributeForm";
-import { Command } from "./index";
 import { Pencil, Plus, Trash } from "../../components/Icons";
 import { EditorContext } from "../../context/EditorContextProvider";
 import "./AttributesPage.css";

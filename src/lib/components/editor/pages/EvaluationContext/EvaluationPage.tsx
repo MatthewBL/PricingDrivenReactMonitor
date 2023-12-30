@@ -4,11 +4,10 @@ import { Table } from "../../components/Table";
 import { Modal } from "../../components/Modal";
 import { Pencil, Trash } from "../../components/Icons";
 import { EditorContext } from "../../context/EditorContextProvider";
-import { Command } from "./index";
 import { TextEvaluationForm } from "./TextEvaluationForm";
 import { NumericEvaluationForm } from "./NumericEvaluationForm";
 import "./EvaluationPage.css";
-import { Attribute } from "../../types";
+import { Attribute, Command } from "../../types";
 import { ConditionEvaluationForm } from "./ConditionEvaluationForm";
 
 export function EvaluationPage() {

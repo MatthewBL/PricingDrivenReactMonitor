@@ -79,6 +79,8 @@ export type CustomValueToken = "CustomValue";
 export type UnknownToken = "Unknown";
 export type ParsedToken = { type: Tokens; value: string };
 
+export type Command = "add" | "edit" | "delete";
+
 export interface Expression {
   operator: Operators;
   planContext: string;
