@@ -1,5 +1,5 @@
 export * from "./lib/components/editor";
-export { default } from "./lib/components/feature/useGenericFeature";
+export { useGenericFeature } from "./lib/components/feature/useGenericFeature";
 export { feature } from "./lib/logic/model/Feature";
 export {
   and,
