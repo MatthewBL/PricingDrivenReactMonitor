@@ -2,13 +2,11 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "sourceMap": true,
     "target": "es5",
     "lib": ["dom", "es5"],
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "node",
-    "declaration": true,
     "removeComments": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
