@@ -14,8 +14,7 @@
       },
       "output": {
         "sortNodes": true,
-        "noBanner": true,
-        "exportReferencedTypes": false
+        "noBanner": true
       }
     }
   ]
