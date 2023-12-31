@@ -15,7 +15,7 @@ export interface GenericFeatureHookOptions {
 
 export type FeatureResponse = JSX.Element;
 
-export default function useGenericFeature(
+export function useGenericFeature(
   options: GenericFeatureHookOptions
 ): FeatureResponse {
   const { featureRetriever } = useContext(FeatureContext);
@@ -32,9 +32,7 @@ export default function useGenericFeature(
     if (options.on) {
       setIsLoading(true);
       // Get the feature value for each provided expression
-      const expressionPromises = options.on.map((on) =>
-        on.expression.eval()
-      );
+      const expressionPromises = options.on.map((on) => on.expression.eval());
 
       if (expressionPromises.length === 0) {
         setIsLoading(false);
