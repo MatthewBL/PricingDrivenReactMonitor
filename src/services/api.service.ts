@@ -2,12 +2,19 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, Method } from 
 import TokenService from "./token.service";
 
 export function fetchWithPricingInterceptor(url: string, options: RequestInit) {
-  return fetch("http://localhost:8080" + url, options).then((response) => {
-    // Check if the response contains the 'newToken' header and update the token in localStorage
-    const newToken = response.headers.get("New-Token");
 
-    if (newToken !== null && newToken !== TokenService.getLocalAccessToken()) {
-      TokenService.updateLocalAccessToken(newToken);
+  return fetch("http://localhost:8080" + url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      "Pricing-Token": TokenService.getLocalPricingToken(),
+    }
+  }).then((response) => {
+    // Check if the response contains the 'newToken' header and update the token in localStorage
+    const newToken = response.headers.get("Pricing-Token");
+
+    if (newToken !== null && newToken !== TokenService.getLocalPricingToken()) {
+      TokenService.updateLocalPricingToken(newToken);
       window.location.reload();
     }
 
@@ -17,10 +24,10 @@ export function fetchWithPricingInterceptor(url: string, options: RequestInit) {
 
 export function searchNewTokenAndUpdate(res: Response) {
   // Check if the response contains the 'newToken' header and update the token in localStorage
-  const newToken = res.headers.get("New-Token");
+  const newToken = res.headers.get("Pricing-Token");
 
-  if (newToken !== null && newToken !== TokenService.getLocalAccessToken()) {
-    TokenService.updateLocalAccessToken(newToken);
+  if (newToken !== null && newToken !== TokenService.getLocalPricingToken()) {
+    TokenService.updateLocalPricingToken(newToken);
     window.location.reload();
   }
 }
@@ -38,7 +45,7 @@ export function searchNewTokenAndUpdate(res: Response) {
 
 //     this.instance.interceptors.request.use(
 //       (config) => {
-//         const token = TokenService.getLocalAccessToken();
+//         const token = TokenService.getLocalPricingToken();
 //         if (token) {
 //           config.headers!["Authorization"] = "Bearer " + token; // for Spring Boot back-end
 //         }
@@ -56,9 +63,9 @@ export function searchNewTokenAndUpdate(res: Response) {
 
 //         if (
 //           newToken !== null &&
-//           newToken !== TokenService.getLocalAccessToken()
+//           newToken !== TokenService.getLocalPricingToken()
 //         ) {
-//           TokenService.updateLocalAccessToken(newToken);
+//           TokenService.updateLocalPricingToken(newToken);
 //           alert("Clinic plan changed!");
 //           window.location.reload();
 //         }
@@ -82,7 +89,7 @@ export function searchNewTokenAndUpdate(res: Response) {
 //               );
 
 //               const { accessToken } = rs.data;
-//               TokenService.updateLocalAccessToken(accessToken);
+//               TokenService.updateLocalPricingToken(accessToken);
 
 //               return this.instance(originalConfig);
 //             } catch (_error) {
