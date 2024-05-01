@@ -3,7 +3,7 @@ import TokenService from "./token.service";
 
 export function fetchWithPricingInterceptor(url: string, options: RequestInit) {
 
-  return fetch("http://localhost:8080" + url, {
+  return fetch(url, {
     ...options,
     headers: {
       ...options.headers,
