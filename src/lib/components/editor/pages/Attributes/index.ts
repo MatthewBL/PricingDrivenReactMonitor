@@ -1,1 +1,0 @@
-export { AttributesPage } from "./AttributesPage";

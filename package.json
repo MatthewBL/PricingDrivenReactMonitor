@@ -1,28 +1,23 @@
 {
-  "name": "pricing4react",
-  "version": "2.0.1",
-  "description": "A library of components that ease the integration of feature toggling driven by pricing plans into your React application's UI.",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "name": "pricingDrivenReactMonitor",
+  "version": "1.0.0",
+  "description": "A tool that intercepts endpoint accesses in frontend to monitor data of the requests and stores them in a csv file.",
+  "main": "stc/services/reactInterceptor.js",
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c",
     "build:types": "dts-bundle-generator --config bundle.dts.json"
   },
   "keywords": [
-    "feature",
-    "toggle",
     "pricing",
-    "plan",
-    "react",
-    "component"
+    "monitor",
+    "react"
   ],
   "author": "ISA Group, University of Seville, Spain",
-  "homepage": "https://github.com/isa-group/Pricing4React#readme",
+  "homepage": "https://github.com/MatthewBL/PricingDrivenReactMonitor#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/isa-group/Pricing4React"
+    "url": "https://github.com/MatthewBL/PricingDrivenReactMonitor.git"
   },
   "license": "MIT",
   "peerDependencies": {
@@ -56,5 +51,11 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-collector": "^0.25.0",
+    "@opentelemetry/tracing": "^0.24.0",
+    "@opentelemetry/web": "^0.24.0"
+  }
 }

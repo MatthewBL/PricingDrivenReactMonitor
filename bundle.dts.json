@@ -9,7 +9,7 @@
       "outFile": "./dist/index.d.ts",
       "libraries": {
         "allowedTypesLibraries": ["react", "react-dom"],
-        "importedLibraries": ["axios", "buffer", "long", "protobufjs"],
+        "importedLibraries": ["buffer"],
         "inlinedLibraries": ["@my-company/package"]
       },
       "output": {
